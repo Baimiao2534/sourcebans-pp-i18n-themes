@@ -10,16 +10,16 @@
 
 | 代碼 | 語言 | 主題名稱 |
 |------|------|----------|
-| `en_US` | 英語（美國） | SourceBans++ English (US) |
-| `en_GB` | 英語（英國） | SourceBans++ English (UK) |
-| `zh_CN` | 簡體中文 | SourceBans++ 简体中文 |
+| `en_US` | English (US) | SourceBans++ English (US) |
+| `en_GB` | English (UK) | SourceBans++ English (UK) |
+| `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
 | `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
 | `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
 | `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
 | `ja_JP` | 日本語 | SourceBans++ 日本語 |
-| `de_DE` | 德語 | SourceBans++ Deutsch |
-| `fr_FR` | 法語 | SourceBans++ Français |
-| `ru_RU` | 俄語 | SourceBans++ Русский |
+| `de_DE` | Deutsch | SourceBans++ Deutsch |
+| `fr_FR` | Français | SourceBans++ Français |
+| `ru_RU` | Русский | SourceBans++ Русский |
 
 後續版本將增加更多語言支援。
 

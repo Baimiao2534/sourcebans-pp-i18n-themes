@@ -10,15 +10,15 @@
 
 | Код | Язык | Название темы |
 |-----|------|----------------|
-| `en_US` | Английский (США) | SourceBans++ English (US) |
-| `en_GB` | Английский (Великобритания) | SourceBans++ English (UK) |
-| `zh_CN` | Упрощённый китайский | SourceBans++ 简体中文 |
-| `zh_HK` | Традиционный китайский (Гонконг) | SourceBans++ 繁體中文（香港） |
-| `zh_MO` | Традиционный китайский (Макао) | SourceBans++ 繁體中文（澳門） |
-| `zh_TW` | Традиционный китайский (Тайвань) | SourceBans++ 繁體中文（台灣） |
-| `ja_JP` | Японский | SourceBans++ 日本語 |
-| `de_DE` | Немецкий | SourceBans++ Deutsch |
-| `fr_FR` | Французский | SourceBans++ Français |
+| `en_US` | English (US) | SourceBans++ English (US) |
+| `en_GB` | English (UK) | SourceBans++ English (UK) |
+| `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
+| `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
+| `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
+| `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
+| `ja_JP` | 日本語 | SourceBans++ 日本語 |
+| `de_DE` | Deutsch | SourceBans++ Deutsch |
+| `fr_FR` | Français | SourceBans++ Français |
 | `ru_RU` | Русский | SourceBans++ Русский |
 
 В будущих версиях будут добавлены новые языки.

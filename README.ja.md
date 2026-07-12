@@ -10,16 +10,16 @@
 
 | コード | 言語 | テーマ名 |
 |--------|------|----------|
-| `en_US` | 英語（米国） | SourceBans++ English (US) |
-| `en_GB` | 英語（英国） | SourceBans++ English (UK) |
-| `zh_CN` | 簡体字中国語 | SourceBans++ 简体中文 |
-| `zh_HK` | 繁体字中国語（香港） | SourceBans++ 繁體中文（香港） |
-| `zh_MO` | 繁体字中国語（マカオ） | SourceBans++ 繁體中文（澳門） |
-| `zh_TW` | 繁体字中国語（台湾） | SourceBans++ 繁體中文（台灣） |
+| `en_US` | English (US) | SourceBans++ English (US) |
+| `en_GB` | English (UK) | SourceBans++ English (UK) |
+| `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
+| `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
+| `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
+| `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
 | `ja_JP` | 日本語 | SourceBans++ 日本語 |
-| `de_DE` | ドイツ語 | SourceBans++ Deutsch |
-| `fr_FR` | フランス語 | SourceBans++ Français |
-| `ru_RU` | ロシア語 | SourceBans++ Русский |
+| `de_DE` | Deutsch | SourceBans++ Deutsch |
+| `fr_FR` | Français | SourceBans++ Français |
+| `ru_RU` | Русский | SourceBans++ Русский |
 
 今後のリリースでより多くの言語が追加される予定です。
 

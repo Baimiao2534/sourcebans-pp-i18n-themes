@@ -10,16 +10,16 @@
 
 | 代码 | 语言 | 主题名称 |
 |------|------|----------|
-| `en_US` | 英语（美国） | SourceBans++ English (US) |
-| `en_GB` | 英语（英国） | SourceBans++ English (UK) |
+| `en_US` | English (US) | SourceBans++ English (US) |
+| `en_GB` | English (UK) | SourceBans++ English (UK) |
 | `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
 | `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
 | `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
 | `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
 | `ja_JP` | 日本語 | SourceBans++ 日本語 |
-| `de_DE` | 德语 | SourceBans++ Deutsch |
-| `fr_FR` | 法语 | SourceBans++ Français |
-| `ru_RU` | 俄语 | SourceBans++ Русский |
+| `de_DE` | Deutsch | SourceBans++ Deutsch |
+| `fr_FR` | Français | SourceBans++ Français |
+| `ru_RU` | Русский | SourceBans++ Русский |
 
 后续版本将增加更多语言支持。
 

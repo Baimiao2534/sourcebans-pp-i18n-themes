@@ -10,16 +10,16 @@ Dieses Projekt ist eine inoffizielle, Community-gesteuerte Spracherweiterung fü
 
 | Code | Sprache | Theme-Name |
 |------|---------|------------|
-| `en_US` | Englisch (US) | SourceBans++ English (US) |
-| `en_GB` | Englisch (UK) | SourceBans++ English (UK) |
-| `zh_CN` | Vereinfachtes Chinesisch | SourceBans++ 简体中文 |
-| `zh_HK` | Traditionelles Chinesisch (Hongkong) | SourceBans++ 繁體中文（香港） |
-| `zh_MO` | Traditionelles Chinesisch (Macao) | SourceBans++ 繁體中文（澳門） |
-| `zh_TW` | Traditionelles Chinesisch (Taiwan) | SourceBans++ 繁體中文（台灣） |
-| `ja_JP` | Japanisch | SourceBans++ 日本語 |
+| `en_US` | English (US) | SourceBans++ English (US) |
+| `en_GB` | English (UK) | SourceBans++ English (UK) |
+| `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
+| `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
+| `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
+| `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
+| `ja_JP` | 日本語 | SourceBans++ 日本語 |
 | `de_DE` | Deutsch | SourceBans++ Deutsch |
-| `fr_FR` | Französisch | SourceBans++ Français |
-| `ru_RU` | Russisch | SourceBans++ Русский |
+| `fr_FR` | Français | SourceBans++ Français |
+| `ru_RU` | Русский | SourceBans++ Русский |
 
 In zukünftigen Versionen werden weitere Sprachen hinzugefügt.
 

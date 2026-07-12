@@ -12,14 +12,14 @@ This project is an unofficial community-driven language extension for the offici
 |------|----------|------------|
 | `en_US` | English (US) | SourceBans++ English (US) |
 | `en_GB` | English (UK) | SourceBans++ English (UK) |
-| `zh_CN` | Simplified Chinese | SourceBans++ 简体中文 |
-| `zh_HK` | Traditional Chinese (Hong Kong) | SourceBans++ 繁體中文（香港） |
-| `zh_MO` | Traditional Chinese (Macau) | SourceBans++ 繁體中文（澳門） |
-| `zh_TW` | Traditional Chinese (Taiwan) | SourceBans++ 繁體中文（台灣） |
-| `ja_JP` | Japanese | SourceBans++ 日本語 |
-| `de_DE` | German | SourceBans++ Deutsch |
-| `fr_FR` | French | SourceBans++ Français |
-| `ru_RU` | Russian | SourceBans++ Русский |
+| `zh_CN` | 简体中文 | SourceBans++ 简体中文 |
+| `zh_HK` | 繁體中文（香港） | SourceBans++ 繁體中文（香港） |
+| `zh_MO` | 繁體中文（澳門） | SourceBans++ 繁體中文（澳門） |
+| `zh_TW` | 繁體中文（台灣） | SourceBans++ 繁體中文（台灣） |
+| `ja_JP` | 日本語 | SourceBans++ 日本語 |
+| `de_DE` | Deutsch | SourceBans++ Deutsch |
+| `fr_FR` | Français | SourceBans++ Français |
+| `ru_RU` | Русский | SourceBans++ Русский |
 
 More languages will be added in future releases.
 
