@@ -1,0 +1,110 @@
+{*
+    SourceBans++ 2026 — chrome / title.tpl
+
+    Topbar (breadcrumbs + ⌘K palette trigger + theme toggle), then opens
+    <main class="page"> for the page handler's content. Pair:
+    web/pages/core/title.php (assigns $title, $breadcrumb, $board_name —
+    same contract as web/themes/default/core/title.tpl).
+
+    Interactive surfaces carry data-testid + ARIA per the issue's
+    "Testability hooks" rule:
+      - palette trigger: data-testid="palette-trigger" + aria-label
+      - theme toggle:    data-testid="theme-toggle"    + aria-label
+      - mobile menu:     data-testid="mobile-menu-toggle" + aria-label
+      - active breadcrumb: aria-current="page"
+
+    The palette / drawer JS that consumes data-palette-open and
+    data-theme-toggle ships in C1/C2 — the buttons render now so the
+    static markup contract is locked from A2 onward.
+*}
+<div class="main">
+    <header class="topbar" data-testid="topbar">
+        {* #1448: keep `btn` first — only `.btn` carries the load-bearing `background` / `color` / `border` / `display: inline-flex` declarations; the modifiers set CSS custom properties + (for sizing) geometry on top. See AGENTS.md "Anti-patterns" → modifier-only `btn--*` chains. *}
+        <button type="button"
+                class="btn btn--ghost btn--icon"
+                data-mobile-menu
+                data-testid="mobile-menu-toggle"
+                aria-label="Ouvrir le menu de navigation"
+                aria-controls="sidebar">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <nav class="topbar__breadcrumbs" aria-label="Fil d'Ariane">
+            {foreach from=$breadcrumb item=crumb name=bc}
+                {if !$smarty.foreach.bc.first}
+                    <i data-lucide="chevron-right" style="width:12px;height:12px;color:var(--text-faint)"></i>
+                {/if}
+                <a href="{$crumb.url}"
+                   {if $smarty.foreach.bc.last}aria-current="page"{/if}>{$crumb.title}</a>
+            {/foreach}
+        </nav>
+
+        <div style="flex:1"></div>
+
+        {*
+            #1207 CC-1 / CC-3: the topbar palette trigger is icon-only at
+            EVERY viewport. CC-1 (slice 1, PR #1208) collapsed it at
+            <=768px because the search-input shape couldn't share a row
+            with the breadcrumb + theme toggle on mobile; CC-3 (this
+            slice) extends the same collapse to desktop because the
+            chrome's labelled "search input + Ctrl-K hint" was a
+            duplicate affordance for the same `<dialog id="palette-root">`
+            the ⌘K shortcut already opens — both surfaces competed for
+            attention and pulled the user's eye twice. The palette
+            itself owns the search semantically; the topbar trigger only
+            opens it.
+
+            The .topbar__search-label / .topbar__search-kbd hooks below
+            are the CSS handles theme.css uses to hide the visible label
+            and the keyboard hint. Keep them BOTH in the DOM
+            unconditionally so:
+              - SR users hear "Open command palette …" via the existing
+                aria-label regardless of viewport,
+              - theme.js's applyPlatformHints() can still rewrite the kbd
+                text to ⌘K on Mac after first paint without re-rendering,
+              - the icon stays the visible affordance on every viewport so
+                the testability hook (`data-palette-open` /
+                `data-testid="palette-trigger"`) works the same way for
+                desktop click + mobile tap.
+        *}
+        <button type="button"
+                class="topbar__search"
+                data-palette-open
+                data-testid="palette-trigger"
+                aria-label="Ouvrir la palette de commandes (rechercher joueurs, SteamIDs, pages)">
+            <i data-lucide="search" style="width:14px;height:14px"></i>
+            <span class="topbar__search-label">Rechercher joueurs, SteamIDs…</span>
+            {* The U+2318 ⌘ glyph is missing from the vendored JetBrains Mono
+               and the generic CSS mono fallback on every non-Mac browser, so
+               a server-rendered '⌘K' renders as tofu for the majority of users
+               (#1184). Render the Ctrl form here and let theme.js upgrade
+               Mac/iOS clients to '⌘K' at boot. *}
+            <kbd class="topbar__search-kbd">Ctrl K</kbd>
+        </button>
+
+        {*
+            #1185 follow-up: tri-state icon (sun / moon / monitor). The click
+            handler in theme.js cycles light → dark → system → light, but
+            pre-fix the button rendered only sun + moon gated on the resolved
+            <html class="dark"> — so "system" was indistinguishable from
+            whichever of light/dark the OS resolved to, and users had no
+            way to tell at a glance which mode the toggle would jump to
+            next. The third <i data-lucide="monitor"> placeholder is gated
+            by CSS on <html data-theme-pref="..."> (the *preference*, NOT
+            the resolved theme), which theme.js's applyTheme() and the
+            anti-FOUC bootloader both write. aria-label is rewritten in
+            applyTheme() to mirror the current preference so screen-reader
+            users get the same indicator sighted users do.
+        *}
+        <button type="button"
+                class="btn btn--ghost btn--icon"
+                data-theme-toggle
+                data-testid="theme-toggle"
+                aria-label="Changer de thème de couleur">
+            <i data-lucide="sun"     class="theme-toggle__sun"></i>
+            <i data-lucide="moon"    class="theme-toggle__moon"></i>
+            <i data-lucide="monitor" class="theme-toggle__system"></i>
+        </button>
+    </header>
+
+    <main class="page" id="page">
