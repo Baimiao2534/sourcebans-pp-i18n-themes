@@ -1,0 +1,896 @@
+{*
+    SourceBans++ 2026 — page / page_admin_settings_settings.tpl
+
+    "Main settings" sub-tab on the admin Settings page. Pair:
+    Sbpp\View\AdminSettingsView + web/pages/admin.settings.php (which
+    routes by ?section=settings|features|logs|themes and renders one
+    View per request — no AdminTabs JS tab-switching, no .tabcontent
+    wrapper divs).
+
+    #1259 — sidebar lifted into a shared partial
+    --------------------------------------------
+    Pre-#1259 every page_admin_settings_*.tpl carried its own inline
+    `<nav>` block declaring four `<a class="sidebar__link">` rows and
+    a hardcoded `grid-template-columns:14rem 1fr` layout. The chrome
+    is now driven by `core/admin_sidebar.tpl` (parameterized partial)
+    via `web/includes/View/AdminTabs.php`; the page handler
+    (admin.settings.php) opens the shell + sidebar + content column
+    BEFORE this template renders. This template's outer wrapper is
+    just the page-level padding + heading + form content — no grid,
+    no sidebar markup. See AGENTS.md "Sub-paged admin routes" for
+    the convention.
+
+    Variable contract (kept in sync by SmartyTemplateRule):
+        Permission gates:
+            $can_web_settings — gates the entire body. Computed via
+                Perms::for in admin.settings.php from
+                ADMIN_OWNER|ADMIN_WEB_SETTINGS.
+            $can_owner — kept for parity with sibling settings views;
+                this template doesn't gate any UI on it directly but
+                the View constructor requires it for cross-tab parity.
+        Settings values: $config_title, $config_logo,
+            $config_min_password, $config_dateformat,
+            $config_dash_title, $config_dash_text, $auth_maxlife,
+            $auth_maxlife_remember, $auth_maxlife_steam,
+            $auth_maxlife_human, $auth_maxlife_remember_human,
+            $auth_maxlife_steam_human (#1232 — server-rendered first
+            paint for the per-input duration echoes; the page-tail JS
+            mirrors `Sbpp\Util\Duration::humanizeMinutes()` so the
+            spans update live as the operator types),
+            $config_debug, $enable_submit, $enable_protest,
+            $enable_commslist, $protest_emailonlyinvolved,
+            $dash_lognopopup, $config_default_page,
+            $config_bans_per_page, $banlist_hideadmname,
+            $banlist_nocountryfetch, $banlist_hideplayerips,
+            $bans_customreason (list), $config_smtp (tuple
+            [host, user, port]), $config_smtp_verify_peer,
+            $config_mail_from_email, $config_mail_from_name.
+
+    Testability hooks:
+        - Sidebar <a> elements: data-testid="admin-tab-<slug>" (#1259
+          unified hook on `core/admin_sidebar.tpl`; the legacy
+          `settings-tab-<slug>` hook is gone — the chrome is now
+          shared with servers / mods / groups so the testid uses the
+          common `admin-tab-<slug>` shape).
+        - Each <label>/<input> row: data-testid="setting-row" +
+          data-key="<setting.key>" so end-to-end tests can target
+          a setting by its persisted name (e.g. "template.title")
+          without depending on form-input ordering.
+        - Save button: data-testid="settings-save".
+
+    Security note: dash.intro.text is rendered as a PLAIN <textarea>
+    by design. The previous TinyMCE WYSIWYG was the source of #1113's
+    stored-XSS — admins typed raw HTML, the dashboard emitted it via
+    nofilter, every visitor executed it. The value now flows through
+    Sbpp\Markup\IntroRenderer (CommonMark, html_input=escape,
+    allow_unsafe_links=false) on render. Re-introducing TinyMCE,
+    CKEditor, or any other HTML editor here re-opens the vector.
+    Documented in AGENTS.md "Anti-patterns" + "Admin-authored display
+    text". The help icon links to the CommonMark cheat-sheet so admins
+    can discover the syntax without losing the safe-on-render contract.
+
+    #1266 — outer `.p-6` removed
+    ----------------------------
+    The page padding now lives on the `.admin-sidebar-shell` (the grid
+    host opened by AdminTabs.php), so this template no longer wraps
+    its body in `<div class="p-6">`. Without that change the sidebar's
+    first row floated 1.5rem above the page heading because
+    `align-items: start` aligned grid cells, not visible content
+    inside them. The `.mb-6` heading wrapper inside this template is
+    intentionally kept so the heading still gets its bottom gap to
+    the first card.
+*}
+<div>
+    <div class="mb-6">
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">设置</h1>
+        <p class="text-sm text-muted m-0 mt-2">全站配置。更改立即生效。</p>
+    </div>
+
+    {if NOT $can_web_settings}
+        <div class="card">
+            <div class="card__body">
+                <p class="text-muted">访问被拒绝。需要 <code>ADMIN_WEB_SETTINGS</code> 权限。</p>
+            </div>
+        </div>
+    {else}
+                <form action="?p=admin&amp;c=settings&amp;section=settings" method="post" class="space-y-4" id="form-settings-main">
+                    {csrf_field}
+                    <input type="hidden" name="settingsGroup" value="mainsettings">
+
+                    <div class="card">
+                        <div class="card__header"><div><h3>常规</h3><p>站点标识、密码规则和日期。</p></div></div>
+                        <div class="card__body space-y-4">
+                            <div data-testid="setting-row" data-key="template.title">
+                                <label class="label" for="template_title">站点标题</label>
+                                <input class="input" type="text" id="template_title" name="template_title" value="{$config_title}">
+                            </div>
+                            <div data-testid="setting-row" data-key="template.logo">
+                                <label class="label" for="template_logo">Logo 路径</label>
+                                <input class="input" type="text" id="template_logo" name="template_logo" value="{$config_logo}" aria-describedby="template_logo_help">
+                                {if $config_logo_using_fallback}
+                                    {*
+                                        #1480 review finding 5: the resolver
+                                        (`Sbpp\View\BrandLogo::resolve()`)
+                                        silently falls back to the default
+                                        shield when the configured value is
+                                        broken (file deleted, traversal
+                                        indicator, v1.x default). Surface the
+                                        fallback state inline so the operator
+                                        knows their customisation is inactive
+                                        — without this the input shows the raw
+                                        saved value as if it were active.
+                                    *}
+                                    <p class="settings-fieldset__help"
+                                       style="color:#7f1d1d;background:rgba(220,38,38,0.10);border-left:3px solid #dc2626;padding:0.5rem 0.75rem;margin-top:0.25rem;border-radius:0.25rem;"
+                                       data-testid="setting-warning-template.logo">
+                                        <strong>注意：</strong>当前 chrome 正在渲染默认盾牌（<code class="font-mono">images/favicon.svg</code>），因为保存的路径无法解析为当前主题磁盘上的文件。请检查文件是否存在于 <code class="font-mono">themes/&lt;theme&gt;/</code> 下，或清空输入以移除自定义设置。
+                                    </p>
+                                {/if}
+                                <p class="settings-fieldset__help"
+                                   id="template_logo_help"
+                                   data-testid="setting-help-template.logo">
+                                    侧边栏和登录页 Logo 的路径，相对于主题目录（<code class="font-mono">themes/&lt;theme&gt;/</code>）。默认为 <code class="font-mono">images/favicon.svg</code>。512&times;512 的栅格版本位于 <code class="font-mono">logos/sbpp_logo.png</code>。
+                                </p>
+                            </div>
+                            <div data-testid="setting-row" data-key="config.password.minlength">
+                                <label class="label" for="config_password_minlength">最小密码长度</label>
+                                <input class="input" type="number" min="1" id="config_password_minlength" name="config_password_minlength" value="{$config_min_password}">
+                            </div>
+                            <div data-testid="setting-row" data-key="config.dateformat">
+                                <label class="label" for="config_dateformat">日期格式 <span class="text-muted text-xs">（<a href="https://www.php.net/manual/en/datetime.format.php" target="_blank" rel="noopener">PHP date()</a>）</span></label>
+                                <input class="input" type="text" id="config_dateformat" name="config_dateformat" value="{$config_dateformat}">
+                            </div>
+                            <div data-testid="setting-row" data-key="config.debug">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="config_debug" name="config_debug"{if $config_debug} checked{/if}>
+                                    <span class="text-sm font-medium">启用调试模式</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {*
+                        #1207 ADM-7: token-lifetime inputs stacked,
+                        with per-input help.
+
+                        Pre-fix shape: a 3-column `display: grid` with
+                        the labels "Default", "Remember me",
+                        "Steam login" side-by-side. The labels were
+                        unequal width and the inputs themselves were
+                        narrower than their labels at desktop
+                        ("the input boxes are narrower than their
+                        labels"); on mobile the grid collapsed to a
+                        single column but the explanatory copy
+                        ("Token lifetimes (in minutes)") stayed on
+                        the card header so the user couldn't tell
+                        which input the unit applied to.
+
+                        Fix:
+
+                          - Use a `<fieldset>` + `<legend>` so the
+                            section heading is the form group's a11y
+                            label (replacing the card-level `<h3>`
+                            chrome — the outer `.card` chrome is kept
+                            for visual consistency with sibling
+                            settings sections).
+                          - Each input lives in its own `<div
+                            data-testid="setting-row">` with a
+                            description paragraph below the input so
+                            the unit ("in minutes") and the meaning
+                            ("when the user ticks Remember me", "when
+                            signed in via the Continue with Steam
+                            button") sit next to the field they apply
+                            to. The paragraphs are tied to the
+                            inputs via `aria-describedby` so screen
+                            readers announce them as the input's
+                            description.
+                          - The labels are renamed away from
+                            "Default" / "Remember me" / "Steam login"
+                            to "Default sign-in" / "\"Remember me\"
+                            sign-in" / "Steam sign-in" so users
+                            scanning the form don't have to read the
+                            section heading to know what "Default"
+                            applies to.
+                          - The vertical stack layout works the same
+                            on desktop and mobile, so the
+                            help-text-detached-from-the-card-header
+                            bug at <=768px goes away too.
+                    *}
+                    <div class="card">
+                        <fieldset class="settings-fieldset"
+                                  data-testid="settings-token-lifetimes">
+                            <legend class="settings-fieldset__legend">
+                                <span class="settings-fieldset__title">认证</span>
+                                <span class="settings-fieldset__hint">会话令牌生命周期，以分钟为单位。设置为 <code>0</code> 可禁用某个登录路径。</span>
+                            </legend>
+                            <div class="settings-fieldset__body space-y-5">
+                                {*
+                                    #1232: per-input duration echo.
+
+                                    Each input gets a `data-duration-input`
+                                    marker attribute and an adjacent muted
+                                    span keyed by `data-duration-echo-for=
+                                    "<input-id>"`. The span carries
+                                    `aria-live="polite"` so screen-reader
+                                    users hear the conversion as they edit.
+
+                                    The span is server-rendered with the
+                                    `*_human` props from `AdminSettingsView`
+                                    (populated by
+                                    `Sbpp\Util\Duration::humanizeMinutes()`
+                                    in admin.settings.php) so the page works
+                                    without JS. The page-tail
+                                    `<script>` re-implements the same
+                                    formula and updates the span on every
+                                    `input` event — see the IIFE near the
+                                    bottom of this template.
+
+                                    The span sits between the input and the
+                                    `.settings-fieldset__help` paragraph.
+                                    On desktop the input is clamped at
+                                    18rem (`.settings-fieldset__input`)
+                                    so the inline span flows next to it
+                                    on the same line; on mobile (<=768px)
+                                    the input expands to 100% and the
+                                    span wraps below — both shapes are
+                                    fine because the span is short.
+                                *}
+                                <div data-testid="setting-row" data-key="auth.maxlife">
+                                    <label class="label" for="auth_maxlife">默认登录</label>
+                                    <input class="input settings-fieldset__input"
+                                           type="number" min="0"
+                                           id="auth_maxlife"
+                                           name="auth_maxlife"
+                                           value="{$auth_maxlife}"
+                                           data-duration-input
+                                           aria-describedby="auth_maxlife_help">
+                                    <span class="text-muted text-xs"
+                                          data-duration-echo-for="auth_maxlife"
+                                          aria-live="polite">{$auth_maxlife_human}</span>
+                                    <p class="settings-fieldset__help"
+                                       id="auth_maxlife_help"
+                                       data-testid="setting-help-auth.maxlife">
+                                        普通登录会话在用户被登出前的持续时间，以分钟为单位。
+                                    </p>
+                                </div>
+                                <div data-testid="setting-row" data-key="auth.maxlife.remember">
+                                    <label class="label" for="auth_maxlife_remember">&ldquo;记住我&rdquo; 登录</label>
+                                    <input class="input settings-fieldset__input"
+                                           type="number" min="0"
+                                           id="auth_maxlife_remember"
+                                           name="auth_maxlife_remember"
+                                           value="{$auth_maxlife_remember}"
+                                           data-duration-input
+                                           aria-describedby="auth_maxlife_remember_help">
+                                    <span class="text-muted text-xs"
+                                          data-duration-echo-for="auth_maxlife_remember"
+                                          aria-live="polite">{$auth_maxlife_remember_human}</span>
+                                    <p class="settings-fieldset__help"
+                                       id="auth_maxlife_remember_help"
+                                       data-testid="setting-help-auth.maxlife.remember">
+                                        用户在登录表单上勾选 &ldquo;记住我&rdquo; 复选框时使用。通常比默认会话长得多。
+                                    </p>
+                                </div>
+                                <div data-testid="setting-row" data-key="auth.maxlife.steam">
+                                    <label class="label" for="auth_maxlife_steam">Steam 登录</label>
+                                    <input class="input settings-fieldset__input"
+                                           type="number" min="0"
+                                           id="auth_maxlife_steam"
+                                           name="auth_maxlife_steam"
+                                           value="{$auth_maxlife_steam}"
+                                           data-duration-input
+                                           aria-describedby="auth_maxlife_steam_help">
+                                    <span class="text-muted text-xs"
+                                          data-duration-echo-for="auth_maxlife_steam"
+                                          aria-live="polite">{$auth_maxlife_steam_human}</span>
+                                    <p class="settings-fieldset__help"
+                                       id="auth_maxlife_steam_help"
+                                       data-testid="setting-help-auth.maxlife.steam">
+                                        通过 &ldquo;使用 Steam 继续&rdquo; 按钮打开的会话的生命周期。
+                                    </p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header"><div><h3>控制台简介</h3><p>公开落地页的标题和正文。</p></div></div>
+                        <div class="card__body space-y-4">
+                            <div data-testid="setting-row" data-key="dash.intro.title">
+                                <label class="label" for="dash_intro_title">简介标题</label>
+                                <input class="input" type="text" id="dash_intro_title" name="dash_intro_title" value="{$config_dash_title}">
+                            </div>
+                            <div data-testid="setting-row" data-key="dash.intro.text">
+                                <label class="label" for="dash_intro_text">
+                                    简介正文
+                                    <span class="text-muted text-xs">
+                                        — 支持 Markdown
+                                        （<a href="https://commonmark.org/help/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            data-testid="dash-intro-cheatsheet-link">CommonMark 速查表</a>）。
+                                        原始 HTML 在渲染时会被转义。
+                                    </span>
+                                </label>
+                                {*
+                                    #1207 SET-1: live preview pane.
+
+                                    The textarea on the left stays a plain
+                                    <textarea> by design (re-introducing a
+                                    WYSIWYG was the source of #1113 — see
+                                    AGENTS.md "Anti-patterns"). The preview
+                                    pane on the right calls the new
+                                    `system.preview_intro_text` JSON action
+                                    which pipes the value through
+                                    `Sbpp\Markup\IntroRenderer` server-side,
+                                    so the rendered HTML matches what the
+                                    public dashboard would emit byte-for-byte.
+
+                                    Layout: the grid drops to one column
+                                    below 768px so the preview stacks
+                                    underneath on mobile rather than
+                                    crushing the textarea.
+
+                                    The preview frame's `nofilter` is the
+                                    only `nofilter` use here; safety
+                                    annotation is on the `{$rendered}` line
+                                    below for the initial server-rendered
+                                    paint, and the JS-side update goes
+                                    through `el.innerHTML = r.data.html`
+                                    where `r.data.html` is the same
+                                    IntroRenderer output (`html_input:
+                                    'escape'`, `allow_unsafe_links:
+                                    'false'`).
+                                *}
+                                <div class="dash-intro-editor"
+                                     data-testid="dash-intro-editor">
+                                    <textarea class="textarea"
+                                              id="dash_intro_text"
+                                              name="dash_intro_text"
+                                              rows="10"
+                                              style="width:100%;font-family:var(--font-mono);font-size:var(--fs-sm)"
+                                              data-testid="dash-intro-textarea">{$config_dash_text}</textarea>
+                                    <div class="dash-intro-preview"
+                                         data-testid="dash-intro-preview"
+                                         data-loading="false"
+                                         aria-label="Markdown 预览">
+                                        <div class="dash-intro-preview__label">预览</div>
+                                        {*
+                                            aria-live sits on the body (not the wrapper)
+                                            so assistive tech announces only the rendered
+                                            content on each keystroke — not the static
+                                            "Preview" label above it.
+                                        *}
+                                        <div class="dash-intro-preview__body"
+                                             data-testid="dash-intro-preview-body"
+                                             aria-live="polite">
+                                            {if $config_dash_text_preview != ''}
+                                                {* nofilter: $config_dash_text_preview is `IntroRenderer::renderIntroText()` output (CommonMark + html_input=escape + allow_unsafe_links=false) — the same render path the public dashboard uses, see AGENTS.md "Admin-authored display text". *}
+                                                {$config_dash_text_preview nofilter}
+                                            {else}
+                                                <p class="text-xs text-muted m-0" data-empty>在左侧输入 Markdown 以查看其对访问者的渲染效果。</p>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-testid="setting-row" data-key="dash.lognopopup">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="dash_nopopup" name="dash_nopopup"{if $dash_lognopopup} checked{/if}>
+                                    <span class="text-sm font-medium">禁用日志弹窗（改用直接链接）</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header"><div><h3>公开页面</h3><p>访问者可以访问哪些额外页面。</p></div></div>
+                        <div class="card__body space-y-3">
+                            <div data-testid="setting-row" data-key="config.enableprotest">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="enable_protest" name="enable_protest"{if $enable_protest} checked{/if}>
+                                    <span class="text-sm font-medium">启用封禁申诉页面</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="config.enablesubmit">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="enable_submit" name="enable_submit"{if $enable_submit} checked{/if}>
+                                    <span class="text-sm font-medium">启用封禁提交页面</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="config.enablecomms">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="enable_commslist" name="enable_commslist"{if $enable_commslist} checked{/if}>
+                                    <span class="text-sm font-medium">启用通信封禁列表</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="protest.emailonlyinvolved">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="protest_emailonlyinvolved" name="protest_emailonlyinvolved"{if $protest_emailonlyinvolved} checked{/if}>
+                                    <span class="text-sm font-medium">仅在新申诉时向原封禁管理员发送邮件</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="config.defaultpage">
+                                <label class="label" for="default_page">默认落地页</label>
+                                <select class="select" id="default_page" name="default_page">
+                                    <option value="0"{if $config_default_page == 0} selected{/if}>控制台</option>
+                                    <option value="1"{if $config_default_page == 1} selected{/if}>封禁列表</option>
+                                    <option value="2"{if $config_default_page == 2} selected{/if}>服务器</option>
+                                    <option value="3"{if $config_default_page == 3} selected{/if}>提交封禁</option>
+                                    <option value="4"{if $config_default_page == 4} selected{/if}>申诉封禁</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header"><div><h3>封禁列表</h3><p>分页和可见性。</p></div></div>
+                        <div class="card__body space-y-4">
+                            <div data-testid="setting-row" data-key="banlist.bansperpage">
+                                <label class="label" for="banlist_bansperpage">每页封禁数</label>
+                                <input class="input" type="number" min="1" id="banlist_bansperpage" name="banlist_bansperpage" value="{$config_bans_per_page}">
+                            </div>
+                            <div data-testid="setting-row" data-key="banlist.hideadminname">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="banlist_hideadmname" name="banlist_hideadmname"{if $banlist_hideadmname} checked{/if}>
+                                    <span class="text-sm font-medium">在公开封禁信息中隐藏管理员名称</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="banlist.hideplayerips">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="banlist_hideplayerips" name="banlist_hideplayerips"{if $banlist_hideplayerips} checked{/if}>
+                                    <span class="text-sm font-medium">在公开封禁信息中隐藏玩家 IP</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="banlist.nocountryfetch">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="banlist_nocountryfetch" name="banlist_nocountryfetch"{if $banlist_nocountryfetch} checked{/if}>
+                                    <span class="text-sm font-medium">跳过 IP 的国家查询</span>
+                                </label>
+                            </div>
+                            <div data-testid="setting-row" data-key="bans.customreasons">
+                                <label class="label">自定义封禁原因</label>
+                                <p class="text-xs text-muted m-0 mb-2">每行将成为封禁原因下拉菜单中的一个选项。留空则移除。</p>
+                                <div id="custom-reasons" class="space-y-3">
+                                    {foreach from=$bans_customreason item="creason"}
+                                        {* nofilter: bans.customreasons round-trips through htmlspecialchars in admin.settings.php before serialize() into sb_settings, so the value is already entity-encoded; auto-escape would double-encode (matches legacy default theme). Admin-only input + already-escaped on store. *}
+                                        <input class="input" type="text" name="bans_customreason[]" value="{$creason nofilter}">
+                                    {/foreach}
+                                    <input class="input" type="text" name="bans_customreason[]" placeholder="添加其他原因…">
+                                    <input class="input" type="text" name="bans_customreason[]" placeholder="添加其他原因…">
+                                </div>
+                                <button type="button" class="btn btn--ghost btn--sm mt-2" onclick="addCustomReason();">
+                                    <i data-lucide="plus"></i> 添加行
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header"><div><h3>SMTP</h3><p>出站邮件传输。</p></div></div>
+                        <div class="card__body space-y-4">
+                            <div class="grid gap-4" style="grid-template-columns:2fr 1fr">
+                                <div data-testid="setting-row" data-key="smtp.host">
+                                    <label class="label" for="mail_host">主机</label>
+                                    {* config_smtp[0]=host, [1]=user, [2]=port — the array shape mirrors Config::getMulti(['smtp.host','smtp.user','smtp.port']) so the legacy default theme can keep using the same View. *}
+                                    <input class="input" type="text" id="mail_host" name="mail_host" value="{$config_smtp[0]}">
+                                </div>
+                                <div data-testid="setting-row" data-key="smtp.port">
+                                    <label class="label" for="mail_port">端口</label>
+                                    <input class="input" type="number" min="0" id="mail_port" name="mail_port" value="{$config_smtp[2]}">
+                                </div>
+                            </div>
+                            <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
+                                <div data-testid="setting-row" data-key="smtp.user">
+                                    <label class="label" for="mail_user">用户名</label>
+                                    <input class="input" type="text" id="mail_user" name="mail_user" value="{$config_smtp[1]}" autocomplete="off">
+                                </div>
+                                <div data-testid="setting-row" data-key="smtp.pass">
+                                    <label class="label" for="mail_pass">密码 <span class="text-muted text-xs">（留空以保持当前）</span></label>
+                                    <input class="input" type="password" id="mail_pass" name="mail_pass" value="" autocomplete="new-password">
+                                </div>
+                            </div>
+                            <div data-testid="setting-row" data-key="smtp.verify_peer">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="mail_verify_peer" name="mail_verify_peer"{if $config_smtp_verify_peer} checked{/if}>
+                                    <span class="text-sm font-medium">验证 TLS 对等证书</span>
+                                </label>
+                            </div>
+                            <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
+                                <div data-testid="setting-row" data-key="config.mail.from_email">
+                                    <label class="label" for="mail_from_email">发件人邮箱</label>
+                                    <input class="input" type="email" id="mail_from_email" name="mail_from_email" value="{$config_mail_from_email}">
+                                </div>
+                                <div data-testid="setting-row" data-key="config.mail.from_name">
+                                    <label class="label" for="mail_from_name">发件人名称</label>
+                                    <input class="input" type="text" id="mail_from_name" name="mail_from_name" value="{$config_mail_from_name}">
+                                </div>
+                            </div>
+                            {*
+                                #1455: SMTP test-email row.
+
+                                Operator-controlled affordance that triggers a
+                                live SMTP send so the operator can verify their
+                                credentials end-to-end without waiting for a
+                                real outbound event (password reset, ban
+                                protest reply, etc.) to fire.
+
+                                Server-rendered first-paint state:
+                                  - Recipient input is pre-populated with the
+                                    logged-in admin's own email (or empty when
+                                    they have no email on file).
+                                  - Button is `disabled` when host/user/from-
+                                    email is empty AT FIRST PAINT so a
+                                    freshly-installed panel doesn't tempt the
+                                    operator into clicking before they've
+                                    configured SMTP. The page-tail JS keeps
+                                    the disabled state in sync as the operator
+                                    edits the SMTP inputs (the password field
+                                    isn't part of the disabled-derivation
+                                    because the operator can leave it blank to
+                                    "keep current" — that's NOT an "SMTP not
+                                    configured" state for the test surface).
+
+                                  Server-side gate is the load-bearing one:
+                                  `api_system_test_email` re-checks
+                                  `Mailer::create() === null` and surfaces a
+                                  pointed `smtp_not_configured` error envelope
+                                  if the operator bypasses the client-side
+                                  disabled flag (third-party theme strip, hand-
+                                  crafted POST, etc.).
+                            *}
+                            <div data-testid="setting-row" data-key="smtp.test">
+                                <label class="label" for="mail_test_to">发送测试邮件</label>
+                                <div class="grid gap-2" style="grid-template-columns:1fr auto">
+                                    <input class="input"
+                                           type="email"
+                                           id="mail_test_to"
+                                           name="mail_test_to"
+                                           value="{$admin_email}"
+                                           placeholder="recipient@example.com"
+                                           data-testid="smtp-test-recipient"
+                                           autocomplete="off">
+                                    <button type="button"
+                                            class="btn btn--secondary"
+                                            data-testid="smtp-test-email"
+                                            id="smtp_test_email_btn"
+                                            {if $config_smtp[0] === '' || $config_smtp[1] === '' || $config_mail_from_email === ''}disabled{/if}>
+                                        <i data-lucide="send"></i> 发送测试邮件
+                                    </button>
+                                </div>
+                                <p class="text-xs text-muted mt-1">
+                                    通过已保存的 SMTP 凭证发送验证邮件。如果刚刚更改了上述内容，请先保存表单 — 测试使用的是持久化的值，而非输入框中未保存的内容。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {*
+                        #1207 SET-2: `.settings-actions` keeps clear of
+                        the page footer on mobile. The class adds a
+                        bottom margin so the "Save changes" button no
+                        longer reads as overlapping the
+                        `<footer class="app-footer">` underneath.
+                    *}
+                    <div class="settings-actions flex items-center justify-end gap-2">
+                        <button type="button" class="btn btn--secondary btn--sm" onclick="clearCacheBtn();">
+                            <i data-lucide="brush"></i> 清除缓存
+                        </button>
+                        <button type="submit" class="btn btn--primary" data-testid="settings-save">
+                            <i data-lucide="save"></i> 保存更改
+                        </button>
+                    </div>
+                </form>
+    {/if}
+</div>
+
+<script>
+{literal}
+// @ts-check
+(function () {
+    'use strict';
+
+    /**
+     * Append a blank custom-reason input next to the existing ones. The
+     * server iterates `bans_customreason[]` order-independently and drops
+     * empty entries, so users can grow the list freely without managing
+     * indexes.
+     */
+    window.addCustomReason = function () {
+        var box = document.getElementById('custom-reasons');
+        if (!box) return;
+        var inp = document.createElement('input');
+        inp.className = 'input';
+        inp.type = 'text';
+        inp.name = 'bans_customreason[]';
+        inp.placeholder = '添加其他原因…';
+        box.appendChild(inp);
+    };
+
+    /**
+     * Wire the "Clear cache" button to the existing system.clear_cache
+     * JSON action. We purposely don't change the page (the user is mid-edit
+     * on the form), just toast a confirmation.
+     */
+    window.clearCacheBtn = function () {
+        if (!window.sb || !window.sb.api || !window.Actions) return;
+        window.sb.api.call(window.Actions.SystemClearCache, {}).then(function () {
+            window.alert('缓存已清除。');
+        });
+    };
+
+    /**
+     * #1207 SET-1: live Markdown preview.
+     *
+     * Debounced input handler that POSTs the textarea's current value
+     * to `system.preview_intro_text`, receives the rendered HTML back
+     * (rendered by `Sbpp\Markup\IntroRenderer` — same path the public
+     * dashboard uses), and patches the preview pane in place. The
+     * `[data-loading]` flips to `true` while a call is in flight so
+     * the contract from `_base.ts`'s `waitForReady()` (data-loading
+     * settles to "false" before tests proceed) keeps holding.
+     *
+     * The first render comes from PHP (see the `{if
+     * $config_dash_text|trim != ''}` block above); JS only kicks in
+     * once the user starts typing, so the page works without JS too —
+     * the saved-form bounce flow re-renders the page with fresh PHP
+     * markup either way.
+     */
+    var ta = /** @type {HTMLTextAreaElement|null} */ (document.getElementById('dash_intro_text'));
+    var preview = /** @type {HTMLElement|null} */ (
+        document.querySelector('[data-testid="dash-intro-preview"]')
+    );
+    var previewBody = /** @type {HTMLElement|null} */ (
+        document.querySelector('[data-testid="dash-intro-preview-body"]')
+    );
+
+    if (ta && preview && previewBody && window.sb && window.sb.api && window.Actions) {
+        var emptyHtml = '<p class="text-xs text-muted m-0" data-empty>在左侧输入 Markdown 以查看其对访问者的渲染效果。</p>';
+
+        /** @type {number|null} */
+        var pending = null;
+        /** @type {string} */
+        var lastSent = ta.value;
+
+        function refresh() {
+            if (!ta || !preview || !previewBody) return;
+            var current = ta.value;
+            if (current === lastSent && pending === null) return;
+            lastSent = current;
+            if (current.trim() === '') {
+                previewBody.innerHTML = emptyHtml;
+                preview.setAttribute('data-loading', 'false');
+                return;
+            }
+            preview.setAttribute('data-loading', 'true');
+            window.sb.api.call(window.Actions.SystemPreviewIntroText, { markdown: current }).then(function (r) {
+                if (!preview || !previewBody) return;
+                preview.setAttribute('data-loading', 'false');
+                if (r && r.ok && r.data && typeof r.data.html === 'string') {
+                    // r.data.html is IntroRenderer output (CommonMark
+                    // with html_input=escape, allow_unsafe_links=false);
+                    // safe to drop in via innerHTML for the same reason
+                    // the server-rendered first paint above is safe
+                    // behind `nofilter`. Caveat: do NOT swap this for
+                    // a third-party Markdown library — see AGENTS.md
+                    // "Admin-authored display text" for the contract.
+                    previewBody.innerHTML = r.data.html;
+                }
+            }, function () {
+                if (preview) preview.setAttribute('data-loading', 'false');
+            });
+        }
+
+        ta.addEventListener('input', function () {
+            if (pending !== null) window.clearTimeout(pending);
+            pending = window.setTimeout(function () {
+                pending = null;
+                refresh();
+            }, 200);
+        });
+    }
+
+    /**
+     * #1232: live "minutes -> human" echo for the Authentication
+     * fieldset. Mirrors `Sbpp\Util\Duration::humanizeMinutes()` (PHP)
+     * so the muted span next to each `[data-duration-input]` updates
+     * as the operator types. The first paint is server-rendered (see
+     * `$auth_maxlife_human` etc. in the template), so this block only
+     * runs when the user actually edits a value.
+     *
+     * @param {number} minutes
+     * @returns {string}
+     */
+    function humanizeMinutes(minutes) {
+        if (!Number.isFinite(minutes) || minutes <= 0) return '已禁用';
+        var n = Math.floor(minutes);
+        if (n < 60) return n === 1 ? '1 分钟' : n + ' 分钟';
+        if (n < 1440) {
+            if (n % 60 === 0) {
+                var h = n / 60;
+                return h === 1 ? '1 小时' : h + ' 小时';
+            }
+            var hStr = trimZero(n / 60);
+            return '\u2248 ' + hStr + ' 小时';
+        }
+        if (n % 1440 === 0) {
+            var d = n / 1440;
+            return d === 1 ? '1 天' : d + ' 天';
+        }
+        var dStr = trimZero(n / 1440);
+        return '\u2248 ' + dStr + ' 天';
+    }
+
+    /**
+     * Format a number to one decimal and drop a trailing `.0` so values
+     * that round to a whole number render without a redundant decimal.
+     * Mirrors the PHP helper's `trimZero()`.
+     *
+     * @param {number} value
+     * @returns {string}
+     */
+    function trimZero(value) {
+        var s = (Math.round(value * 10) / 10).toFixed(1);
+        return s.charAt(s.length - 1) === '0' && s.charAt(s.length - 2) === '.'
+            ? s.slice(0, -2)
+            : s;
+    }
+
+    var durationInputs = /** @type {NodeListOf<HTMLInputElement>} */ (
+        document.querySelectorAll('[data-duration-input]')
+    );
+    durationInputs.forEach(function (input) {
+        var echo = /** @type {HTMLElement|null} */ (
+            document.querySelector('[data-duration-echo-for="' + input.id + '"]')
+        );
+        if (!echo) return;
+        input.addEventListener('input', function () {
+            // Empty input -> treat as 0 (matches the "disabled" sentinel
+            // the PHP helper returns; the `<input type=number>` clears
+            // to "" rather than "0" on backspace).
+            var raw = input.value.trim();
+            var n = raw === '' ? 0 : parseInt(raw, 10);
+            echo.textContent = humanizeMinutes(Number.isNaN(n) ? 0 : n);
+        });
+    });
+
+    /**
+     * #1455: SMTP "Send test email" button.
+     *
+     * The PHP-side handler reads SMTP credentials from sb_settings (so
+     * the test always reflects the persisted configuration); this JS
+     * is purely UX glue:
+     *
+     *   1. Keep the button disabled until host / user / from-email
+     *      are all non-empty, mirroring the server-side
+     *      smtp_not_configured branch so the operator never clicks a
+     *      button that's guaranteed to fail. Password is NOT in the
+     *      derivation because the form intentionally leaves it blank
+     *      on render ("leave blank to keep current") — an empty
+     *      password input on a panel with a saved password is NOT an
+     *      "SMTP not configured" state.
+     *   2. On click: pre-flight the email-input's native validity,
+     *      flip the busy-state on the button (window.SBPP.setBusy),
+     *      POST to system.test_email, then surface a toast keyed on
+     *      the response shape. The server is the load-bearing gate:
+     *      the throttle / smtp_not_configured / mail_failed branches
+     *      all run server-side regardless of what the client sends.
+     */
+    var testBtn = /** @type {HTMLButtonElement|null} */ (
+        document.getElementById('smtp_test_email_btn')
+    );
+    var testTo = /** @type {HTMLInputElement|null} */ (
+        document.getElementById('mail_test_to')
+    );
+    var smtpHost = /** @type {HTMLInputElement|null} */ (document.getElementById('mail_host'));
+    var smtpUser = /** @type {HTMLInputElement|null} */ (document.getElementById('mail_user'));
+    var smtpFromEmail = /** @type {HTMLInputElement|null} */ (document.getElementById('mail_from_email'));
+
+    /**
+     * Theme-aware busy-state setter that delegates to the canonical
+     * window.SBPP.setBusy when present (full data-loading + aria-busy
+     * + disabled triple per AGENTS.md "Loading state on action
+     * buttons") and falls back to the bare disabled flag so a
+     * third-party theme that strips theme.js still gates against
+     * double-clicks.
+     *
+     * @param {HTMLButtonElement|null} btn
+     * @param {boolean} busy
+     */
+    function setBusy(btn, busy) {
+        if (!btn) return;
+        if (window.SBPP && typeof window.SBPP.setBusy === 'function') {
+            window.SBPP.setBusy(btn, busy);
+        } else {
+            btn.disabled = busy;
+        }
+    }
+
+    /**
+     * Surface a toast via window.SBPP.showToast when the chrome JS
+     * is loaded; fall back to window.alert so the operator still
+     * gets visible feedback on third-party themes that strip the
+     * helper.
+     *
+     * @param {string} kind 'info' | 'success' | 'warn' | 'error'
+     * @param {string} title
+     * @param {string} [body]
+     */
+    function toast(kind, title, body) {
+        if (window.SBPP && typeof window.SBPP.showToast === 'function') {
+            window.SBPP.showToast({ kind: kind, title: title, body: body });
+        } else {
+            window.alert(title + (body ? '\n\n' + body : ''));
+        }
+    }
+
+    /**
+     * Live re-evaluation of the button's disabled state as the
+     * operator edits SMTP fields. Mirrors the server-rendered first-
+     * paint state in the template's `{if … disabled}` arm so the JS
+     * never starts from a stale snapshot.
+     */
+    function refreshButtonState() {
+        if (!testBtn || !smtpHost || !smtpUser || !smtpFromEmail) return;
+        var ready =
+            smtpHost.value.trim() !== '' &&
+            smtpUser.value.trim() !== '' &&
+            smtpFromEmail.value.trim() !== '';
+        testBtn.disabled = !ready;
+    }
+
+    if (smtpHost) smtpHost.addEventListener('input', refreshButtonState);
+    if (smtpUser) smtpUser.addEventListener('input', refreshButtonState);
+    if (smtpFromEmail) smtpFromEmail.addEventListener('input', refreshButtonState);
+
+    if (testBtn && window.sb && window.sb.api && window.Actions) {
+        testBtn.addEventListener('click', function () {
+            if (!testBtn || !testTo) return;
+            // Native validity check first — handles "missing @",
+            // "trailing space", "no TLD" before we burn a round-trip
+            // and a rate-limit slot. The server re-runs
+            // FILTER_VALIDATE_EMAIL regardless; this is UX polish.
+            var rawTo = testTo.value.trim();
+            if (rawTo === '' || !testTo.checkValidity()) {
+                testTo.reportValidity();
+                toast('warn', '请输入收件人', '在发送测试前请输入有效的邮箱地址。');
+                return;
+            }
+
+            setBusy(testBtn, true);
+            window.sb.api.call(window.Actions.SystemTestEmail, { to: rawTo }).then(
+                function (r) {
+                    setBusy(testBtn, false);
+                    if (r && r.ok && r.data && typeof r.data.to === 'string') {
+                        toast('success', '测试邮件已发送',
+                            'SMTP 测试邮件已发送至 ' + r.data.to + '。请检查收件箱以确认送达。');
+                        return;
+                    }
+                    // Structured error envelope. Branch on r.error.code
+                    // so the operator gets actionable copy instead of
+                    // a generic "request failed" string.
+                    var err = (r && r.error) || {};
+                    var code = err.code || 'unknown';
+                    var msg = err.message || '服务器返回了意外响应。';
+                    if (code === 'smtp_not_configured') {
+                        toast('warn', 'SMTP 未配置', msg);
+                    } else if (code === 'rate_limited') {
+                        toast('warn', '测试邮件已被限流', msg);
+                    } else if (code === 'validation') {
+                        toast('warn', '请检查收件人', msg);
+                    } else if (code === 'mail_failed') {
+                        toast('error', '测试邮件失败', msg);
+                    } else {
+                        toast('error', '测试邮件失败', msg);
+                    }
+                },
+                function () {
+                    setBusy(testBtn, false);
+                    toast('error', '测试邮件失败', '无法访问面板 API。请检查网络后重试。');
+                }
+            );
+        });
+    }
+})();
+{/literal}
+</script>
