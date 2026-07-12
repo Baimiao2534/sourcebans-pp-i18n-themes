@@ -34,25 +34,25 @@
     {if NOT $permission_list}
         <div class="card" data-testid="server-list-denied">
             <div class="card__body">
-                <h3 style="margin:0 0 0.25rem">Access Denied</h3>
-                <p class="text-sm text-muted m-0">You don't have permission to list servers.</p>
+                <h3 style="margin:0 0 0.25rem">Accès refusé</h3>
+                <p class="text-sm text-muted m-0">Vous n'avez pas la permission de lister les serveurs.</p>
             </div>
         </div>
     {else}
         <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap:wrap">
             <div>
-                <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Servers</h1>
+                <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Serveurs</h1>
                 <p class="text-sm text-muted m-0 mt-2">
                     <span data-testid="server-count" id="srvcount">{$server_count}</span>
-                    registered {if $server_count == 1}server{else}servers{/if}.
-                    Live host / map / player counts hydrate after first paint.
+                    serveur{if $server_count != 1}s{/if} enregistré{if $server_count != 1}s{/if}.
+                    L'hôte en direct / la carte / le nombre de joueurs se chargent après le premier affichage.
                 </p>
             </div>
             {if $permission_addserver}
                 <a class="btn btn--primary"
                    href="index.php?p=admin&amp;c=servers&amp;section=add"
                    data-testid="server-list-add">
-                    Add server
+                    Ajouter un serveur
                 </a>
             {/if}
         </div>
@@ -60,8 +60,8 @@
         {if $server_count == 0}
             <div class="card" data-testid="server-list-empty">
                 <div class="card__body text-sm text-muted">
-                    No servers configured yet.
-                    {if $permission_addserver}<a href="index.php?p=admin&amp;c=servers&amp;section=add">Add one</a> to get started.{/if}
+                    Aucun serveur configuré pour le moment.
+                    {if $permission_addserver}<a href="index.php?p=admin&amp;c=servers&amp;section=add">En ajouter un</a> pour commencer.{/if}
                 </div>
             </div>
         {else}
@@ -143,10 +143,10 @@
                                       data-testid="server-status"
                                       aria-live="polite">
                                     <i data-lucide="loader" style="width:10px;height:10px"></i>
-                                    <span data-status-label>Loading</span>
+                                    <span data-status-label>Chargement</span>
                                 </span>
                             {else}
-                                <span class="pill pill--offline" title="Disabled (hidden from public lists)">Disabled</span>
+                                <span class="pill pill--offline" title="Désactivé (masqué des listes publiques)">Désactivé</span>
                             {/if}
                         </header>
 
@@ -170,23 +170,23 @@
                                 document-level [data-copy] delegate in theme.js
                                 (secure-context clipboard + execCommand fallback).
                             *}
-                            <dt style="font-weight:500;color:var(--text)">Server ID</dt>
+                            <dt style="font-weight:500;color:var(--text)">ID serveur</dt>
                             <dd style="margin:0;display:flex;align-items:center;gap:0.25rem" data-testid="server-id">
                                 <span class="font-mono" data-testid="server-id-value">{$server.sid}</span>
                                 <button class="btn btn--ghost btn--icon btn--xs"
                                         type="button"
                                         data-copy="{$server.sid}"
                                         data-testid="server-id-copy"
-                                        title="Copy Server ID"
-                                        aria-label="Copy Server ID">
+                                        title="Copier l'ID du serveur"
+                                        aria-label="Copier l'ID du serveur">
                                     <i data-lucide="copy" style="width:12px;height:12px"></i>
                                 </button>
                             </dd>
                             <dt style="font-weight:500;color:var(--text)">Mod</dt>
-                            <dd style="margin:0">{if isset($server.mod_name)}{$server.mod_name|escape}{else}<span class="text-faint">unknown</span>{/if}</dd>
-                            <dt style="font-weight:500;color:var(--text)">Players</dt>
+                            <dd style="margin:0">{if isset($server.mod_name)}{$server.mod_name|escape}{else}<span class="text-faint">inconnu</span>{/if}</dd>
+                            <dt style="font-weight:500;color:var(--text)">Joueurs</dt>
                             <dd style="margin:0" data-testid="server-players">—</dd>
-                            <dt style="font-weight:500;color:var(--text)">Map</dt>
+                            <dt style="font-weight:500;color:var(--text)">Carte</dt>
                             <dd style="margin:0" data-testid="server-map">—</dd>
                         </dl>
 
@@ -207,7 +207,7 @@
                                 <a class="btn btn--ghost btn--sm"
                                    data-testid="server-tile-edit"
                                    href="index.php?p=admin&c=servers&o=edit&id={$server.sid|escape:'url'}">
-                                    Edit
+                                    Modifier
                                 </a>
                             {/if}
                             {if $server.enabled}
@@ -226,8 +226,8 @@
                                         class="btn btn--ghost btn--sm"
                                         data-testid="server-refresh"
                                         data-action="refresh"
-                                        title="Re-query this server"
-                                        aria-label="Refresh server status"
+                                        title="Interroger à nouveau ce serveur"
+                                        aria-label="Rafraîchir l'état du serveur"
                                         disabled>
                                     <i data-lucide="refresh-cw" style="width:13px;height:13px"></i>
                                 </button>
@@ -240,7 +240,7 @@
                                         data-sid="{$server.sid}"
                                         data-label="{$server.ip|escape}:{$server.port}"
                                         style="color:var(--danger);margin-left:auto">
-                                    Delete
+                                    Supprimer
                                 </button>
                             {/if}
                         </footer>
@@ -251,9 +251,9 @@
 
         {if $permission_addserver}
             <div class="text-xs text-muted mt-4" data-testid="server-list-mapimg-hint">
-                Need to upload a map screenshot? Drop it under
-                <code class="font-mono">web/images/maps/</code> using the map name as the filename
-                (e.g. <code class="font-mono">de_dust2.jpg</code>).
+                Besoin de téléverser une capture de carte ? Déposez-la sous
+                <code class="font-mono">web/images/maps/</code> en utilisant le nom de la carte comme nom de fichier
+                (ex. <code class="font-mono">de_dust2.jpg</code>).
             </div>
         {/if}
     {/if}
@@ -294,9 +294,9 @@
         if (!btn) return;
         e.preventDefault();
         var sid = Number(btn.dataset.sid);
-        var label = btn.dataset.label || ('Server #' + sid);
+        var label = btn.dataset.label || ('Serveur n°' + sid);
         if (!Number.isFinite(sid) || sid <= 0) return;
-        if (!window.confirm('Delete ' + label + '?\n\nThis removes the server entry and any group/admin mappings. Bans logged from it are retained.')) {
+        if (!window.confirm('Supprimer ' + label + ' ?\n\nCela supprime l\'entrée du serveur et tout mappage de groupe/administrateur. Les bannissements enregistrés depuis ce serveur sont conservés.')) {
             return;
         }
         var api = window.sb && window.sb.api;
@@ -306,7 +306,7 @@
             if (!r || r.ok === false) {
                 setBusy(btn, false);
                 if (r && r.error && window.SBPP && window.SBPP.showToast) {
-                    window.SBPP.showToast({ kind: 'error', title: 'Delete failed', body: r.error.message || 'Unknown error' });
+                    window.SBPP.showToast({ kind: 'error', title: 'Échec de la suppression', body: r.error.message || 'Erreur inconnue' });
                 }
                 return;
             }
@@ -323,7 +323,7 @@
                 if (counter) counter.textContent = String(d.counter.srvcount);
             }
             if (window.SBPP && window.SBPP.showToast) {
-                window.SBPP.showToast({ kind: 'success', title: 'Server deleted', body: label });
+                window.SBPP.showToast({ kind: 'success', title: 'Serveur supprimé', body: label });
             }
         });
     });

@@ -57,18 +57,18 @@
 *}
 <div>
     <div class="mb-6">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Settings</h1>
-        <p class="text-sm text-muted m-0 mt-2">Pick the theme that paints the panel chrome for every visitor.</p>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Paramètres</h1>
+        <p class="text-sm text-muted m-0 mt-2">Choisissez le thème qui peint le chrome du panneau pour chaque visiteur.</p>
     </div>
             <div class="card">
                 <div class="card__header">
                     <div>
-                        <h3>Installed themes</h3>
-                        <p>Each card represents one directory under <code>web/themes/</code> with a <code>theme.conf.php</code> manifest.</p>
+                        <h3>Thèmes installés</h3>
+                        <p>Chaque carte représente un répertoire sous <code>web/themes/</code> avec un manifeste <code>theme.conf.php</code>.</p>
                     </div>
                     <div class="text-xs text-muted" style="text-align:right" data-testid="current-theme-summary">
-                        Currently in use:<br>
-                        <strong>{$theme_name}</strong> v{$theme_version} by {$theme_author}{if $theme_link != ''} · <a href="{$theme_link}" target="_blank" rel="noopener" class="text-muted">homepage</a>{/if}<br>
+                        Actuellement utilisé :<br>
+                        <strong>{$theme_name}</strong> v{$theme_version} par {$theme_author}{if $theme_link != ''} · <a href="{$theme_link}" target="_blank" rel="noopener" class="text-muted">page d'accueil</a>{/if}<br>
                         <code>{$current_theme_dir}</code>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     {if NOT $can_web_settings}
                         <p class="text-xs text-muted m-0 mb-4" style="padding:0.5rem 0.75rem;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-muted)">
                             <i data-lucide="info"></i>
-                            You can browse themes but you need <code>ADMIN_WEB_SETTINGS</code> to switch the active one.
+                            Vous pouvez parcourir les thèmes mais il vous faut <code>ADMIN_WEB_SETTINGS</code> pour changer le thème actif.
                         </p>
                     {/if}
 
@@ -91,29 +91,29 @@
                                      style="border:1px solid {if $t.active}var(--brand-600){else}var(--border){/if};border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-surface);display:flex;flex-direction:column;{if $t.active}box-shadow:0 0 0 2px var(--brand-600) inset{/if}">
                                 <div style="aspect-ratio:250 / 170;background:var(--bg-muted);display:grid;place-items:center;overflow:hidden">
                                     <img src="{$t.screenshot}"
-                                         alt="{$t.name} theme screenshot"
+                                         alt="Capture d'écran du thème {$t.name}"
                                          loading="lazy"
                                          style="width:100%;height:100%;object-fit:cover"
-                                         onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'text-muted text-xs\'>No screenshot</span>'">
+                                         onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'text-muted text-xs\'>Pas de capture</span>'">
                                 </div>
                                 <div class="p-4 space-y-3" style="flex:1;display:flex;flex-direction:column">
                                     <div>
                                         <div class="flex items-center gap-2">
                                             <h4 class="m-0 font-semibold text-sm">{$t.name}</h4>
                                             {if $t.active}
-                                                <span class="pill pill--online" title="Currently active">
-                                                    <i data-lucide="check" style="width:0.75rem;height:0.75rem"></i> Active
+                                                <span class="pill pill--online" title="Actuellement actif">
+                                                    <i data-lucide="check" style="width:0.75rem;height:0.75rem"></i> Actif
                                                 </span>
                                             {/if}
                                         </div>
-                                        <p class="text-xs text-muted m-0 mt-2">by {$t.author} · v{$t.version}{if $t.link != ''} · <a href="{$t.link}" target="_blank" rel="noopener" class="text-muted" title="Open theme homepage"><i data-lucide="external-link" style="width:0.75rem;height:0.75rem;vertical-align:-1px"></i> homepage</a>{/if}</p>
+                                        <p class="text-xs text-muted m-0 mt-2">par {$t.author} · v{$t.version}{if $t.link != ''} · <a href="{$t.link}" target="_blank" rel="noopener" class="text-muted" title="Ouvrir la page d'accueil du thème"><i data-lucide="external-link" style="width:0.75rem;height:0.75rem;vertical-align:-1px"></i> page d'accueil</a>{/if}</p>
                                         <p class="text-xs font-mono text-faint m-0 mt-2">{$t.dir}</p>
                                     </div>
                                     <div class="flex items-center justify-end gap-2 mt-2" style="margin-top:auto">
                                         {if $can_web_settings}
                                             {if $t.active}
                                                 <button type="button" class="btn btn--secondary btn--sm" disabled aria-pressed="true">
-                                                    <i data-lucide="check"></i> In use
+                                                    <i data-lucide="check"></i> En utilisation
                                                 </button>
                                             {else}
                                                 <button type="button"
@@ -121,7 +121,7 @@
                                                         data-testid="theme-apply"
                                                         data-theme="{$t.dir}"
                                                         onclick="applyTheme(this.dataset.theme);">
-                                                    <i data-lucide="check-circle"></i> Use this theme
+                                                    <i data-lucide="check-circle"></i> Utiliser ce thème
                                                 </button>
                                             {/if}
                                         {/if}
@@ -150,7 +150,7 @@
      */
     window.applyTheme = function (theme) {
         if (!theme) return;
-        if (!window.confirm('Switch the panel theme to "' + theme + '"? Every visitor will see the new theme on their next request.')) return;
+        if (!window.confirm('Changer le thème du panneau en « ' + theme + ' » ? Chaque visiteur verra le nouveau thème à sa prochaine requête.')) return;
         if (!window.sb || !window.sb.api || !window.Actions) return;
         window.sb.api.callOrAlert(window.Actions.SystemApplyTheme, { theme: theme }).then(function (env) {
             if (env && env.ok && env.data && env.data.reload) {

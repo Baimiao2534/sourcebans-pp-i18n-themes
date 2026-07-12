@@ -34,7 +34,7 @@
  `web/tests/integration/IframeChromeAntiFoucBootloaderTest.php`.
 *}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -57,7 +57,7 @@
     <div class="card__header">
         <div>
             <h3>{$title}</h3>
-            <p>Pick a file to upload. The file must be {$formats} file format.</p>
+            <p>Wählen Sie eine Datei zum Hochladen. Die Datei muss im Format {$formats} vorliegen.</p>
         </div>
     </div>
     <div class="card__body">
@@ -78,7 +78,7 @@
             {csrf_field}
             <input type="hidden" name="upload" value="1">
 
-            <label class="label" for="uploadfile-input">Select file</label>
+            <label class="label" for="uploadfile-input">Datei auswählen</label>
             <div class="file-input">
                 <label class="btn btn--secondary">
                     <input type="file"
@@ -88,16 +88,16 @@
                            data-file-input
                            required
                            hidden>
-                    Choose file&hellip;
+                    Datei auswählen&hellip;
                 </label>
-                <span class="text-muted text-sm" data-file-name>No file chosen</span>
+                <span class="text-muted text-sm" data-file-name>Keine Datei ausgewählt</span>
             </div>
 
             <div style="margin-top:0.75rem;display:flex;justify-content:flex-end">
                 <button type="submit"
                         class="btn btn--primary btn--sm"
                         data-testid="uploadfile-submit">
-                    Save
+                    Speichern
                 </button>
             </div>
         </form>
@@ -115,7 +115,7 @@
         var span = wrap && wrap.querySelector('[data-file-name]');
         if (!span) return;
         var f = t.files && t.files[0];
-        span.textContent = f ? f.name : 'No file chosen';
+        span.textContent = f ? f.name : 'Keine Datei ausgewählt';
     });
 })();
 </script>

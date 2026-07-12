@@ -14,7 +14,7 @@
     sbpp2026/default needs without `phpstan-baseline.neon` carve-outs.
 *}
 {if NOT $permission_listgroups}
-    <div class="card"><div class="card__body"><p class="text-muted m-0">Access denied.</p></div></div>
+    <div class="card"><div class="card__body"><p class="text-muted m-0">Accès refusé.</p></div></div>
 {else}
 {* #1266 — outer `.p-6` removed; the 1.5rem page inset now lives on
    `.admin-sidebar-shell` (the AdminTabs grid host). The `space-y-6`
@@ -29,8 +29,8 @@
     <section data-testid="web-groups-section">
         <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap:wrap">
             <div>
-                <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Web admin groups</h1>
-                <p class="text-sm text-muted m-0 mt-2">Permission flags and immunity for web panel groups. Total: {$web_group_count}.</p>
+                <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Groupes d'administration Web</h1>
+                <p class="text-sm text-muted m-0 mt-2">Flags de permission et immunité pour les groupes du panneau Web. Total : {$web_group_count}.</p>
             </div>
         </div>
 
@@ -48,15 +48,15 @@
                 <span class="empty-state__icon" aria-hidden="true">
                     <i data-lucide="users-round" style="width:18px;height:18px"></i>
                 </span>
-                <h2 class="empty-state__title">No web admin groups yet</h2>
-                <p class="empty-state__body">Web admin groups bundle panel permissions for a set of admins. Create one to assign multiple admins the same flags at once.</p>
+                <h2 class="empty-state__title">Aucun groupe d'administration Web</h2>
+                <p class="empty-state__body">Les groupes d'administration Web regroupent des permissions du panneau pour un ensemble d'administrateurs. Créez-en un pour attribuer les mêmes flags à plusieurs administrateurs à la fois.</p>
                 {if $permission_addgroup}
                     <div class="empty-state__actions">
                         <a class="btn btn--primary btn--sm"
                            href="?p=admin&amp;c=groups&amp;section=add"
                            data-testid="admin-groups-empty-web-add">
                             <i data-lucide="plus" style="width:13px;height:13px"></i>
-                            Add a web admin group
+                            Ajouter un groupe d'administration Web
                         </a>
                     </div>
                 {/if}
@@ -81,7 +81,7 @@
                              style="width:2.25rem;height:2.25rem;background:var(--brand-600);font-size:var(--fs-base)">{$group.name|truncate:1:'':true|upper|escape}</div>
                         <div style="flex:1;min-width:0">
                             <div class="font-medium text-sm truncate">{$group.name|escape}</div>
-                            <div class="text-xs text-muted">{$web_admins[$smarty.foreach.web_group.index]} member{if $web_admins[$smarty.foreach.web_group.index] != 1}s{/if}</div>
+                            <div class="text-xs text-muted">{$web_admins[$smarty.foreach.web_group.index]} membre{if $web_admins[$smarty.foreach.web_group.index] != 1}s{/if}</div>
                             {if $web_admins_list[$smarty.foreach.web_group.index]}
                                 <div class="text-xs text-faint truncate" style="margin-top:0.125rem">
                                     {foreach from=$web_admins_list[$smarty.foreach.web_group.index] item="web_admin" name="web_admin"}{if $smarty.foreach.web_admin.index > 0}, {/if}{if $smarty.foreach.web_admin.index < 3}{$web_admin.user|escape}{elseif $smarty.foreach.web_admin.index == 3}&hellip;{/if}{/foreach}
@@ -105,13 +105,13 @@
                     <div class="card__header">
                         <div>
                             <h3>{$selected_group.name|escape}</h3>
-                            <p>{$selected_group.member_count} member{if $selected_group.member_count != 1}s{/if}</p>
+                            <p>{$selected_group.member_count} membre{if $selected_group.member_count != 1}s{/if}</p>
                         </div>
                         {if $permission_deletegroup}
                             <button type="button"
                                     class="btn btn--ghost btn--sm"
                                     data-testid="group-delete"
-                                    onclick="SbppGroupsDelete({$selected_group.gid}, '{$selected_group.name|escape:'javascript'}', this);">Delete group</button>
+                                    onclick="SbppGroupsDelete({$selected_group.gid}, '{$selected_group.name|escape:'javascript'}', this);">Supprimer le groupe</button>
                         {/if}
                     </div>
                     <div class="card__body space-y-4">
@@ -121,7 +121,7 @@
                            admin groups (`:prefix_srvgroups`) keep their immunity
                            surface on the per-group cards below. *}
                         <div>
-                            <label class="label" for="group-name-input">Group name</label>
+                            <label class="label" for="group-name-input">Nom du groupe</label>
                             <input class="input"
                                    id="group-name-input"
                                    name="name"
@@ -132,12 +132,12 @@
 
                         <div>
                             <div class="flex items-center justify-between gap-2 mb-2">
-                                <label class="label m-0">Permission flags</label>
+                                <label class="label m-0">Flags de permission</label>
                                 {* #1258: `data-testid="flag-bitmask"` lets the page-tail JS
                                    below (and future E2E specs) anchor on the contract instead
                                    of visible copy. SSR is the source of truth for the initial
                                    paint; the listener re-folds the OR-sum on each `change`. *}
-                                <span class="text-xs text-muted" data-testid="flag-bitmask">{$selected_group.flags} bitmask</span>
+                                <span class="text-xs text-muted" data-testid="flag-bitmask">{$selected_group.flags} masque</span>
                             </div>
                             {* #1258: per-flag rows are bare `<label class="flex items-center
                                gap-2">` — no inline border / background / radius — so the grid
@@ -166,16 +166,16 @@
 
                         {if $permission_editgroup}
                             <div class="flex justify-end gap-2" style="border-top:1px solid var(--border);padding-top:0.75rem">
-                                <a class="btn btn--ghost" href="?p=admin&c=groups">Discard</a>
+                                <a class="btn btn--ghost" href="?p=admin&c=groups">Annuler</a>
                                 <button class="btn btn--primary"
                                         type="submit"
-                                        data-testid="group-save">Save changes</button>
+                                        data-testid="group-save">Enregistrer</button>
                             </div>
                         {/if}
                     </div>
                 </form>
             {else}
-                <div class="card"><div class="card__body"><p class="text-muted m-0">Select a group on the left to edit its flags.</p></div></div>
+                <div class="card"><div class="card__body"><p class="text-muted m-0">Sélectionnez un groupe à gauche pour modifier ses flags.</p></div></div>
             {/if}
         </div>
         {/if}
@@ -187,8 +187,8 @@
     <section data-testid="server-admin-groups-section">
         <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap:wrap">
             <div>
-                <h2 style="font-size:var(--fs-xl);font-weight:600;margin:0">Server admin groups</h2>
-                <p class="text-sm text-muted m-0 mt-2">SourceMod admin groups (in-game flags). Total: {$server_admin_group_count}.</p>
+                <h2 style="font-size:var(--fs-xl);font-weight:600;margin:0">Groupes d'administration serveur</h2>
+                <p class="text-sm text-muted m-0 mt-2">Groupes d'administration SourceMod (flags en jeu). Total : {$server_admin_group_count}.</p>
             </div>
         </div>
 
@@ -205,15 +205,15 @@
                 <span class="empty-state__icon" aria-hidden="true">
                     <i data-lucide="shield-check" style="width:18px;height:18px"></i>
                 </span>
-                <h2 class="empty-state__title">No server admin groups yet</h2>
-                <p class="empty-state__body">Server admin groups carry SourceMod char-flags and immunity. Create one to grant in-game admin powers to a set of admins.</p>
+                <h2 class="empty-state__title">Aucun groupe d'administration serveur</h2>
+                <p class="empty-state__body">Les groupes d'administration serveur transportent les flags SourceMod et l'immunité. Créez-en un pour accorder des pouvoirs d'administration en jeu à un ensemble d'administrateurs.</p>
                 {if $permission_addgroup}
                     <div class="empty-state__actions">
                         <a class="btn btn--primary btn--sm"
                            href="?p=admin&amp;c=groups&amp;section=add"
                            data-testid="admin-groups-empty-server-admin-add">
                             <i data-lucide="plus" style="width:13px;height:13px"></i>
-                            Add a server admin group
+                            Ajouter un groupe d'administration serveur
                         </a>
                     </div>
                 {/if}
@@ -225,14 +225,14 @@
                         <div class="card__header">
                             <div>
                                 <h3>{$group.name|escape}</h3>
-                                <p>{$server_admins[$smarty.foreach.server_admin_group.index]} member{if $server_admins[$smarty.foreach.server_admin_group.index] != 1}s{/if} &middot; immunity {$group.immunity}</p>
+                                <p>{$server_admins[$smarty.foreach.server_admin_group.index]} membre{if $server_admins[$smarty.foreach.server_admin_group.index] != 1}s{/if} &middot; immunité {$group.immunity}</p>
                             </div>
                             <div class="flex gap-1">
                                 {if $permission_editgroup}
-                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=groups&o=edit&type=srv&id={$group.id|escape:'url'}">Edit</a>
+                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=groups&o=edit&type=srv&id={$group.id|escape:'url'}">Modifier</a>
                                 {/if}
                                 {if $permission_deletegroup}
-                                    <button type="button" class="btn btn--ghost btn--sm" onclick="SbppServerGroupsDelete({$group.id}, '{$group.name|escape:'javascript'}', 'srv', this);">Delete</button>
+                                    <button type="button" class="btn btn--ghost btn--sm" onclick="SbppServerGroupsDelete({$group.id}, '{$group.name|escape:'javascript'}', 'srv', this);">Supprimer</button>
                                 {/if}
                             </div>
                         </div>
@@ -246,18 +246,18 @@
                                         {/foreach}
                                     </div>
                                 {else}
-                                    <p class="text-xs text-muted m-0"><em>None</em></p>
+                                    <p class="text-xs text-muted m-0"><em>Aucune</em></p>
                                 {/if}
                             </div>
                             {if $server_admins_list[$smarty.foreach.server_admin_group.index]}
                                 <div>
-                                    <div class="text-xs font-semibold text-muted mb-2">Members</div>
+                                    <div class="text-xs font-semibold text-muted mb-2">Membres</div>
                                     <ul style="list-style:none;padding:0;margin:0" class="space-y-3">
                                         {foreach from=$server_admins_list[$smarty.foreach.server_admin_group.index] item="server_admin"}
                                             <li class="flex items-center justify-between gap-2 text-sm">
                                                 <span class="truncate">{$server_admin.user|escape}</span>
                                                 {if $permission_editadmin}
-                                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=admins&o=editgroup&id={$server_admin.aid|escape:'url'}">Edit</a>
+                                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=admins&o=editgroup&id={$server_admin.aid|escape:'url'}">Modifier</a>
                                                 {/if}
                                             </li>
                                         {/foreach}
@@ -291,8 +291,8 @@
     <section data-testid="server-groups-section">
         <div class="flex items-center justify-between gap-4 mb-4" style="flex-wrap:wrap">
             <div>
-                <h2 style="font-size:var(--fs-xl);font-weight:600;margin:0">Server groups</h2>
-                <p class="text-sm text-muted m-0 mt-2">Groupings of game servers (no permission flags). Total: {$server_group_count}.</p>
+                <h2 style="font-size:var(--fs-xl);font-weight:600;margin:0">Groupes de serveurs</h2>
+                <p class="text-sm text-muted m-0 mt-2">Regroupements de serveurs de jeu (aucun flag de permission). Total : {$server_group_count}.</p>
             </div>
         </div>
 
@@ -307,15 +307,15 @@
                 <span class="empty-state__icon" aria-hidden="true">
                     <i data-lucide="server-cog" style="width:18px;height:18px"></i>
                 </span>
-                <h2 class="empty-state__title">No server groups yet</h2>
-                <p class="empty-state__body">Server groups bundle game servers together so you can assign admins to many servers at once. Create one to start grouping your servers.</p>
+                <h2 class="empty-state__title">Aucun groupe de serveurs</h2>
+                <p class="empty-state__body">Les groupes de serveurs regroupent des serveurs de jeu afin que vous puissiez affecter des administrateurs à plusieurs serveurs à la fois. Créez-en un pour commencer à organiser vos serveurs.</p>
                 {if $permission_addgroup}
                     <div class="empty-state__actions">
                         <a class="btn btn--primary btn--sm"
                            href="?p=admin&amp;c=groups&amp;section=add"
                            data-testid="admin-groups-empty-server-add">
                             <i data-lucide="plus" style="width:13px;height:13px"></i>
-                            Add a server group
+                            Ajouter un groupe de serveurs
                         </a>
                     </div>
                 {/if}
@@ -327,14 +327,14 @@
                         <div class="card__header">
                             <div>
                                 <h3>{$group.name|escape}</h3>
-                                <p>{$server_counts[$smarty.foreach.server_group.index]} server{if $server_counts[$smarty.foreach.server_group.index] != 1}s{/if}</p>
+                                <p>{$server_counts[$smarty.foreach.server_group.index]} serveur{if $server_counts[$smarty.foreach.server_group.index] != 1}s{/if}</p>
                             </div>
                             <div class="flex gap-1">
                                 {if $permission_editgroup}
-                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=groups&o=edit&type=server&id={$group.gid|escape:'url'}">Edit</a>
+                                    <a class="btn btn--ghost btn--sm" href="index.php?p=admin&c=groups&o=edit&type=server&id={$group.gid|escape:'url'}">Modifier</a>
                                 {/if}
                                 {if $permission_deletegroup}
-                                    <button type="button" class="btn btn--ghost btn--sm" onclick="SbppServerGroupsDelete({$group.gid}, '{$group.name|escape:'javascript'}', 'server', this);">Delete</button>
+                                    <button type="button" class="btn btn--ghost btn--sm" onclick="SbppServerGroupsDelete({$group.gid}, '{$group.name|escape:'javascript'}', 'server', this);">Supprimer</button>
                                 {/if}
                             </div>
                         </div>
@@ -387,7 +387,7 @@
                                is right for an empty CELL inside a populated card. #1406. *}
                             {if empty($group.servers)}
                                 <p class="text-xs text-muted m-0" data-testid="server-group-empty">
-                                    <em>No servers bound to this group yet.</em>
+                                    <em>Aucun serveur lié à ce groupe pour le moment.</em>
                                 </p>
                             {else}
                                 <ul class="space-y-2"
@@ -428,8 +428,8 @@
                                             {if !$server.enabled}
                                                 <span class="pill pill--offline"
                                                       data-testid="server-disabled-tag"
-                                                      title="Disabled — hidden from public lists and skipped by the per-card hydration probe"
-                                                      style="flex-shrink:0">Disabled</span>
+                                                      title="Désactivé — masqué des listes publiques et ignoré par la sonde d'hydratation par carte"
+                                                      style="flex-shrink:0">Désactivé</span>
                                             {/if}
                                         </li>
                                     {/foreach}
@@ -519,14 +519,14 @@ function SbppGroupsApplyResponse(r, opts) {
     if (!r) return;
     if (r.redirect) return;
 
-    var fallback = (opts && opts.defaultTitle) || 'Done';
+    var fallback = (opts && opts.defaultTitle) || 'Terminé';
 
     if (r.ok === false) {
-        var em = (r.error && r.error.message) || 'Unknown error';
+        var em = (r.error && r.error.message) || 'Erreur inconnue';
         if (window.SBPP && typeof window.SBPP.showToast === 'function') {
-            window.SBPP.showToast({ kind: 'error', title: 'Error', body: em });
+            window.SBPP.showToast({ kind: 'error', title: 'Erreur', body: em });
         } else if (window.sb && window.sb.message) {
-            window.sb.message.error('Error', em);
+            window.sb.message.error('Erreur', em);
         }
         return;
     }
@@ -574,13 +574,13 @@ function SbppGroupsSave(event) {
         type: 'web'
     }).then(function (r) {
         SbppGroupsSetBusy(submitBtn, false);
-        SbppGroupsApplyResponse(r, { defaultTitle: 'Group updated' });
+        SbppGroupsApplyResponse(r, { defaultTitle: 'Groupe mis à jour' });
     });
     return false;
 }
 
 function SbppGroupsDelete(gid, name, btn) {
-    if (!confirm('Delete group "' + name + '"?')) return;
+    if (!confirm('Supprimer le groupe « ' + name + ' » ?')) return;
     SbppGroupsSetBusy(btn, true);
     sb.api.call(Actions.GroupsRemove, { gid: Number(gid), type: 'web' })
         .then(function (r) {
@@ -588,25 +588,25 @@ function SbppGroupsDelete(gid, name, btn) {
             // navigates within 1.5s and re-enabling it would let the operator
             // queue a second delete on the now-stale row.
             if (r && r.ok && (r.data && (r.data.reload || (r.data.message && r.data.message.redir)))) {
-                SbppGroupsApplyResponse(r, { defaultTitle: 'Group deleted' });
+                SbppGroupsApplyResponse(r, { defaultTitle: 'Groupe supprimé' });
                 return;
             }
             SbppGroupsSetBusy(btn, false);
-            SbppGroupsApplyResponse(r, { defaultTitle: 'Group deleted' });
+            SbppGroupsApplyResponse(r, { defaultTitle: 'Groupe supprimé' });
         });
 }
 
 function SbppServerGroupsDelete(gid, name, type, btn) {
-    if (!confirm('Delete group "' + name + '"?')) return;
+    if (!confirm('Supprimer le groupe « ' + name + ' » ?')) return;
     SbppGroupsSetBusy(btn, true);
     sb.api.call(Actions.GroupsRemove, { gid: Number(gid), type: String(type) })
         .then(function (r) {
             if (r && r.ok && (r.data && (r.data.reload || (r.data.message && r.data.message.redir)))) {
-                SbppGroupsApplyResponse(r, { defaultTitle: 'Group deleted' });
+                SbppGroupsApplyResponse(r, { defaultTitle: 'Groupe supprimé' });
                 return;
             }
             SbppGroupsSetBusy(btn, false);
-            SbppGroupsApplyResponse(r, { defaultTitle: 'Group deleted' });
+            SbppGroupsApplyResponse(r, { defaultTitle: 'Groupe supprimé' });
         });
 }
 
@@ -632,7 +632,7 @@ function SbppServerGroupsDelete(gid, name, type, btn) {
         var target = /** @type {HTMLInputElement|null} */ (event.target);
         if (!target || !target.matches || !target.matches('input[name="flags[]"]')) return;
 
-        preview.textContent = SbppFoldFlags(grid) + ' bitmask';
+        preview.textContent = SbppFoldFlags(grid) + ' masque';
     });
 })();
 {/literal}

@@ -82,14 +82,14 @@
 *}
 <div>
     <div class="mb-6">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Settings</h1>
-        <p class="text-sm text-muted m-0 mt-2">Site-wide configuration. Changes apply immediately.</p>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Paramètres</h1>
+        <p class="text-sm text-muted m-0 mt-2">Configuration globale du site. Les changements s'appliquent immédiatement.</p>
     </div>
 
     {if NOT $can_web_settings}
         <div class="card">
             <div class="card__body">
-                <p class="text-muted">Access denied. <code>ADMIN_WEB_SETTINGS</code> required.</p>
+                <p class="text-muted">Accès refusé. <code>ADMIN_WEB_SETTINGS</code> requis.</p>
             </div>
         </div>
     {else}
@@ -98,14 +98,14 @@
                     <input type="hidden" name="settingsGroup" value="mainsettings">
 
                     <div class="card">
-                        <div class="card__header"><div><h3>General</h3><p>Site identity, password rules, and dates.</p></div></div>
+                        <div class="card__header"><div><h3>Général</h3><p>Identité du site, règles de mot de passe et dates.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="template.title">
-                                <label class="label" for="template_title">Site title</label>
+                                <label class="label" for="template_title">Titre du site</label>
                                 <input class="input" type="text" id="template_title" name="template_title" value="{$config_title}">
                             </div>
                             <div data-testid="setting-row" data-key="template.logo">
-                                <label class="label" for="template_logo">Logo path</label>
+                                <label class="label" for="template_logo">Chemin du logo</label>
                                 <input class="input" type="text" id="template_logo" name="template_logo" value="{$config_logo}" aria-describedby="template_logo_help">
                                 {if $config_logo_using_fallback}
                                     {*
@@ -123,27 +123,27 @@
                                     <p class="settings-fieldset__help"
                                        style="color:#7f1d1d;background:rgba(220,38,38,0.10);border-left:3px solid #dc2626;padding:0.5rem 0.75rem;margin-top:0.25rem;border-radius:0.25rem;"
                                        data-testid="setting-warning-template.logo">
-                                        <strong>Heads up:</strong> the chrome is currently rendering the default shield (<code class="font-mono">images/favicon.svg</code>) because the saved path doesn't resolve to a file on disk inside the active theme. Check that the file exists under <code class="font-mono">themes/&lt;theme&gt;/</code> or clear the input to remove the customisation.
+                                        <strong>Attention :</strong> le chrome affiche actuellement le bouclier par défaut (<code class="font-mono">images/favicon.svg</code>) car le chemin enregistré ne correspond à aucun fichier sur le disque dans le thème actif. Vérifiez que le fichier existe sous <code class="font-mono">themes/&lt;theme&gt;/</code> ou videz le champ pour retirer la personnalisation.
                                     </p>
                                 {/if}
                                 <p class="settings-fieldset__help"
                                    id="template_logo_help"
                                    data-testid="setting-help-template.logo">
-                                    Path to the sidebar and sign-in logo, relative to the theme directory (<code class="font-mono">themes/&lt;theme&gt;/</code>). Defaults to <code class="font-mono">images/favicon.svg</code>. A 512&times;512 raster version sits at <code class="font-mono">logos/sbpp_logo.png</code>.
+                                    Chemin vers le logo de la barre latérale et de la connexion, relatif au répertoire du thème (<code class="font-mono">themes/&lt;theme&gt;/</code>). Par défaut <code class="font-mono">images/favicon.svg</code>. Une version raster 512&times;512 se trouve à <code class="font-mono">logos/sbpp_logo.png</code>.
                                 </p>
                             </div>
                             <div data-testid="setting-row" data-key="config.password.minlength">
-                                <label class="label" for="config_password_minlength">Minimum password length</label>
+                                <label class="label" for="config_password_minlength">Longueur minimale du mot de passe</label>
                                 <input class="input" type="number" min="1" id="config_password_minlength" name="config_password_minlength" value="{$config_min_password}">
                             </div>
                             <div data-testid="setting-row" data-key="config.dateformat">
-                                <label class="label" for="config_dateformat">Date format <span class="text-muted text-xs">(<a href="https://www.php.net/manual/en/datetime.format.php" target="_blank" rel="noopener">PHP date()</a>)</span></label>
+                                <label class="label" for="config_dateformat">Format de date <span class="text-muted text-xs">(<a href="https://www.php.net/manual/en/datetime.format.php" target="_blank" rel="noopener">PHP date()</a>)</span></label>
                                 <input class="input" type="text" id="config_dateformat" name="config_dateformat" value="{$config_dateformat}">
                             </div>
                             <div data-testid="setting-row" data-key="config.debug">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="config_debug" name="config_debug"{if $config_debug} checked{/if}>
-                                    <span class="text-sm font-medium">Enable debug mode</span>
+                                    <span class="text-sm font-medium">Activer le mode débogage</span>
                                 </label>
                             </div>
                         </div>
@@ -200,8 +200,8 @@
                         <fieldset class="settings-fieldset"
                                   data-testid="settings-token-lifetimes">
                             <legend class="settings-fieldset__legend">
-                                <span class="settings-fieldset__title">Authentication</span>
-                                <span class="settings-fieldset__hint">Session token lifetimes, measured in minutes. Set a value to <code>0</code> to disable a sign-in path.</span>
+                                <span class="settings-fieldset__title">Authentification</span>
+                                <span class="settings-fieldset__hint">Durées de vie des jetons de session, en minutes. Mettez la valeur à <code>0</code> pour désactiver une voie de connexion.</span>
                             </legend>
                             <div class="settings-fieldset__body space-y-5">
                                 {*
@@ -236,7 +236,7 @@
                                     fine because the span is short.
                                 *}
                                 <div data-testid="setting-row" data-key="auth.maxlife">
-                                    <label class="label" for="auth_maxlife">Default sign-in</label>
+                                    <label class="label" for="auth_maxlife">Connexion par défaut</label>
                                     <input class="input settings-fieldset__input"
                                            type="number" min="0"
                                            id="auth_maxlife"
@@ -250,11 +250,11 @@
                                     <p class="settings-fieldset__help"
                                        id="auth_maxlife_help"
                                        data-testid="setting-help-auth.maxlife">
-                                        How long a regular sign-in session lasts before the user is signed out, in minutes.
+                                        Durée d'une session de connexion normale avant que l'utilisateur soit déconnecté, en minutes.
                                     </p>
                                 </div>
                                 <div data-testid="setting-row" data-key="auth.maxlife.remember">
-                                    <label class="label" for="auth_maxlife_remember">&ldquo;Remember me&rdquo; sign-in</label>
+                                    <label class="label" for="auth_maxlife_remember">Connexion &laquo;&nbsp;Remember me&nbsp;&raquo;</label>
                                     <input class="input settings-fieldset__input"
                                            type="number" min="0"
                                            id="auth_maxlife_remember"
@@ -268,11 +268,11 @@
                                     <p class="settings-fieldset__help"
                                        id="auth_maxlife_remember_help"
                                        data-testid="setting-help-auth.maxlife.remember">
-                                        Used when the user ticks the &ldquo;Remember me&rdquo; checkbox on the login form. Typically much longer than the default session.
+                                        Utilisée lorsque l'utilisateur coche la case &laquo;&nbsp;Remember me&nbsp;&raquo; du formulaire de connexion. Généralement bien plus longue que la session par défaut.
                                     </p>
                                 </div>
                                 <div data-testid="setting-row" data-key="auth.maxlife.steam">
-                                    <label class="label" for="auth_maxlife_steam">Steam sign-in</label>
+                                    <label class="label" for="auth_maxlife_steam">Connexion Steam</label>
                                     <input class="input settings-fieldset__input"
                                            type="number" min="0"
                                            id="auth_maxlife_steam"
@@ -286,7 +286,7 @@
                                     <p class="settings-fieldset__help"
                                        id="auth_maxlife_steam_help"
                                        data-testid="setting-help-auth.maxlife.steam">
-                                        Lifetime of a session opened via the &ldquo;Continue with Steam&rdquo; button.
+                                        Durée de vie d'une session ouverte via le bouton &laquo;&nbsp;Continuer avec Steam&nbsp;&raquo;.
                                     </p>
                                 </div>
                             </div>
@@ -294,22 +294,22 @@
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Dashboard intro</h3><p>Public landing-page header and body.</p></div></div>
+                        <div class="card__header"><div><h3>Introduction du tableau de bord</h3><p>En-tête et corps de la page d'accueil publique.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="dash.intro.title">
-                                <label class="label" for="dash_intro_title">Intro title</label>
+                                <label class="label" for="dash_intro_title">Titre de l'intro</label>
                                 <input class="input" type="text" id="dash_intro_title" name="dash_intro_title" value="{$config_dash_title}">
                             </div>
                             <div data-testid="setting-row" data-key="dash.intro.text">
                                 <label class="label" for="dash_intro_text">
-                                    Intro body
+                                    Corps de l'intro
                                     <span class="text-muted text-xs">
-                                        — Markdown supported
+                                        — Markdown pris en charge
                                         (<a href="https://commonmark.org/help/"
                                             target="_blank"
                                             rel="noopener"
-                                            data-testid="dash-intro-cheatsheet-link">CommonMark cheat-sheet</a>).
-                                        Raw HTML is escaped on render.
+                                            data-testid="dash-intro-cheatsheet-link">aide-mémoire CommonMark</a>).
+                                        Le HTML brut est échappé au rendu.
                                     </span>
                                 </label>
                                 {*
@@ -353,8 +353,8 @@
                                     <div class="dash-intro-preview"
                                          data-testid="dash-intro-preview"
                                          data-loading="false"
-                                         aria-label="Markdown preview">
-                                        <div class="dash-intro-preview__label">Preview</div>
+                                         aria-label="Aperçu Markdown">
+                                        <div class="dash-intro-preview__label">Aperçu</div>
                                         {*
                                             aria-live sits on the body (not the wrapper)
                                             so assistive tech announces only the rendered
@@ -368,7 +368,7 @@
                                                 {* nofilter: $config_dash_text_preview is `IntroRenderer::renderIntroText()` output (CommonMark + html_input=escape + allow_unsafe_links=false) — the same render path the public dashboard uses, see AGENTS.md "Admin-authored display text". *}
                                                 {$config_dash_text_preview nofilter}
                                             {else}
-                                                <p class="text-xs text-muted m-0" data-empty>Type Markdown on the left to see how it renders to visitors.</p>
+                                                <p class="text-xs text-muted m-0" data-empty>Saisissez du Markdown à gauche pour voir comment il est rendu aux visiteurs.</p>
                                             {/if}
                                         </div>
                                     </div>
@@ -377,101 +377,101 @@
                             <div data-testid="setting-row" data-key="dash.lognopopup">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="dash_nopopup" name="dash_nopopup"{if $dash_lognopopup} checked{/if}>
-                                    <span class="text-sm font-medium">Disable log popup (use direct links instead)</span>
+                                    <span class="text-sm font-medium">Désactiver la fenêtre pop-up du journal (utiliser des liens directs à la place)</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Public pages</h3><p>Which extra pages visitors can reach.</p></div></div>
+                        <div class="card__header"><div><h3>Pages publiques</h3><p>Pages supplémentaires accessibles aux visiteurs.</p></div></div>
                         <div class="card__body space-y-3">
                             <div data-testid="setting-row" data-key="config.enableprotest">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_protest" name="enable_protest"{if $enable_protest} checked{/if}>
-                                    <span class="text-sm font-medium">Enable ban-protest page</span>
+                                    <span class="text-sm font-medium">Activer la page de réclamation de bannissement</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="config.enablesubmit">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_submit" name="enable_submit"{if $enable_submit} checked{/if}>
-                                    <span class="text-sm font-medium">Enable ban-submission page</span>
+                                    <span class="text-sm font-medium">Activer la page de soumission de bannissement</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="config.enablecomms">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_commslist" name="enable_commslist"{if $enable_commslist} checked{/if}>
-                                    <span class="text-sm font-medium">Enable comms list</span>
+                                    <span class="text-sm font-medium">Activer la liste des comms</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="protest.emailonlyinvolved">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="protest_emailonlyinvolved" name="protest_emailonlyinvolved"{if $protest_emailonlyinvolved} checked{/if}>
-                                    <span class="text-sm font-medium">Only email the original ban admin on new protests</span>
+                                    <span class="text-sm font-medium">N'envoyer un courriel qu'à l'admin du bannissement d'origine lors des nouvelles réclamations</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="config.defaultpage">
-                                <label class="label" for="default_page">Default landing page</label>
+                                <label class="label" for="default_page">Page d'accueil par défaut</label>
                                 <select class="select" id="default_page" name="default_page">
-                                    <option value="0"{if $config_default_page == 0} selected{/if}>Dashboard</option>
-                                    <option value="1"{if $config_default_page == 1} selected{/if}>Ban list</option>
-                                    <option value="2"{if $config_default_page == 2} selected{/if}>Servers</option>
-                                    <option value="3"{if $config_default_page == 3} selected{/if}>Submit a ban</option>
-                                    <option value="4"{if $config_default_page == 4} selected{/if}>Protest a ban</option>
+                                    <option value="0"{if $config_default_page == 0} selected{/if}>Tableau de bord</option>
+                                    <option value="1"{if $config_default_page == 1} selected{/if}>Liste des bannissements</option>
+                                    <option value="2"{if $config_default_page == 2} selected{/if}>Serveurs</option>
+                                    <option value="3"{if $config_default_page == 3} selected{/if}>Soumettre un bannissement</option>
+                                    <option value="4"{if $config_default_page == 4} selected{/if}>Réclamer un bannissement</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Ban list</h3><p>Pagination and visibility.</p></div></div>
+                        <div class="card__header"><div><h3>Liste des bannissements</h3><p>Pagination et visibilité.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="banlist.bansperpage">
-                                <label class="label" for="banlist_bansperpage">Bans per page</label>
+                                <label class="label" for="banlist_bansperpage">Bannissements par page</label>
                                 <input class="input" type="number" min="1" id="banlist_bansperpage" name="banlist_bansperpage" value="{$config_bans_per_page}">
                             </div>
                             <div data-testid="setting-row" data-key="banlist.hideadminname">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="banlist_hideadmname" name="banlist_hideadmname"{if $banlist_hideadmname} checked{/if}>
-                                    <span class="text-sm font-medium">Hide admin name from public ban info</span>
+                                    <span class="text-sm font-medium">Masquer le nom de l'admin dans les infos publiques de bannissement</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="banlist.hideplayerips">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="banlist_hideplayerips" name="banlist_hideplayerips"{if $banlist_hideplayerips} checked{/if}>
-                                    <span class="text-sm font-medium">Hide player IPs from public ban info</span>
+                                    <span class="text-sm font-medium">Masquer les IP des joueurs dans les infos publiques de bannissement</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="banlist.nocountryfetch">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="banlist_nocountryfetch" name="banlist_nocountryfetch"{if $banlist_nocountryfetch} checked{/if}>
-                                    <span class="text-sm font-medium">Skip country lookup for IPs</span>
+                                    <span class="text-sm font-medium">Ignorer la recherche de pays pour les IP</span>
                                 </label>
                             </div>
                             <div data-testid="setting-row" data-key="bans.customreasons">
-                                <label class="label">Custom ban reasons</label>
-                                <p class="text-xs text-muted m-0 mb-2">Each line becomes an option in the ban-reason dropdown. Leave blank to remove.</p>
+                                <label class="label">Motifs de bannissement personnalisés</label>
+                                <p class="text-xs text-muted m-0 mb-2">Chaque ligne devient une option du menu déroulant des motifs. Laisser vide pour supprimer.</p>
                                 <div id="custom-reasons" class="space-y-3">
                                     {foreach from=$bans_customreason item="creason"}
                                         {* nofilter: bans.customreasons round-trips through htmlspecialchars in admin.settings.php before serialize() into sb_settings, so the value is already entity-encoded; auto-escape would double-encode (matches legacy default theme). Admin-only input + already-escaped on store. *}
                                         <input class="input" type="text" name="bans_customreason[]" value="{$creason nofilter}">
                                     {/foreach}
-                                    <input class="input" type="text" name="bans_customreason[]" placeholder="Add another reason…">
-                                    <input class="input" type="text" name="bans_customreason[]" placeholder="Add another reason…">
+                                    <input class="input" type="text" name="bans_customreason[]" placeholder="Ajouter un autre motif…">
+                                    <input class="input" type="text" name="bans_customreason[]" placeholder="Ajouter un autre motif…">
                                 </div>
                                 <button type="button" class="btn btn--ghost btn--sm mt-2" onclick="addCustomReason();">
-                                    <i data-lucide="plus"></i> Add row
+                                    <i data-lucide="plus"></i> Ajouter une ligne
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>SMTP</h3><p>Outbound email transport.</p></div></div>
+                        <div class="card__header"><div><h3>SMTP</h3><p>Transport du courriel sortant.</p></div></div>
                         <div class="card__body space-y-4">
                             <div class="grid gap-4" style="grid-template-columns:2fr 1fr">
                                 <div data-testid="setting-row" data-key="smtp.host">
-                                    <label class="label" for="mail_host">Host</label>
+                                    <label class="label" for="mail_host">Hôte</label>
                                     {* config_smtp[0]=host, [1]=user, [2]=port — the array shape mirrors Config::getMulti(['smtp.host','smtp.user','smtp.port']) so the legacy default theme can keep using the same View. *}
                                     <input class="input" type="text" id="mail_host" name="mail_host" value="{$config_smtp[0]}">
                                 </div>
@@ -482,27 +482,27 @@
                             </div>
                             <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
                                 <div data-testid="setting-row" data-key="smtp.user">
-                                    <label class="label" for="mail_user">Username</label>
+                                    <label class="label" for="mail_user">Nom d'utilisateur</label>
                                     <input class="input" type="text" id="mail_user" name="mail_user" value="{$config_smtp[1]}" autocomplete="off">
                                 </div>
                                 <div data-testid="setting-row" data-key="smtp.pass">
-                                    <label class="label" for="mail_pass">Password <span class="text-muted text-xs">(leave blank to keep current)</span></label>
+                                    <label class="label" for="mail_pass">Mot de passe <span class="text-muted text-xs">(laisser vide pour conserver l'actuel)</span></label>
                                     <input class="input" type="password" id="mail_pass" name="mail_pass" value="" autocomplete="new-password">
                                 </div>
                             </div>
                             <div data-testid="setting-row" data-key="smtp.verify_peer">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="mail_verify_peer" name="mail_verify_peer"{if $config_smtp_verify_peer} checked{/if}>
-                                    <span class="text-sm font-medium">Verify TLS peer certificate</span>
+                                    <span class="text-sm font-medium">Vérifier le certificat TLS du pair</span>
                                 </label>
                             </div>
                             <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
                                 <div data-testid="setting-row" data-key="config.mail.from_email">
-                                    <label class="label" for="mail_from_email">From email</label>
+                                    <label class="label" for="mail_from_email">Courriel expéditeur</label>
                                     <input class="input" type="email" id="mail_from_email" name="mail_from_email" value="{$config_mail_from_email}">
                                 </div>
                                 <div data-testid="setting-row" data-key="config.mail.from_name">
-                                    <label class="label" for="mail_from_name">From name</label>
+                                    <label class="label" for="mail_from_name">Nom de l'expéditeur</label>
                                     <input class="input" type="text" id="mail_from_name" name="mail_from_name" value="{$config_mail_from_name}">
                                 </div>
                             </div>
@@ -540,14 +540,14 @@
                                   crafted POST, etc.).
                             *}
                             <div data-testid="setting-row" data-key="smtp.test">
-                                <label class="label" for="mail_test_to">Send a test email</label>
+                                <label class="label" for="mail_test_to">Envoyer un courriel de test</label>
                                 <div class="grid gap-2" style="grid-template-columns:1fr auto">
                                     <input class="input"
                                            type="email"
                                            id="mail_test_to"
                                            name="mail_test_to"
                                            value="{$admin_email}"
-                                           placeholder="recipient@example.com"
+                                           placeholder="destinataire@exemple.com"
                                            data-testid="smtp-test-recipient"
                                            autocomplete="off">
                                     <button type="button"
@@ -555,13 +555,13 @@
                                             data-testid="smtp-test-email"
                                             id="smtp_test_email_btn"
                                             {if $config_smtp[0] === '' || $config_smtp[1] === '' || $config_mail_from_email === ''}disabled{/if}>
-                                        <i data-lucide="send"></i> Send test email
+                                        <i data-lucide="send"></i> Envoyer un courriel de test
                                     </button>
                                 </div>
                                 <p class="text-xs text-muted mt-1">
-                                    Sends a verification email through the saved SMTP credentials. Save the form
-                                    first if you just changed anything above — the test uses the persisted values,
-                                    not the unsaved contents of the inputs.
+                                    Envoie un courriel de vérification via les identifiants SMTP enregistrés. Enregistrez d'abord le formulaire
+                                    si vous venez de modifier quoi que ce soit ci-dessus — le test utilise les valeurs persistées,
+                                    pas le contenu non enregistré des champs.
                                 </p>
                             </div>
                         </div>
@@ -576,10 +576,10 @@
                     *}
                     <div class="settings-actions flex items-center justify-end gap-2">
                         <button type="button" class="btn btn--secondary btn--sm" onclick="clearCacheBtn();">
-                            <i data-lucide="brush"></i> Clear cache
+                            <i data-lucide="brush"></i> Vider le cache
                         </button>
                         <button type="submit" class="btn btn--primary" data-testid="settings-save">
-                            <i data-lucide="save"></i> Save changes
+                            <i data-lucide="save"></i> Enregistrer
                         </button>
                     </div>
                 </form>
@@ -605,7 +605,7 @@
         inp.className = 'input';
         inp.type = 'text';
         inp.name = 'bans_customreason[]';
-        inp.placeholder = 'Add another reason…';
+        inp.placeholder = 'Ajouter un autre motif…';
         box.appendChild(inp);
     };
 
@@ -617,7 +617,7 @@
     window.clearCacheBtn = function () {
         if (!window.sb || !window.sb.api || !window.Actions) return;
         window.sb.api.call(window.Actions.SystemClearCache, {}).then(function () {
-            window.alert('Cache cleared.');
+            window.alert('Cache vidé.');
         });
     };
 
@@ -647,7 +647,7 @@
     );
 
     if (ta && preview && previewBody && window.sb && window.sb.api && window.Actions) {
-        var emptyHtml = '<p class="text-xs text-muted m-0" data-empty>Type Markdown on the left to see how it renders to visitors.</p>';
+        var emptyHtml = '<p class="text-xs text-muted m-0" data-empty>Saisissez du Markdown à gauche pour voir comment il est rendu aux visiteurs.</p>';
 
         /** @type {number|null} */
         var pending = null;
@@ -704,23 +704,23 @@
      * @returns {string}
      */
     function humanizeMinutes(minutes) {
-        if (!Number.isFinite(minutes) || minutes <= 0) return 'disabled';
+        if (!Number.isFinite(minutes) || minutes <= 0) return 'désactivé';
         var n = Math.floor(minutes);
         if (n < 60) return n === 1 ? '1 minute' : n + ' minutes';
         if (n < 1440) {
             if (n % 60 === 0) {
                 var h = n / 60;
-                return h === 1 ? '1 hour' : h + ' hours';
+                return h === 1 ? '1 heure' : h + ' heures';
             }
             var hStr = trimZero(n / 60);
-            return '\u2248 ' + hStr + ' ' + (hStr === '1' ? 'hour' : 'hours');
+            return '\u2248 ' + hStr + ' h';
         }
         if (n % 1440 === 0) {
             var d = n / 1440;
-            return d === 1 ? '1 day' : d + ' days';
+            return d === 1 ? '1 jour' : d + ' jours';
         }
         var dStr = trimZero(n / 1440);
-        return '\u2248 ' + dStr + ' ' + (dStr === '1' ? 'day' : 'days');
+        return '\u2248 ' + dStr + ' j';
     }
 
     /**
@@ -855,7 +855,7 @@
             var rawTo = testTo.value.trim();
             if (rawTo === '' || !testTo.checkValidity()) {
                 testTo.reportValidity();
-                toast('warn', 'Enter a recipient', 'Type a valid email address before sending the test.');
+                toast('warn', 'Saisir un destinataire', 'Saisissez une adresse e-mail valide avant d\'envoyer le test.');
                 return;
             }
 
@@ -864,8 +864,8 @@
                 function (r) {
                     setBusy(testBtn, false);
                     if (r && r.ok && r.data && typeof r.data.to === 'string') {
-                        toast('success', 'Test email sent',
-                            'A SMTP test message was dispatched to ' + r.data.to + '. Check the inbox to confirm delivery.');
+                        toast('success', 'Courriel de test envoyé',
+                            'Un message de test SMTP a été envoyé à ' + r.data.to + '. Vérifiez la boîte de réception pour confirmer la livraison.');
                         return;
                     }
                     // Structured error envelope. Branch on r.error.code
@@ -873,22 +873,22 @@
                     // a generic "request failed" string.
                     var err = (r && r.error) || {};
                     var code = err.code || 'unknown';
-                    var msg = err.message || 'The server returned an unexpected response.';
+                    var msg = err.message || 'Le serveur a renvoyé une réponse inattendue.';
                     if (code === 'smtp_not_configured') {
-                        toast('warn', 'SMTP not configured', msg);
+                        toast('warn', 'SMTP non configuré', msg);
                     } else if (code === 'rate_limited') {
-                        toast('warn', 'Test email throttled', msg);
+                        toast('warn', 'Courriel de test limité', msg);
                     } else if (code === 'validation') {
-                        toast('warn', 'Check the recipient', msg);
+                        toast('warn', 'Vérifier le destinataire', msg);
                     } else if (code === 'mail_failed') {
-                        toast('error', 'Test email failed', msg);
+                        toast('error', 'Échec du courriel de test', msg);
                     } else {
-                        toast('error', 'Test email failed', msg);
+                        toast('error', 'Échec du courriel de test', msg);
                     }
                 },
                 function () {
                     setBusy(testBtn, false);
-                    toast('error', 'Test email failed', 'Could not reach the panel API. Check your network and try again.');
+                    toast('error', 'Échec du courriel de test', 'Impossible de joindre l\'API du panneau. Vérifiez votre réseau et réessayez.');
                 }
             );
         });

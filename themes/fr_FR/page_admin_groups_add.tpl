@@ -13,7 +13,7 @@
     the existing JSON API.
 *}
 {if NOT $permission_addgroup}
-    <div class="card"><div class="card__body"><p class="text-muted m-0">Access denied.</p></div></div>
+    <div class="card"><div class="card__body"><p class="text-muted m-0">Accès refusé.</p></div></div>
 {else}
 {* #1266 — outer `.p-6` removed; the 1.5rem page inset now lives on
    `.admin-sidebar-shell` (the AdminTabs grid host). The `max-width:
@@ -21,8 +21,8 @@
    readable line length on wide viewports. *}
 <div style="max-width:48rem">
     <div class="mb-4">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Create a group</h1>
-        <p class="text-sm text-muted m-0 mt-2">Pick a name and a type. You can edit permission flags from the <strong>List groups</strong> tab once the group exists.</p>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Créer un groupe</h1>
+        <p class="text-sm text-muted m-0 mt-2">Choisissez un nom et un type. Vous pourrez modifier les permissions depuis l'onglet <strong>Liste des groupes</strong> une fois le groupe créé.</p>
     </div>
     <form class="card"
           method="post"
@@ -32,47 +32,47 @@
         {csrf_field}
         <div class="card__body space-y-4">
             <div>
-                <label class="label" for="add-group-name">Group name</label>
+                <label class="label" for="add-group-name">Nom du groupe</label>
                 <input class="input"
                        id="add-group-name"
                        name="name"
                        data-testid="add-group-name"
                        autocomplete="off"
-                       placeholder="e.g. Senior Admins"
+                       placeholder="ex. Administrateurs seniors"
                        required>
-                <p class="text-xs text-muted m-0 mt-2">Must be unique. No commas.</p>
+                <p class="text-xs text-muted m-0 mt-2">Doit être unique. Pas de virgules.</p>
             </div>
 
             <div>
-                <label class="label" for="add-group-type">Group type</label>
+                <label class="label" for="add-group-type">Type de groupe</label>
                 <select class="select"
                         id="add-group-type"
                         name="type"
                         data-testid="add-group-type"
                         onchange="SbppGroupsAddTypeChanged(this);">
-                    <option value="0">Please select &hellip;</option>
-                    <option value="1">Web admin group</option>
-                    <option value="2">Server admin group</option>
-                    <option value="3">Server group</option>
+                    <option value="0">Veuillez sélectionner &hellip;</option>
+                    <option value="1">Groupe d'administrateurs Web</option>
+                    <option value="2">Groupe d'administrateurs serveur</option>
+                    <option value="3">Groupe de serveurs</option>
                 </select>
-                <p class="text-xs text-muted m-0 mt-2">Web admin = panel permissions. Server admin = SourceMod char-flags. Server group = grouping of game servers.</p>
+                <p class="text-xs text-muted m-0 mt-2">Administrateur Web = permissions du panneau. Administrateur serveur = flags SourceMod. Groupe de serveurs = regroupement de serveurs de jeu.</p>
             </div>
 
             <div data-testid="add-group-srvflags-block" id="add-group-srvflags-block" style="display:none">
-                <label class="label" for="add-group-srvflags">SourceMod flags &amp; immunity</label>
+                <label class="label" for="add-group-srvflags">Flags SourceMod &amp; immunité</label>
                 <input class="input"
                        id="add-group-srvflags"
                        name="srvflags"
                        data-testid="add-group-srvflags"
                        autocomplete="off"
-                       placeholder="e.g. abz#50">
-                <p class="text-xs text-muted m-0 mt-2">SourceMod flag string. Append <code>#&lt;immunity&gt;</code> for immunity (defaults to 0).</p>
+                       placeholder="ex. abz#50">
+                <p class="text-xs text-muted m-0 mt-2">Chaîne de flags SourceMod. Ajoutez <code>#&lt;immunité&gt;</code> pour l'immunité (0 par défaut).</p>
             </div>
         </div>
         <div class="card__header" style="border-top:1px solid var(--border);border-bottom:0;justify-content:flex-end">
             <div class="flex gap-2">
-                <a class="btn btn--ghost" href="?p=admin&c=groups&section=list" data-testid="add-group-cancel">Cancel</a>
-                <button class="btn btn--primary" type="submit" data-testid="add-group-submit">Create group</button>
+                <a class="btn btn--ghost" href="?p=admin&c=groups&section=list" data-testid="add-group-cancel">Annuler</a>
+                <button class="btn btn--primary" type="submit" data-testid="add-group-submit">Créer le groupe</button>
             </div>
         </div>
     </form>
@@ -120,17 +120,17 @@ function SbppGroupsAdd(event) {
         if (r.redirect) return;
         SbppGroupsAddSetBusy(submitBtn, false);
         if (r.ok === false) {
-            var em = (r.error && r.error.message) || 'Unknown error';
+            var em = (r.error && r.error.message) || 'Erreur inconnue';
             if (window.SBPP && typeof window.SBPP.showToast === 'function') {
-                window.SBPP.showToast({ kind: 'error', title: 'Error', body: em });
+                window.SBPP.showToast({ kind: 'error', title: 'Erreur', body: em });
             } else {
-                sb.message.error('Error', em);
+                sb.message.error('Erreur', em);
             }
             return;
         }
         var data = r.data || {};
-        var body = (data.message && data.message.body) || 'Group added.';
-        var title = (data.message && data.message.title) || 'Group added';
+        var body = (data.message && data.message.body) || 'Groupe ajouté.';
+        var title = (data.message && data.message.title) || 'Groupe ajouté';
         if (window.SBPP && typeof window.SBPP.showToast === 'function') {
             window.SBPP.showToast({ kind: 'success', title: title, body: body });
         } else {

@@ -28,11 +28,11 @@
 {assign var="ip_first" value=($ip != '')}
 <section class="p-6 space-y-6" style="max-width:64rem">
     <header>
-        <h1 style="font-size:1.5rem;font-weight:600;margin:0">Appeal a ban</h1>
+        <h1 style="font-size:1.5rem;font-weight:600;margin:0">Bann anfechten</h1>
         <p class="text-sm text-muted m-0 mt-2">
-            Think a ban on your account is a mistake? Submit an appeal
-            below and the staff team will review it. Confirm the ban first
-            on the <a href="index.php?p=banlist" style="color:var(--accent)">ban list</a>.
+            Glauben Sie, dass ein Bann auf Ihrem Konto ein Fehler ist? Reichen Sie
+            unten einen Einspruch ein und das Team wird ihn prüfen. Bestätigen Sie
+            den Bann zuerst in der <a href="index.php?p=banlist" style="color:var(--accent)">Bannliste</a>.
         </p>
     </header>
 
@@ -44,8 +44,8 @@
               data-protest-form>
             <div class="card__header">
                 <div>
-                    <h3>Your details</h3>
-                    <p>Fields marked <span style="color:var(--danger)">*</span> are required.</p>
+                    <h3>Ihre Angaben</h3>
+                    <p>Mit <span style="color:var(--danger)">*</span> markierte Felder sind erforderlich.</p>
                 </div>
                 <i data-lucide="megaphone" style="color:var(--text-faint)"></i>
             </div>
@@ -54,20 +54,20 @@
                 <input type="hidden" name="subprotest" value="1">
 
                 <div>
-                    <label class="label" for="protest-type">Ban type</label>
+                    <label class="label" for="protest-type">Bann-Typ</label>
                     <select id="protest-type"
                             name="Type"
                             class="select"
                             data-testid="protest-type"
                             data-protest-type>
-                        <option value="0" {if !$ip_first}selected{/if}>Steam ID</option>
-                        <option value="1" {if $ip_first}selected{/if}>IP Address</option>
+                        <option value="0" {if !$ip_first}selected{/if}>Steam-ID</option>
+                        <option value="1" {if $ip_first}selected{/if}>IP-Adresse</option>
                     </select>
                 </div>
 
                 <div data-protest-row="steam" {if $ip_first}hidden{/if}>
                     <label class="label" for="protest-steam">
-                        Your SteamID <span style="color:var(--danger)">*</span>
+                        Ihre SteamID <span style="color:var(--danger)">*</span>
                     </label>
                     <input id="protest-steam"
                            type="text"
@@ -83,7 +83,7 @@
 
                 <div data-protest-row="ip" {if !$ip_first}hidden{/if}>
                     <label class="label" for="protest-ip">
-                        Your IP <span style="color:var(--danger)">*</span>
+                        Ihre IP <span style="color:var(--danger)">*</span>
                     </label>
                     <input id="protest-ip"
                            type="text"
@@ -100,7 +100,7 @@
                 <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
                     <div>
                         <label class="label" for="protest-name">
-                            In-game name <span style="color:var(--danger)">*</span>
+                            In-Game-Name <span style="color:var(--danger)">*</span>
                         </label>
                         <input id="protest-name"
                                type="text"
@@ -113,7 +113,7 @@
                     </div>
                     <div>
                         <label class="label" for="protest-email">
-                            Your email <span style="color:var(--danger)">*</span>
+                            Ihre E-Mail <span style="color:var(--danger)">*</span>
                         </label>
                         <input id="protest-email"
                                type="email"
@@ -128,7 +128,7 @@
 
                 <div>
                     <label class="label" for="protest-reason">
-                        Why should you be unbanned? <span style="color:var(--danger)">*</span>
+                        Warum sollten Sie entbannt werden? <span style="color:var(--danger)">*</span>
                     </label>
                     <textarea id="protest-reason"
                               name="BanReason"
@@ -136,14 +136,14 @@
                               class="textarea"
                               required
                               data-testid="protest-reason"
-                              placeholder="Be as descriptive as possible. The more context staff have, the faster your appeal can be reviewed.">{$reason|escape}</textarea>
+                              placeholder="Beschreiben Sie so genau wie möglich. Je mehr Kontext das Team hat, desto schneller kann Ihr Einspruch geprüft werden.">{$reason|escape}</textarea>
                 </div>
             </div>
             <div class="card__header" style="justify-content:flex-end;border-top:1px solid var(--border);border-bottom:0">
                 <button type="submit"
                         class="btn btn--primary"
                         data-testid="protest-submit">
-                    <i data-lucide="send-horizontal"></i> Submit appeal
+                    <i data-lucide="send-horizontal"></i> Einspruch einreichen
                 </button>
             </div>
         </form>
@@ -151,29 +151,29 @@
         <aside class="card">
             <div class="card__header">
                 <div>
-                    <h3>What happens next?</h3>
-                    <p>Typical turnaround</p>
+                    <h3>Was passiert als Nächstes?</h3>
+                    <p>Typische Bearbeitungszeit</p>
                 </div>
                 <i data-lucide="info" style="color:var(--text-faint)"></i>
             </div>
             <div class="card__body space-y-4 text-sm">
                 <p class="m-0 text-muted">
-                    The staff team is notified the moment you submit.
-                    They review the original ban evidence and the context
-                    you provide here.
+                    Das Team wird benachrichtigt, sobald Sie den Einspruch einreichen.
+                    Es prüft die ursprünglichen Beweise und den Kontext, den Sie hier
+                    angeben.
                 </p>
                 <p class="m-0 text-muted">
-                    You'll receive a reply by email — usually within
-                    <span class="font-medium" style="color:var(--text)">24 hours</span>.
+                    Sie erhalten eine Antwort per E-Mail – normalerweise innerhalb von
+                    <span class="font-medium" style="color:var(--text)">24 Stunden</span>.
                 </p>
                 <div class="space-y-3"
                      style="border-top:1px solid var(--border);padding-top:1rem">
                     <div class="flex gap-2 items-start">
                         <i data-lucide="alert-triangle" style="color:var(--warning);flex-shrink:0;width:16px;height:16px;margin-top:2px"></i>
                         <p class="m-0 text-xs text-muted">
-                            Threats, harassment, or abuse aimed at the
-                            staff will not get you unbanned and will get
-                            you permanently banned from every service.
+                            Drohungen, Belästigung oder Missbrauch gegenüber dem
+                            Team führen nicht zu einer Entbannung und ziehen
+                            einen dauerhaften Bann von allen Diensten nach sich.
                         </p>
                     </div>
                 </div>

@@ -61,12 +61,12 @@
     matching the chrome's shape.
 *}-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="csrf-token" content="-{$csrf_token}-">
-    <title>-{if $mode === 'kick'}-Kick player-{else}-Ban player-{/if}-</title>
+    <title>-{if $mode === 'kick'}-Spieler kicken-{else}-Spieler bannen-{/if}-</title>
     <script>
     (function () {
         try {
@@ -87,8 +87,8 @@
 <div id="container" class="card" data-testid="kickit-container" data-mode="-{$mode}-">
     <div class="card__header">
         <div>
-            <h3>Searching for the player on all servers&hellip;</h3>
-            <p>Each row is polled live; rows update as servers respond.</p>
+            <h3>Suche nach dem Spieler auf allen Servern&hellip;</h3>
+            <p>Jede Zeile wird live abgefragt; Zeilen aktualisieren sich, sobald Server antworten.</p>
         </div>
     </div>
     <div class="card__body">
@@ -109,7 +109,7 @@
                     <td>
                         <div id="srv_-{$serv.num}-"
                              class="text-xs text-muted"
-                             data-testid="kickit-status--{$serv.num}-">Waiting&hellip;</div>
+                             data-testid="kickit-status--{$serv.num}-">Warten&hellip;</div>
                     </td>
                 </tr>
                 -{/foreach}-
@@ -130,7 +130,7 @@
             if (srvcount === TOTAL || count === -1) {
                 var ctl = parent.document.getElementById('dialog-control');
                 if (ctl) {
-                    ctl.innerHTML = '<font color="green" style="font-size: 12px;"><b>Done searching.</b></font>' + ctl.innerHTML;
+                    ctl.innerHTML = '<font color="green" style="font-size: 12px;"><b>Suche abgeschlossen.</b></font>' + ctl.innerHTML;
                     ctl.style.display = 'block';
                 }
                 setTimeout(function () {
@@ -158,7 +158,7 @@
             sb.api.call(Actions.KickitKickPlayer, { check: CHECK, sid: sid, num: num, type: TYPE, mode: MODE })
                 .then(function (r) {
                     if (!r || !r.ok || !r.data) {
-                        sb.setHTML('srv_' + num, "<span class='text-xs' style='color:var(--danger)'><i>Error.</i></span>");
+                        sb.setHTML('srv_' + num, "<span class='text-xs' style='color:var(--danger)'><i>Fehler.</i></span>");
                         setCounter(1);
                         return;
                     }
@@ -167,13 +167,13 @@
                         sb.setHTML('srvip_' + num, "<span class='font-mono text-xs' title='" + d.ip + ':' + d.port + "'>" + d.hostname + "</span>");
                     }
                     if (d.status === 'no_connect') {
-                        sb.setHTML('srv_' + num, "<span class='text-xs' style='color:var(--danger)'><i>Can't connect to server.</i></span>");
+                        sb.setHTML('srv_' + num, "<span class='text-xs' style='color:var(--danger)'><i>Verbindung zum Server nicht möglich.</i></span>");
                         setCounter(1);
                     } else if (d.status === 'kicked') {
-                        sb.setHTML('srv_' + num, "<span class='text-xs font-semibold' style='color:var(--success)'><u>Player Found &amp; Kicked!</u></span>");
+                        sb.setHTML('srv_' + num, "<span class='text-xs font-semibold' style='color:var(--success)'><u>Spieler gefunden &amp; gekickt!</u></span>");
                         setCounter(-1);
                     } else {
-                        sb.setHTML('srv_' + num, "<span class='text-xs text-muted'>Player not found.</span>");
+                        sb.setHTML('srv_' + num, "<span class='text-xs text-muted'>Spieler nicht gefunden.</span>");
                         setCounter(1);
                     }
                 });
@@ -187,10 +187,10 @@
                 if (!r || !r.ok || !r.data) return;
                 r.data.servers.forEach(function (s) {
                     if (s.has_rcon) {
-                        sb.setHTML('srv_' + s.num, '<span class="text-xs text-muted">Searching&hellip;</span>');
+                        sb.setHTML('srv_' + s.num, '<span class="text-xs text-muted">Suche&hellip;</span>');
                         processRow(s.sid, s.num);
                     } else {
-                        sb.setHTML('srv_' + s.num, '<span class="text-xs text-faint">No rcon password.</span>');
+                        sb.setHTML('srv_' + s.num, '<span class="text-xs text-faint">Kein RCON-Passwort.</span>');
                         setCounter(1);
                     }
                 });

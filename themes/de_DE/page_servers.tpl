@@ -76,11 +76,11 @@
 
     <header class="flex items-end justify-between gap-3" style="flex-wrap:wrap">
         <div>
-            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Servers</h1>
+            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Server</h1>
             <p class="text-sm text-muted m-0 mt-2"
                data-testid="servers-summary"
                data-total="{$server_list|@count}">
-                {$server_list|@count} configured
+                {$server_list|@count} konfiguriert
                 <span data-online-count>&middot; <span data-online-num>0</span> online</span>
             </p>
         </div>
@@ -115,10 +115,11 @@
             <p class="text-xs text-muted m-0 servers-rcon-hint"
                data-testid="servers-rcon-hint"
                style="max-width:24rem;text-align:right">
-                Right-click a player on an expanded card to view their
-                profile, copy their SteamID, or kick / ban / block them.
-                Kick / ban / block actions only show on servers you have
-                RCON access to.
+                Klicken Sie mit der rechten Maustaste auf einen Spieler
+                in einer erweiterten Karte, um sein Profil anzuzeigen,
+                seine SteamID zu kopieren oder ihn zu kicken / bannen /
+                blockieren. Kick-/Bann-/Blockieraktionen werden nur auf
+                Servern angezeigt, auf die Sie RCON-Zugriff haben.
             </p>
         {/if}
     </header>
@@ -134,10 +135,10 @@
                 <span class="empty-state__icon" aria-hidden="true">
                     <i data-lucide="server" style="width:18px;height:18px"></i>
                 </span>
-                <h2 class="empty-state__title">No servers configured yet</h2>
+                <h2 class="empty-state__title">Noch keine Server konfiguriert</h2>
                 <p class="empty-state__body">
-                    Once you add a server, players, status, and live
-                    counts will appear here for visitors.
+                    Sobald Sie einen Server hinzufügen, erscheinen hier
+                    Spieler, Status und Live-Zahlen für Besucher.
                 </p>
                 {if $can_add_server}
                     <div class="empty-state__actions">
@@ -145,7 +146,7 @@
                            href="?p=admin&amp;c=servers"
                            data-testid="servers-empty-add">
                             <i data-lucide="plus" style="width:13px;height:13px"></i>
-                            Add a server
+                            Server hinzufügen
                         </a>
                     </div>
                 {/if}
@@ -209,7 +210,7 @@
                           data-testid="server-status"
                           aria-live="polite">
                         <i data-lucide="loader" style="width:10px;height:10px"></i>
-                        <span data-status-label>Loading</span>
+                        <span data-status-label>Laden</span>
                     </span>
                 </div>
 
@@ -221,7 +222,7 @@
                     <dd class="font-mono text-faint" data-testid="server-map" style="margin:0">&mdash;</dd>
 
                     <dt class="text-muted flex items-center gap-1" style="margin:0">
-                        <i data-lucide="users" style="width:13px;height:13px"></i> Players
+                        <i data-lucide="users" style="width:13px;height:13px"></i> Spieler
                     </dt>
                     <dd class="tabular-nums font-medium"
                         data-testid="server-players"
@@ -241,7 +242,7 @@
                        data-testid="server-connect"
                        href="steam://connect/{$server.dns}:{$server.port}">
                         <i data-lucide="play" style="width:13px;height:13px"></i>
-                        Connect
+                        Verbinden
                     </a>
                     <button type="button"
                             class="btn btn--secondary btn--sm"
@@ -251,14 +252,14 @@
                             aria-controls="server-players-{$server.sid}"
                             disabled>
                         <i data-lucide="chevron-down" style="width:13px;height:13px"></i>
-                        Players
+                        Spieler
                     </button>
                     <button type="button"
                             class="btn btn--ghost btn--sm"
                             data-testid="server-refresh"
                             data-action="refresh"
-                            title="Re-query this server"
-                            aria-label="Refresh server status"
+                            title="Diesen Server neu abfragen"
+                            aria-label="Server-Status aktualisieren"
                             disabled>
                         <i data-lucide="refresh-cw" style="width:13px;height:13px"></i>
                     </button>
@@ -318,7 +319,7 @@
                      class="server-tile__mapimg"
                      hidden
                      style="display:block;width:100%;max-width:340px;height:auto;border-radius:var(--radius-sm);margin:0 auto 0.5rem;background:var(--bg-muted)">
-                <p class="text-xs text-muted m-0" data-empty-message>No players currently connected.</p>
+                <p class="text-xs text-muted m-0" data-empty-message>Derzeit keine Spieler verbunden.</p>
                 <ul class="m-0" data-player-list style="list-style:none;padding:0;display:none"></ul>
             </div>
         </article>

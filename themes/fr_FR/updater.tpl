@@ -32,11 +32,11 @@
  inherits the operator's already-set theme preference.
 *}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
- <title>Updater | SourceBans++</title>
+ <title>Mise à jour | SourceBans++</title>
  <script>
  (function () {
  try {
@@ -45,7 +45,7 @@
  var d = m === 'dark' || (m === 'system' && window.matchMedia
  && matchMedia('(prefers-color-scheme: dark)').matches);
  if (d) document.documentElement.classList.add('dark');
- } catch (e) { /* localStorage / matchMedia unavailable; default to light */ }
+ } catch (e) { /* localStorage / matchMedia indisponible ; clair par défaut */ }
  })();
  </script>
  <link rel="stylesheet" href="../themes/default/css/theme.css">
@@ -67,16 +67,16 @@
            Path is relative to /web/updater/ where the script runs. *}
         <img class="sidebar__brand-mark" src="../themes/default/images/favicon.svg" alt="">
         <div>
-            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">SourceBans++ updater</h1>
-            <p class="text-sm text-muted m-0 mt-2">Database migration log.</p>
+            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Mise à jour SourceBans++</h1>
+            <p class="text-sm text-muted m-0 mt-2">Journal de migration de la base de données.</p>
         </div>
     </header>
 
     <section class="card">
         <div class="card__header" data-testid="updater-progress">
             <div>
-                <h3>Progress</h3>
-                <p>Each line below is a step from the migration runner.</p>
+                <h3>Progression</h3>
+                <p>Chaque ligne ci-dessous est une étape du moteur de migration.</p>
             </div>
         </div>
         <div class="card__body">
@@ -89,7 +89,7 @@
                     {/foreach}
                 </ol>
             {else}
-                <p class="text-sm text-muted m-0" data-testid="updater-empty">No updates were applied.</p>
+                <p class="text-sm text-muted m-0" data-testid="updater-empty">Aucune mise à jour n'a été appliquée.</p>
             {/if}
         </div>
     </section>
@@ -97,13 +97,13 @@
     <section class="card">
         <div class="card__header" data-testid="updater-cleanup">
             <div>
-                <h3>Next step</h3>
-                <p>Once the run is complete, remove the <code class="font-mono">/updater</code> directory before serving the panel to admins.</p>
+                <h3>Prochaine étape</h3>
+                <p>Une fois l'exécution terminée, supprimez le répertoire <code class="font-mono">/updater</code> avant de servir le panneau aux admins.</p>
             </div>
         </div>
         <div class="card__body">
             <a class="btn btn--primary" href="../index.php" data-testid="updater-return">
-                Return to panel
+                Retour au panneau
             </a>
         </div>
     </section>

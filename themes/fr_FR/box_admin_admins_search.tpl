@@ -101,12 +101,12 @@
              aria-controls="search-admins-form-body">
         <span class="filters-details__summary-label">
             <i data-lucide="filter" style="width:14px;height:14px"></i>
-            <span>Advanced search</span>
+            <span>Recherche avancée</span>
             {if $active_filter_count > 0}
                 <span class="filters-details__count"
                       data-testid="search-admins-active-count"
-                      aria-label="{$active_filter_count} active filter{if $active_filter_count != 1}s{/if}">
-                    &middot; {$active_filter_count} active
+                      aria-label="{$active_filter_count} filtre actif{if $active_filter_count != 1}s{/if}">
+                    &middot; {$active_filter_count} actif{if $active_filter_count != 1}s{/if}
                 </span>
             {/if}
         </span>
@@ -138,19 +138,19 @@
     *}
     <div class="card__header filters-details__header">
         <div>
-            <p>Combine any of the filters below — the server narrows the admin list to rows matching <strong>every</strong> populated filter (AND semantics).</p>
+            <p>Combinez les filtres ci-dessous — le serveur restreint la liste des administrateurs aux lignes correspondant à <strong>chaque</strong> filtre renseigné (sémantique ET).</p>
         </div>
     </div>
 
     <div class="card__body space-y-3">
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-name" style="grid-column:1;align-self:end">Login name</label>
+            <label class="label" for="search-admins-name" style="grid-column:1;align-self:end">Nom d'utilisateur</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <input class="input"
                        id="search-admins-name"
                        name="name"
                        type="text"
-                       placeholder="Match against the panel login&hellip;"
+                       placeholder="Correspondance avec l'identifiant de connexion&hellip;"
                        data-testid="search-admins-name"
                        value="{$active_filter_name|escape}"
                        style="flex:1;min-width:14rem"
@@ -159,10 +159,10 @@
                         id="search-admins-name-match"
                         name="name_match"
                         data-testid="search-admins-name-match"
-                        aria-label="Login name match mode"
+                        aria-label="Mode de correspondance du nom d'utilisateur"
                         style="width:9rem">
-                    <option value="0"{if $active_filter_name_match == '0'} selected{/if}>Exact match</option>
-                    <option value="1"{if $active_filter_name_match != '0'} selected{/if}>Partial match</option>
+                    <option value="0"{if $active_filter_name_match == '0'} selected{/if}>Correspondance exacte</option>
+                    <option value="1"{if $active_filter_name_match != '0'} selected{/if}>Correspondance partielle</option>
                 </select>
             </div>
         </div>
@@ -183,10 +183,10 @@
                         id="search-admins-steam-match"
                         name="steam_match"
                         data-testid="search-admins-steam-match"
-                        aria-label="Steam ID match mode"
+                        aria-label="Mode de correspondance du Steam ID"
                         style="width:9rem">
-                    <option value="0"{if $active_filter_steam_match != '1'} selected{/if}>Exact match</option>
-                    <option value="1"{if $active_filter_steam_match == '1'} selected{/if}>Partial match</option>
+                    <option value="0"{if $active_filter_steam_match != '1'} selected{/if}>Correspondance exacte</option>
+                    <option value="1"{if $active_filter_steam_match == '1'} selected{/if}>Correspondance partielle</option>
                 </select>
             </div>
         </div>
@@ -199,7 +199,7 @@
                            id="search-admins-admemail"
                            name="admemail"
                            type="email"
-                           placeholder="Match against the panel e-mail&hellip;"
+                           placeholder="Correspondance avec l'e-mail du panneau&hellip;"
                            data-testid="search-admins-admemail"
                            value="{$active_filter_admemail|escape}"
                            style="flex:1;min-width:14rem"
@@ -208,17 +208,17 @@
                             id="search-admins-admemail-match"
                             name="admemail_match"
                             data-testid="search-admins-admemail-match"
-                            aria-label="E-mail match mode"
+                            aria-label="Mode de correspondance de l'e-mail"
                             style="width:9rem">
-                        <option value="0"{if $active_filter_admemail_match == '0'} selected{/if}>Exact match</option>
-                        <option value="1"{if $active_filter_admemail_match != '0'} selected{/if}>Partial match</option>
+                        <option value="0"{if $active_filter_admemail_match == '0'} selected{/if}>Correspondance exacte</option>
+                        <option value="1"{if $active_filter_admemail_match != '0'} selected{/if}>Correspondance partielle</option>
                     </select>
                 </div>
             </div>
         {/if}
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-webgroup">Web group</label>
+            <label class="label" for="search-admins-webgroup">Groupe Web</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-webgroup"
@@ -233,7 +233,7 @@
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-srvadmgroup">SourceMod admin group</label>
+            <label class="label" for="search-admins-srvadmgroup">Groupe d'administration SourceMod</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-srvadmgroup"
@@ -248,7 +248,7 @@
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-srvgroup">Server group</label>
+            <label class="label" for="search-admins-srvgroup">Groupe de serveurs</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-srvgroup"
@@ -263,7 +263,7 @@
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-admwebflag">Web permissions</label>
+            <label class="label" for="search-admins-admwebflag">Permissions Web</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-admwebflag"
@@ -280,7 +280,7 @@
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-admsrvflag">Server permissions</label>
+            <label class="label" for="search-admins-admsrvflag">Permissions serveur</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-admsrvflag"
@@ -297,7 +297,7 @@
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:12rem 1fr;align-items:end">
-            <label class="label" for="search-admins-server">Server</label>
+            <label class="label" for="search-admins-server">Serveur</label>
             <div class="flex gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-admins-server"
@@ -309,7 +309,7 @@
                                 data-sid="{$server.sid}"
                                 data-ip="{$server.ip}"
                                 data-port="{$server.port}"
-                                data-server-host{if $active_filter_server == $server.sid && $active_filter_server != ''} selected{/if}>Loading&hellip; ({$server.ip}:{$server.port})</option>
+                                data-server-host{if $active_filter_server == $server.sid && $active_filter_server != ''} selected{/if}>Chargement&hellip; ({$server.ip}:{$server.port})</option>
                     {/foreach}
                 </select>
             </div>
@@ -318,11 +318,11 @@
         <div class="flex gap-2 justify-end" style="border-top:1px solid var(--border);padding-top:0.75rem">
             <a class="btn btn--ghost btn--sm"
                href="?p=admin&amp;c=admins&amp;section=admins"
-               data-testid="search-admins-reset">Clear filters</a>
+               data-testid="search-admins-reset">Effacer les filtres</a>
             <button type="submit"
                     class="btn btn--primary btn--sm"
                     data-testid="search-admins-submit">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
     </div>
@@ -357,17 +357,17 @@
         if (!sid) return;
         sb.api.call(Actions.ServersHostPlayers, { sid: sid, trunchostname: 70 }).then(function (r) {
             if (!r || !r.ok || !r.data) {
-                opt.textContent = 'Offline (' + ip + ':' + port + ')';
+                opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
                 return;
             }
             var d = r.data;
             if (d.error === 'connect') {
-                opt.textContent = 'Offline (' + ip + ':' + port + ')';
+                opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
                 return;
             }
             opt.textContent = (d.hostname || (ip + ':' + port)) + ' (' + ip + ':' + port + ')';
         }, function () {
-            opt.textContent = 'Offline (' + ip + ':' + port + ')';
+            opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
         });
     });
 })();

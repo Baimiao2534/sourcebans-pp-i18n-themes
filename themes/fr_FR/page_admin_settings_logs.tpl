@@ -50,14 +50,14 @@
 *}
 <div>
     <div class="mb-6">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Settings</h1>
-        <p class="text-sm text-muted m-0 mt-2">System log of admin actions and warnings.</p>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Paramètres</h1>
+        <p class="text-sm text-muted m-0 mt-2">Journal système des actions et avertissements d'admin.</p>
     </div>
 
     {if NOT $can_web_settings}
         <div class="card">
             <div class="card__body">
-                <p class="text-muted">Access denied. <code>ADMIN_WEB_SETTINGS</code> required.</p>
+                <p class="text-muted">Accès refusé. <code>ADMIN_WEB_SETTINGS</code> requis.</p>
             </div>
         </div>
     {else}
@@ -66,15 +66,15 @@
                 <div class="card">
                     <div class="card__header">
                         <div>
-                            <h3>System log</h3>
-                            <p>Click a row to expand. Newest first.</p>
+                            <h3>Journal système</h3>
+                            <p>Cliquez sur une ligne pour la déplier. Les plus récentes en premier.</p>
                         </div>
                         {if $can_owner}
                             <button type="button"
                                     class="btn btn--danger btn--sm"
                                     data-testid="logs-clear"
                                     onclick="clearLogs();">
-                                <i data-lucide="trash-2"></i> Clear log
+                                <i data-lucide="trash-2"></i> Vider le journal
                             </button>
                         {/if}
                     </div>
@@ -98,8 +98,8 @@
                                 <thead>
                                     <tr>
                                         <th style="width:6rem">Type</th>
-                                        <th>Event</th>
-                                        <th style="width:14rem">User</th>
+                                        <th>Événement</th>
+                                        <th style="width:14rem">Utilisateur</th>
                                         <th style="width:14rem">Date</th>
                                     </tr>
                                 </thead>
@@ -139,9 +139,9 @@
                                                 {if $log.type == 'm'}
                                                     <span class="pill pill--online"><i data-lucide="info" style="width:0.75rem;height:0.75rem"></i> Info</span>
                                                 {elseif $log.type == 'w'}
-                                                    <span class="pill pill--active"><i data-lucide="alert-triangle" style="width:0.75rem;height:0.75rem"></i> Warn</span>
+                                                    <span class="pill pill--active"><i data-lucide="alert-triangle" style="width:0.75rem;height:0.75rem"></i> Avert.</span>
                                                 {elseif $log.type == 'e'}
-                                                    <span class="pill pill--permanent"><i data-lucide="circle-x" style="width:0.75rem;height:0.75rem"></i> Error</span>
+                                                    <span class="pill pill--permanent"><i data-lucide="circle-x" style="width:0.75rem;height:0.75rem"></i> Erreur</span>
                                                 {else}
                                                     <span class="pill pill--offline">{$log.type}</span>
                                                 {/if}
@@ -153,12 +153,12 @@
                                         <tr data-detail-for="{$log.lid}" id="log-detail-{$log.lid}" hidden>
                                             <td colspan="4" style="background:var(--bg-muted)">
                                                 <dl class="grid gap-2 text-xs" style="grid-template-columns:8rem 1fr;margin:0">
-                                                    <dt class="text-muted">Details</dt>
+                                                    <dt class="text-muted">Détails</dt>
                                                     {* nofilter: $log.message is escaped via htmlentities() in admin.settings.php (line replaces literal <br/> tags then re-html-encodes) before being assigned. *}
                                                     <dd style="margin:0">{$log.message nofilter}</dd>
-                                                    <dt class="text-muted">Function</dt>
+                                                    <dt class="text-muted">Fonction</dt>
                                                     <dd class="font-mono" style="margin:0">{$log.function}</dd>
-                                                    <dt class="text-muted">Query</dt>
+                                                    <dt class="text-muted">Requête</dt>
                                                     <dd class="font-mono" style="margin:0;word-break:break-all">{$log.query}</dd>
                                                     <dt class="text-muted">IP</dt>
                                                     <dd class="font-mono tabular-nums" style="margin:0">{$log.host}</dd>
@@ -183,7 +183,7 @@
                                on the desktop table's `<thead>` is unnecessary here
                                because each card carries its own per-row context in
                                the summary. *}
-                            <ul class="log-cards" data-testid="logs-cards" aria-label="System log entries">
+                            <ul class="log-cards" data-testid="logs-cards" aria-label="Entrées du journal système">
                                 {foreach from=$log_items item="log"}
                                     <li>
                                         <details class="log-card"
@@ -193,9 +193,9 @@
                                                 {if $log.type == 'm'}
                                                     <span class="pill pill--online"><i data-lucide="info" style="width:0.75rem;height:0.75rem"></i> Info</span>
                                                 {elseif $log.type == 'w'}
-                                                    <span class="pill pill--active"><i data-lucide="alert-triangle" style="width:0.75rem;height:0.75rem"></i> Warn</span>
+                                                    <span class="pill pill--active"><i data-lucide="alert-triangle" style="width:0.75rem;height:0.75rem"></i> Avert.</span>
                                                 {elseif $log.type == 'e'}
-                                                    <span class="pill pill--permanent"><i data-lucide="circle-x" style="width:0.75rem;height:0.75rem"></i> Error</span>
+                                                    <span class="pill pill--permanent"><i data-lucide="circle-x" style="width:0.75rem;height:0.75rem"></i> Erreur</span>
                                                 {else}
                                                     <span class="pill pill--offline">{$log.type}</span>
                                                 {/if}
@@ -203,17 +203,17 @@
                                                 <i class="log-card__chevron" data-lucide="chevron-right" style="width:1rem;height:1rem" aria-hidden="true"></i>
                                             </summary>
                                             <div class="log-card__meta">
-                                                <span><span class="text-muted">User:</span> {$log.user}</span>
-                                                <span><span class="text-muted">Date:</span> {$log.date_str}</span>
+                                                <span><span class="text-muted">Utilisateur :</span> {$log.user}</span>
+                                                <span><span class="text-muted">Date :</span> {$log.date_str}</span>
                                             </div>
                                             <div class="log-card__body">
                                                 <dl class="grid gap-2 text-xs" style="grid-template-columns:6rem 1fr;margin:0">
-                                                    <dt class="text-muted">Details</dt>
+                                                    <dt class="text-muted">Détails</dt>
                                                     {* nofilter: $log.message is escaped via htmlentities() in admin.settings.php (same value as the desktop table above; the page handler stages each log row once and both surfaces consume the same dict). *}
                                                     <dd style="margin:0">{$log.message nofilter}</dd>
-                                                    <dt class="text-muted">Function</dt>
+                                                    <dt class="text-muted">Fonction</dt>
                                                     <dd class="font-mono" style="margin:0;word-break:break-all">{$log.function}</dd>
-                                                    <dt class="text-muted">Query</dt>
+                                                    <dt class="text-muted">Requête</dt>
                                                     <dd class="font-mono" style="margin:0;word-break:break-all">{$log.query}</dd>
                                                     <dt class="text-muted">IP</dt>
                                                     <dd class="font-mono tabular-nums" style="margin:0">{$log.host}</dd>
@@ -224,7 +224,7 @@
                                 {/foreach}
                             </ul>
                         {else}
-                            <p class="text-muted text-sm m-0">No log entries.</p>
+                            <p class="text-muted text-sm m-0">Aucune entrée de journal.</p>
                         {/if}
                     </div>
                 </div>
@@ -286,7 +286,7 @@
      * Confirm() so a misclick on the danger button doesn't nuke history.
      */
     window.clearLogs = function () {
-        if (!window.confirm('Clear the entire system log? This cannot be undone.')) return;
+        if (!window.confirm('Vider tout le journal système ? Cette action est irréversible.')) return;
         window.location.href = 'index.php?p=admin&c=settings&section=logs&log_clear=true';
     };
 })();

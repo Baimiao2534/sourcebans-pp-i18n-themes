@@ -73,18 +73,18 @@
 
     <div class="card__header">
         <div>
-            <h3>Advanced search</h3>
-            <p>Each row is its own search criterion. The &laquo;Search&raquo; button on the right submits using just that row's value.</p>
+            <h3>Recherche avancée</h3>
+            <p>Chaque ligne constitue son propre critère de recherche. Le bouton &laquo;&nbsp;Rechercher&nbsp;&raquo; à droite soumet uniquement la valeur de cette ligne.</p>
         </div>
     </div>
 
     <div class="card__body space-y-3">
         <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-            <label class="label" for="search-comms-name" style="grid-column:1;align-self:end">Nickname</label>
+            <label class="label" for="search-comms-name" style="grid-column:1;align-self:end">Pseudo</label>
             <input class="input"
                    id="search-comms-name"
                    type="text"
-                   placeholder="Substring match against the player nickname&hellip;"
+                   placeholder="Correspondance partielle avec le pseudo du joueur&hellip;"
                    data-testid="search-comms-name"
                    autocomplete="off">
             <button type="submit"
@@ -92,7 +92,7 @@
                     data-testid="search-comms-submit-name"
                     data-search-key="name"
                     data-search-from="search-comms-name">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
@@ -110,8 +110,8 @@
                         id="search-comms-steam-match"
                         data-testid="search-comms-steam-match"
                         style="width:9rem">
-                    <option value="0" selected>Exact match</option>
-                    <option value="1">Partial match</option>
+                    <option value="0" selected>Correspondance exacte</option>
+                    <option value="1">Correspondance partielle</option>
                 </select>
             </div>
             <button type="submit"
@@ -119,16 +119,16 @@
                     data-testid="search-comms-submit-steamid"
                     data-search-key=""
                     data-search-compose="steam">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-            <label class="label" for="search-comms-reason" style="grid-column:1;align-self:end">Reason</label>
+            <label class="label" for="search-comms-reason" style="grid-column:1;align-self:end">Motif</label>
             <input class="input"
                    id="search-comms-reason"
                    type="text"
-                   placeholder="Substring match against the recorded reason&hellip;"
+                   placeholder="Correspondance partielle avec le motif enregistré&hellip;"
                    data-testid="search-comms-reason"
                    autocomplete="off">
             <button type="submit"
@@ -136,7 +136,7 @@
                     data-testid="search-comms-submit-reason"
                     data-search-key="reason"
                     data-search-from="search-comms-reason">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
@@ -169,22 +169,22 @@
                     data-testid="search-comms-submit-date"
                     data-search-key="date"
                     data-search-compose="date">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-            <span class="label" style="grid-column:1;align-self:end">Length</span>
+            <span class="label" style="grid-column:1;align-self:end">Durée</span>
             <div class="flex items-center gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-comms-length-op"
                         data-testid="search-comms-length-op"
                         style="width:5rem">
-                    <option value="e"  title="equal to">=</option>
-                    <option value="h"  title="greater">&gt;</option>
-                    <option value="l"  title="smaller">&lt;</option>
-                    <option value="eh" title="equal to or greater">&gt;=</option>
-                    <option value="el" title="equal to or smaller">&lt;=</option>
+                    <option value="e"  title="égal à">=</option>
+                    <option value="h"  title="supérieur">&gt;</option>
+                    <option value="l"  title="inférieur">&lt;</option>
+                    <option value="eh" title="supérieur ou égal">&gt;=</option>
+                    <option value="el" title="inférieur ou égal">&lt;=</option>
                 </select>
                 <select class="select"
                         id="search-comms-length"
@@ -200,35 +200,35 @@
                         <option value="30">30 minutes</option>
                         <option value="45">45 minutes</option>
                     </optgroup>
-                    <optgroup label="Hours">
-                        <option value="60">1 hour</option>
-                        <option value="120">2 hours</option>
-                        <option value="180">3 hours</option>
-                        <option value="240">4 hours</option>
-                        <option value="480">8 hours</option>
-                        <option value="720">12 hours</option>
+                    <optgroup label="Heures">
+                        <option value="60">1 heure</option>
+                        <option value="120">2 heures</option>
+                        <option value="180">3 heures</option>
+                        <option value="240">4 heures</option>
+                        <option value="480">8 heures</option>
+                        <option value="720">12 heures</option>
                     </optgroup>
-                    <optgroup label="Days">
-                        <option value="1440">1 day</option>
-                        <option value="2880">2 days</option>
-                        <option value="4320">3 days</option>
-                        <option value="5760">4 days</option>
-                        <option value="7200">5 days</option>
-                        <option value="8640">6 days</option>
+                    <optgroup label="Jours">
+                        <option value="1440">1 jour</option>
+                        <option value="2880">2 jours</option>
+                        <option value="4320">3 jours</option>
+                        <option value="5760">4 jours</option>
+                        <option value="7200">5 jours</option>
+                        <option value="8640">6 jours</option>
                     </optgroup>
-                    <optgroup label="Weeks">
-                        <option value="10080">1 week</option>
-                        <option value="20160">2 weeks</option>
-                        <option value="30240">3 weeks</option>
+                    <optgroup label="Semaines">
+                        <option value="10080">1 semaine</option>
+                        <option value="20160">2 semaines</option>
+                        <option value="30240">3 semaines</option>
                     </optgroup>
-                    <optgroup label="Months">
-                        <option value="40320">1 month</option>
-                        <option value="80640">2 months</option>
-                        <option value="120960">3 months</option>
-                        <option value="241920">6 months</option>
-                        <option value="483840">12 months</option>
+                    <optgroup label="Mois">
+                        <option value="40320">1 mois</option>
+                        <option value="80640">2 mois</option>
+                        <option value="120960">3 mois</option>
+                        <option value="241920">6 mois</option>
+                        <option value="483840">12 mois</option>
                     </optgroup>
-                    <option value="other">Other length (minutes)&hellip;</option>
+                    <option value="other">Autre durée (minutes)&hellip;</option>
                 </select>
                 <input type="text"
                        class="input font-mono"
@@ -246,7 +246,7 @@
                     data-testid="search-comms-submit-length"
                     data-search-key="length"
                     data-search-compose="length">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
@@ -256,8 +256,8 @@
                 <select class="select"
                         id="search-comms-btype"
                         data-testid="search-comms-btype">
-                    <option value="1" selected>Mute</option>
-                    <option value="2">Gag</option>
+                    <option value="1" selected>Muet</option>
+                    <option value="2">Bâillon</option>
                 </select>
             </div>
             <button type="submit"
@@ -265,13 +265,13 @@
                     data-testid="search-comms-submit-btype"
                     data-search-key="btype"
                     data-search-from="search-comms-btype">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
         {if NOT $hideadminname}
             <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-                <label class="label" for="search-comms-admin">Admin</label>
+                <label class="label" for="search-comms-admin">Administrateur</label>
                 <div class="flex items-center gap-2" style="flex-wrap:wrap">
                     <select class="select"
                             id="search-comms-admin"
@@ -287,24 +287,24 @@
                         data-testid="search-comms-submit-admin"
                         data-search-key="admin"
                         data-search-from="search-comms-admin">
-                    <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                    <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
                 </button>
             </div>
         {/if}
 
         <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-            <label class="label" for="search-comms-server">Server</label>
+            <label class="label" for="search-comms-server">Serveur</label>
             <div class="flex items-center gap-2" style="flex-wrap:wrap">
                 <select class="select"
                         id="search-comms-server"
                         data-testid="search-comms-server">
-                    <option value="0" selected>Web Ban</option>
+                    <option value="0" selected>Bannissement Web</option>
                     {foreach from=$server_list item="server"}
                         <option value="{$server.sid}"
                                 data-sid="{$server.sid}"
                                 data-ip="{$server.ip}"
                                 data-port="{$server.port}"
-                                data-server-host>Loading&hellip; ({$server.ip}:{$server.port})</option>
+                                data-server-host>Chargement&hellip; ({$server.ip}:{$server.port})</option>
                     {/foreach}
                 </select>
             </div>
@@ -313,17 +313,17 @@
                     data-testid="search-comms-submit-server"
                     data-search-key="where_banned"
                     data-search-from="search-comms-server">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
         {if $is_admin}
             <div class="grid gap-3" style="grid-template-columns:10rem 1fr auto;align-items:end">
-                <label class="label" for="search-comms-comment" style="grid-column:1;align-self:end">Comment</label>
+                <label class="label" for="search-comms-comment" style="grid-column:1;align-self:end">Commentaire</label>
                 <input class="input"
                        id="search-comms-comment"
                        type="text"
-                       placeholder="Substring match against admin notes&hellip;"
+                       placeholder="Correspondance partielle avec les notes d'administration&hellip;"
                        data-testid="search-comms-comment"
                        autocomplete="off">
                 <button type="submit"
@@ -331,7 +331,7 @@
                         data-testid="search-comms-submit-comment"
                         data-search-key="comment"
                         data-search-from="search-comms-comment">
-                    <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                    <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
                 </button>
             </div>
         {/if}
@@ -448,12 +448,12 @@
         if (!sid) return;
         sb.api.call(Actions.ServersHostPlayers, { sid: sid, trunchostname: 70 }).then(function (r) {
             if (!r || !r.ok || !r.data) {
-                opt.textContent = 'Offline (' + ip + ':' + port + ')';
+                opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
                 return;
             }
             var d = r.data;
             if (d.error === 'connect') {
-                opt.textContent = 'Offline (' + ip + ':' + port + ')';
+                opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
                 return;
             }
             // d.hostname is htmlspecialchars()'d server-side; assigning to
@@ -461,7 +461,7 @@
             // matches the legacy LoadServerHost behaviour.
             opt.textContent = (d.hostname || (ip + ':' + port)) + ' (' + ip + ':' + port + ')';
         }, function () {
-            opt.textContent = 'Offline (' + ip + ':' + port + ')';
+            opt.textContent = 'Hors ligne (' + ip + ':' + port + ')';
         });
     });
 })();

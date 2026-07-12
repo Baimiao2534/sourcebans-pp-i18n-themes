@@ -53,15 +53,15 @@
 
     <div class="card__header">
         <div>
-            <h3>Advanced search</h3>
-            <p>Filter the system log by admin, message text, date range, or severity.</p>
+            <h3>Recherche avancée</h3>
+            <p>Filtrer le journal système par administrateur, texte de message, plage de dates ou sévérité.</p>
         </div>
     </div>
 
     <div class="card__body space-y-3">
         <div class="grid gap-3" style="grid-template-columns:14rem 1fr auto;align-items:end">
             <div>
-                <label class="label" for="search-log-admin">Admin</label>
+                <label class="label" for="search-log-admin">Administrateur</label>
                 <select class="select"
                         id="search-log-admin"
                         data-testid="search-log-admin">
@@ -71,13 +71,13 @@
                     {/foreach}
                 </select>
             </div>
-            <div class="text-xs text-muted">Select an admin to filter actions to that account.</div>
+            <div class="text-xs text-muted">Sélectionnez un administrateur pour filtrer les actions de ce compte.</div>
             <button type="submit"
                     class="btn btn--secondary btn--sm"
                     data-testid="search-log-submit-admin"
                     data-search-key="admin"
                     data-search-from="search-log-admin">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
@@ -86,7 +86,7 @@
             <input class="input"
                    id="search-log-message"
                    type="text"
-                   placeholder="Substring to match against the log message&hellip;"
+                   placeholder="Correspondance partielle avec le message du journal&hellip;"
                    data-testid="search-log-message"
                    autocomplete="off">
             <button type="submit"
@@ -94,14 +94,14 @@
                     data-testid="search-log-submit-message"
                     data-search-key="message"
                     data-search-from="search-log-message">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
         <div class="grid gap-3" style="grid-template-columns:14rem 1fr auto;align-items:end">
-            <span class="label" style="grid-column:1;align-self:end">Date range</span>
+            <span class="label" style="grid-column:1;align-self:end">Plage de dates</span>
             <div class="flex items-center gap-2" style="flex-wrap:wrap">
-                <input class="input font-mono" style="width:3rem" type="text" maxlength="2" placeholder="DD"
+                <input class="input font-mono" style="width:3rem" type="text" maxlength="2" placeholder="JJ"
                        data-testid="search-log-date-day"
                        data-search-date="day"
                        autocomplete="off"
@@ -115,13 +115,13 @@
                        inputmode="numeric"
                        pattern="[0-9]*">
                 <span class="text-faint">/</span>
-                <input class="input font-mono" style="width:4.25rem" type="text" maxlength="4" placeholder="YYYY"
+                <input class="input font-mono" style="width:4.25rem" type="text" maxlength="4" placeholder="AAAA"
                        data-testid="search-log-date-year"
                        data-search-date="year"
                        autocomplete="off"
                        inputmode="numeric"
                        pattern="[0-9]*">
-                <span class="text-muted text-xs" style="margin-left:0.5rem">from</span>
+                <span class="text-muted text-xs" style="margin-left:0.5rem">de</span>
                 <input class="input font-mono" style="width:3rem" type="text" maxlength="2" value="00"
                        data-testid="search-log-date-fhour"
                        data-search-date="fhour"
@@ -135,7 +135,7 @@
                        autocomplete="off"
                        inputmode="numeric"
                        pattern="[0-9]*">
-                <span class="text-muted text-xs" style="margin-left:0.5rem">to</span>
+                <span class="text-muted text-xs" style="margin-left:0.5rem">à</span>
                 <input class="input font-mono" style="width:3rem" type="text" maxlength="2" value="23"
                        data-testid="search-log-date-thour"
                        data-search-date="thour"
@@ -155,7 +155,7 @@
                     data-testid="search-log-submit-date"
                     data-search-key="date"
                     data-search-compose="date">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
 
@@ -166,17 +166,17 @@
                         id="search-log-type"
                         data-testid="search-log-type">
                     <option value="m">Message</option>
-                    <option value="w">Warning</option>
-                    <option value="e">Error</option>
+                    <option value="w">Avertissement</option>
+                    <option value="e">Erreur</option>
                 </select>
             </div>
-            <div class="text-xs text-muted">Filter to a single severity level.</div>
+            <div class="text-xs text-muted">Filtrer sur un seul niveau de sévérité.</div>
             <button type="submit"
                     class="btn btn--secondary btn--sm"
                     data-testid="search-log-submit-type"
                     data-search-key="type"
                     data-search-from="search-log-type">
-                <i data-lucide="search" style="width:14px;height:14px"></i> Search
+                <i data-lucide="search" style="width:14px;height:14px"></i> Rechercher
             </button>
         </div>
     </div>

@@ -24,36 +24,36 @@
 <div class="card" style="max-width:42rem;margin:1.5rem auto">
   <div class="card__header">
     <div>
-      <h3>{$commenttype} comment</h3>
-      <p>Visible to admins; commented threads also surface to the public when public comments are enabled.</p>
+      <h3>{$commenttype}-Kommentar</h3>
+      <p>Sichtbar für Administratoren; kommentierte Threads werden auch öffentlich angezeigt, wenn öffentliche Kommentare aktiviert sind.</p>
     </div>
   </div>
   <div class="card__body">
     <form id="banlist-comment-form" data-bid="{$comment}" data-ctype="{$ctype}" data-cid="{$cid}" data-page="{$page}">
-      <label class="label" for="banlist-comment-text">Comment</label>
+      <label class="label" for="banlist-comment-text">Kommentar</label>
       <textarea class="textarea" id="banlist-comment-text" name="commenttext" rows="6" {if !$canedit}disabled{/if}>{$commenttext}</textarea>
       <div class="flex gap-2 mt-4">
         {if $canedit}
-        <button class="btn btn--primary" type="submit">{$commenttype} comment</button>
+        <button class="btn btn--primary" type="submit">{$commenttype}-Kommentar</button>
         {/if}
-        <button class="btn btn--secondary" type="button" onclick="history.back()">Back</button>
+        <button class="btn btn--secondary" type="button" onclick="history.back()">Zurück</button>
       </div>
     </form>
 
     <div class="mt-6">
       {foreach from=$othercomments item=com name=othercomments}
-        {if $smarty.foreach.othercomments.first}<h3 style="font-size:var(--fs-base);font-weight:600;margin:0 0 0.5rem">Other comments</h3>{/if}
+        {if $smarty.foreach.othercomments.first}<h3 style="font-size:var(--fs-base);font-weight:600;margin:0 0 0.5rem">Weitere Kommentare</h3>{/if}
         <div class="mt-4" style="border-top:1px solid var(--border);padding-top:0.75rem">
           <div class="flex items-center justify-between">
             {* #1500: comment author is an admin username; hide it for public viewers when banlist.hideadminname is on (parity with the inline disclosure block below). *}
-            {if $hideadminname}<i class="text-faint">Hidden</i>{elseif !empty($com.comname)}<strong>{$com.comname|escape}</strong>{else}<i class="text-faint">deleted admin</i>{/if}
+            {if $hideadminname}<i class="text-faint">Versteckt</i>{elseif !empty($com.comname)}<strong>{$com.comname|escape}</strong>{else}<i class="text-faint">gelöschter Administrator</i>{/if}
             <span class="text-xs text-muted">{$com.added}</span>
           </div>
           {* nofilter: $com.commenttxt is server-built HTML produced by encodePreservingBr (htmlspecialchars per text segment, only `<br/>` survives) plus a URL-wrap regex that wraps already-escaped URLs in `<a>` tags — see page.banlist.php $cotherdata loop *}
           <div class="text-sm mt-2">{$com.commenttxt nofilter}</div>
           {* gate on edittime not editname: #1500 nulls editname for hidden viewers, edittime survives so the "last edit" indicator still shows. *}
           {if !empty($com.edittime)}
-          <div class="text-xs text-faint mt-2">last edit {$com.edittime} by {if $hideadminname}<i class="text-faint">Hidden</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>deleted admin</i>{/if}</div>
+          <div class="text-xs text-faint mt-2">zuletzt bearbeitet {$com.edittime} von {if $hideadminname}<i class="text-faint">Versteckt</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>gelöschter Administrator</i>{/if}</div>
           {/if}
         </div>
       {/foreach}
@@ -65,13 +65,13 @@
 <div id="banlist-root" class="p-6 space-y-4" style="max-width:1700px;margin:0 auto" data-loading="false">
   <div class="flex items-center justify-between gap-3" style="flex-wrap:wrap">
     <div>
-      <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Ban list</h1>
-      <p class="text-sm text-muted m-0 mt-2"><span class="tabular-nums">{$ban_list|@count}</span> of <span class="tabular-nums">{$total_bans}</span> bans</p>
+      <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Bannliste</h1>
+      <p class="text-sm text-muted m-0 mt-2"><span class="tabular-nums">{$ban_list|@count}</span> von <span class="tabular-nums">{$total_bans}</span> Banns</p>
     </div>
     <div class="flex gap-2 items-center">
       {if $can_export}
-      <a class="btn btn--secondary btn--sm" href="exportbans.php?type=steam" title="Export permanent SteamID bans">Export Steam</a>
-      <a class="btn btn--secondary btn--sm" href="exportbans.php?type=ip" title="Export permanent IP bans">Export IP</a>
+      <a class="btn btn--secondary btn--sm" href="exportbans.php?type=steam" title="Permanente SteamID-Banns exportieren">Steam exportieren</a>
+      <a class="btn btn--secondary btn--sm" href="exportbans.php?type=ip" title="Permanente IP-Banns exportieren">IP exportieren</a>
       {/if}
       {* #1230: aria-pressed mirrors whether inactive bans are
          currently being hidden ($hidetext == 'Show' means the
@@ -100,10 +100,10 @@
          role="button"
          aria-pressed="{if $hidetext == 'Show'}true{else}false{/if}"
          href="index.php?p=banlist&hideinactive={if $hidetext == 'Hide'}true{else}false{/if}{$searchlink}"
-         data-testid="toggle-hide-inactive">{$hidetext} inactive</a>
+         data-testid="toggle-hide-inactive">{if $hidetext == 'Show'}Inaktive anzeigen{else}Inaktive ausblenden{/if}</a>
       {/if}
       {has_access flag=$smarty.const.ADMIN_ADD_BAN}
-      <a class="btn btn--primary btn--sm" href="index.php?p=admin&c=bans">Add ban</a>
+      <a class="btn btn--primary btn--sm" href="index.php?p=admin&c=bans">Bann hinzufügen</a>
       {/has_access}
     </div>
   </div>
@@ -130,22 +130,22 @@
       <div style="flex:1;min-width:14rem;max-width:24rem;position:relative">
         <input class="input" type="search" name="searchText" data-testid="bans-search"
           value="{$filters.search|escape}"
-          placeholder="Player, SteamID, or IP&hellip;" aria-label="Search bans">
+          placeholder="Spieler, SteamID oder IP&hellip;" aria-label="Banns suchen">
       </div>
-      <select class="select" name="server" style="width:auto;min-width:11rem" data-testid="bans-server-filter" aria-label="Filter by server">
-        <option value="">All servers</option>
+      <select class="select" name="server" style="width:auto;min-width:11rem" data-testid="bans-server-filter" aria-label="Nach Server filtern">
+        <option value="">Alle Server</option>
         {foreach $server_list as $s}
           <option value="{$s.sid}" {if $filters.server == $s.sid}selected{/if}>{$s.name|escape}</option>
         {/foreach}
       </select>
-      <select class="select" name="time" style="width:auto" data-testid="bans-time-filter" aria-label="Filter by time range">
-        <option value="">All time</option>
-        <option value="1d"  {if $filters.time == '1d'}selected{/if}>Today</option>
-        <option value="7d"  {if $filters.time == '7d'}selected{/if}>Last 7 days</option>
-        <option value="30d" {if $filters.time == '30d'}selected{/if}>Last 30 days</option>
+      <select class="select" name="time" style="width:auto" data-testid="bans-time-filter" aria-label="Nach Zeitraum filtern">
+        <option value="">Gesamter Zeitraum</option>
+        <option value="1d"  {if $filters.time == '1d'}selected{/if}>Heute</option>
+        <option value="7d"  {if $filters.time == '7d'}selected{/if}>Letzte 7 Tage</option>
+        <option value="30d" {if $filters.time == '30d'}selected{/if}>Letzte 30 Tage</option>
       </select>
       <button class="btn btn--secondary btn--sm" type="submit" data-testid="bans-filter-apply">
-        <i data-lucide="filter"></i> Apply
+        <i data-lucide="filter"></i> Anwenden
       </button>
     </div>
 
@@ -177,13 +177,13 @@
        The sibling commslist chip strip uses `<button>` so it can
        keep `aria-pressed`; the banlist's anchor shape exists so
        no-JS browsers can navigate. *}
-    <div class="flex items-center gap-2 mt-2 scroll-x" role="group" aria-label="Filter by status">
+    <div class="flex items-center gap-2 mt-2 scroll-x" role="group" aria-label="Nach Status filtern">
       <a class="chip"
          href="index.php?p=banlist{$chip_base_link}"
          data-state-filter=""
          data-testid="filter-chip-all"
          data-active="{if $active_state == ''}true{else}false{/if}"
-         aria-current="{if $active_state == ''}true{else}false{/if}">All</a>
+         aria-current="{if $active_state == ''}true{else}false{/if}">Alle</a>
       <a class="chip"
          href="index.php?p=banlist{$chip_base_link}&state=permanent"
          data-state-filter="permanent"
@@ -198,7 +198,7 @@
          data-testid="filter-chip-active"
          data-active="{if $active_state == 'active'}true{else}false{/if}"
          aria-current="{if $active_state == 'active'}true{else}false{/if}">
-        <span class="chip__dot" style="background:#f59e0b"></span>Active
+        <span class="chip__dot" style="background:#f59e0b"></span>Aktiv
       </a>
       <a class="chip"
          href="index.php?p=banlist{$chip_base_link}&state=expired"
@@ -206,7 +206,7 @@
          data-testid="filter-chip-expired"
          data-active="{if $active_state == 'expired'}true{else}false{/if}"
          aria-current="{if $active_state == 'expired'}true{else}false{/if}">
-        <span class="chip__dot" style="background:var(--zinc-300)"></span>Expired
+        <span class="chip__dot" style="background:var(--zinc-300)"></span>Abgelaufen
       </a>
       <a class="chip"
          href="index.php?p=banlist{$chip_base_link}&state=unbanned"
@@ -214,7 +214,7 @@
          data-testid="filter-chip-unbanned"
          data-active="{if $active_state == 'unbanned'}true{else}false{/if}"
          aria-current="{if $active_state == 'unbanned'}true{else}false{/if}">
-        <span class="chip__dot" style="background:#10b981"></span>Unbanned
+        <span class="chip__dot" style="background:#10b981"></span>Entbannt
       </a>
     </div>
   </form>
@@ -244,10 +244,10 @@
              aria-controls="banlist-advsearch-body">
       <span class="filters-details__summary-label">
         <i data-lucide="filter" style="width:14px;height:14px"></i>
-        <span>Advanced search</span>
+        <span>Erweiterte Suche</span>
         {if $is_advanced_search_open}
           <span class="filters-details__count" data-testid="banlist-advsearch-active">
-            &middot; 1 active
+            &middot; 1 aktiv
           </span>
         {/if}
       </span>
@@ -280,7 +280,7 @@
            always renders so the row stays useful at every desktop
            viewport without horizontal scroll inside `.table-scroll`. *}
         <tr>
-          <th scope="col">Player</th>
+          <th scope="col">Spieler</th>
           <th scope="col">SteamID</th>
           {* #1302: IP column gated on `banlist.hideplayerips` + admin
              status (`hideplayerips` is `Config::getBool('banlist.hideplayerips')
@@ -289,13 +289,13 @@
              `{if !$hideadminname}` admin-name guard above; v1.x had this
              column gated on `is_admin()`, the v2.0 redesign dropped it. *}
           {if !$hideplayerips}<th scope="col" class="col-ip col-tier-3">IP</th>{/if}
-          <th scope="col">Reason</th>
+          <th scope="col">Grund</th>
           <th scope="col" class="col-tier-2">Server</th>
-          {if !$hideadminname}<th scope="col" class="col-admin col-tier-2">Admin</th>{/if}
-          <th scope="col" class="col-length col-tier-3">Length</th>
-          <th scope="col" class="col-banned col-tier-3">Banned</th>
+          {if !$hideadminname}<th scope="col" class="col-admin col-tier-2">Administrator</th>{/if}
+          <th scope="col" class="col-length col-tier-3">Dauer</th>
+          <th scope="col" class="col-banned col-tier-3">Gebannt</th>
           <th scope="col" class="col-status">Status</th>
-          <th scope="col" class="col-actions" aria-label="Row actions"></th>
+          <th scope="col" class="col-actions" aria-label="Zeilenaktionen"></th>
         </tr>
       </thead>
       <tbody>
@@ -320,7 +320,7 @@
                  after a row click, the page just navigated to the legacy
                  `?id=N` href instead). The mobile `.ban-cards` branch
                  below already follows this no-stopPropagation shape. *}
-              <a class="font-medium truncate" href="?p=banlist&amp;id={$ban.bid}" data-drawer-href="?p=banlist&amp;c=details&amp;id={$ban.bid}" data-testid="drawer-trigger">{if empty($ban.name)}<i class="text-faint">no nickname</i>{else}{$ban.name|escape}{/if}</a>
+              <a class="font-medium truncate" href="?p=banlist&amp;id={$ban.bid}" data-drawer-href="?p=banlist&amp;c=details&amp;id={$ban.bid}" data-testid="drawer-trigger">{if empty($ban.name)}<i class="text-faint">kein Spitzname</i>{else}{$ban.name|escape}{/if}</a>
             </div>
             {* #BANLIST-COMMENTS: inline <details> disclosure restoring
                the per-row comment visibility v1.x shipped (the
@@ -353,10 +353,10 @@
                      data-bid="{$ban.bid}">
               <summary class="ban-comments-inline__summary"
                        data-testid="ban-comments-toggle"
-                       title="{$ban.commentdata|@count} comment{if $ban.commentdata|@count != 1}s{/if} on this ban">
+                       title="{$ban.commentdata|@count} Kommentar{if $ban.commentdata|@count != 1}e{/if} für diesen Bann">
                 <i data-lucide="message-square-text" style="width:11px;height:11px" aria-hidden="true"></i>
                 <span class="tabular-nums">{$ban.commentdata|@count}</span>
-                <span class="ban-comments-inline__label">comment{if $ban.commentdata|@count != 1}s{/if}</span>
+                <span class="ban-comments-inline__label">Kommentar{if $ban.commentdata|@count != 1}e{/if}</span>
               </summary>
               <ul class="ban-comments-inline__list" data-testid="ban-comments-list">
                 {foreach from=$ban.commentdata item=com}
@@ -364,11 +364,11 @@
                   <div class="ban-comments-inline__meta">
                     {* #1500: comment author is an admin username; hide it for public viewers when banlist.hideadminname is on (parity with the unban-meta gate below). *}
                     {if $hideadminname}
-                      <i class="text-faint">Hidden</i>
+                      <i class="text-faint">Versteckt</i>
                     {elseif !empty($com.comname)}
                       <strong>{$com.comname|escape}</strong>
                     {else}
-                      <i class="text-faint">deleted admin</i>
+                      <i class="text-faint">gelöschter Administrator</i>
                     {/if}
                     <span class="text-faint">&middot;</span>
                     <span class="text-xs text-faint tabular-nums">{$com.added}</span>
@@ -376,7 +376,7 @@
                   {* nofilter: $com.commenttxt is server-built HTML produced by encodePreservingBr (htmlspecialchars per text segment, only `<br/>` survives) plus a URL-wrap regex that wraps already-escaped URLs in `<a>` tags — see page.banlist.php $commentres loop. Same provenance + safety as the existing comment-edit-mode block at the top of this template. *}
                   <div class="ban-comments-inline__text" data-testid="ban-comment-text">{$com.commenttxt nofilter}</div>
                   {if !empty($com.edittime)}
-                  <div class="ban-comments-inline__edit text-xs text-faint">last edit {$com.edittime} by {if $hideadminname}<i class="text-faint">Hidden</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>deleted admin</i>{/if}</div>
+                  <div class="ban-comments-inline__edit text-xs text-faint">zuletzt bearbeitet {$com.edittime} von {if $hideadminname}<i class="text-faint">Versteckt</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>gelöschter Administrator</i>{/if}</div>
                   {/if}
                 </li>
                 {/foreach}
@@ -386,7 +386,7 @@
           </td>
           <td class="font-mono text-xs text-muted">
             {if empty($ban.steam)}
-              <i class="text-faint">none</i>
+              <i class="text-faint">keine</i>
             {else}
               {$ban.steam|escape}
             {/if}
@@ -394,7 +394,7 @@
           {if !$hideplayerips}
           <td class="col-ip col-tier-3 font-mono text-xs text-muted" data-testid="ban-ip">
             {if $ban.ban_ip_raw == ''}
-              <i class="text-faint">none</i>
+              <i class="text-faint">keine</i>
             {else}
               {$ban.ban_ip_raw|escape}
             {/if}
@@ -409,7 +409,7 @@
              reads "no reason" via the existing branch. *}
           <td class="text-muted truncate" style="max-width:18rem"
               {if !empty($ban.reason)}title="{$ban.reason|escape}"{/if}>
-            {if empty($ban.reason)}<i class="text-faint">no reason</i>{else}{$ban.reason|escape}{/if}
+            {if empty($ban.reason)}<i class="text-faint">kein Grund</i>{else}{$ban.reason|escape}{/if}
             {* #1315: surface the unban-reason / removed-by line below the
                truncated reason cell when the row was lifted by an admin
                (state == 'unbanned' — natural-expiry rows have no admin
@@ -421,7 +421,7 @@
             {if $ban.state == 'unbanned' && !$hideadminname && (!empty($ban.ureason) || !empty($ban.removedby))}
               <div class="text-xs text-faint mt-1" data-testid="ban-unban-meta">
                 {if !empty($ban.removedby)}
-                  Unbanned by <span class="font-medium">{$ban.removedby|escape}</span>{if !empty($ban.ureason)}: {/if}
+                  Entbannt von <span class="font-medium">{$ban.removedby|escape}</span>{if !empty($ban.ureason)}: {/if}
                 {/if}
                 {if !empty($ban.ureason)}
                   <span data-testid="ban-unban-reason" title="{$ban.ureason|escape}">{$ban.ureason|escape}</span>
@@ -432,7 +432,7 @@
           <td class="col-tier-2 text-muted truncate" style="max-width:12rem" title="{$ban.sname|escape}">{$ban.sname|escape}</td>
           {if !$hideadminname}
           <td class="col-admin col-tier-2 text-muted">
-            {if empty($ban.aname)}<i class="text-faint">deleted</i>{else}{$ban.aname|escape}{/if}
+            {if empty($ban.aname)}<i class="text-faint">gelöscht</i>{else}{$ban.aname|escape}{/if}
           </td>
           {/if}
           {* #1363: title= surfaces the full SecondsToString breakdown
@@ -444,8 +444,7 @@
               {if $ban.length != 0}title="{$ban.length_human|escape}"{/if}>{if $ban.length == 0}Permanent{else}{$ban.length_human|escape}{/if}</td>
           <td class="col-banned col-tier-3 text-muted text-xs"><time datetime="{$ban.banned_iso}">{$ban.banned_human|escape}</time></td>
           <td class="col-status">
-            {assign var=_pill_label value=$ban.state|capitalize}
-            <span class="pill pill--{$ban.state}">{$_pill_label|escape}</span>
+            <span class="pill pill--{$ban.state}">{if $ban.state == 'active'}Aktiv{elseif $ban.state == 'permanent'}Permanent{elseif $ban.state == 'expired'}Abgelaufen{elseif $ban.state == 'unbanned'}Entbannt{else}{$ban.state|capitalize|escape}{/if}</span>
           </td>
           <td class="col-actions">
             {* #1207 ADM-5 + (this PR): banlist row affordances now mirror
@@ -466,7 +465,7 @@
                    href="index.php?p=admin&amp;c=bans&amp;o=edit&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}"
                    onclick="event.stopPropagation()">
                     <i data-lucide="pencil" style="width:13px;height:13px"></i>
-                    Edit
+                    Bearbeiten
                 </a>
                 {/if}
                 {if $ban.can_unban && $ban.state != 'unbanned' && $ban.state != 'expired'}
@@ -496,7 +495,7 @@
                         data-name="{$ban.name|escape}"
                         data-fallback-href="index.php?p=banlist&amp;a=unban&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}">
                     <i data-lucide="check" style="width:13px;height:13px"></i>
-                    Unban
+                    Entbannen
                 </button>
                 {/if}
                 {* #1315: Re-apply affordance for expired / unbanned rows.
@@ -521,7 +520,7 @@
                    href="index.php?p=admin&amp;c=bans&amp;section=add-ban&amp;rebanid={$ban.bid}&amp;key={$admin_postkey|escape}"
                    onclick="event.stopPropagation()">
                     <i data-lucide="rotate-ccw" style="width:13px;height:13px"></i>
-                    Re-apply
+                    Erneut anwenden
                 </a>
                 {/if}
               {/if}
@@ -538,10 +537,10 @@
               <button class="btn btn--ghost btn--sm" type="button"
                       data-copy="{$ban.steam|escape}"
                       data-testid="row-action-copy-steam"
-                      aria-label="Copy SteamID"
-                      title="Copy SteamID">
+                      aria-label="SteamID kopieren"
+                      title="SteamID kopieren">
                   <i data-lucide="copy" style="width:13px;height:13px"></i>
-                  Copy
+                  Kopieren
               </button>
               {/if}
               {if $ban.can_delete_ban}
@@ -565,7 +564,7 @@
                       data-fallback-href="index.php?p=banlist&amp;a=delete&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}"
                       style="color:var(--danger)">
                   <i data-lucide="trash-2" style="width:13px;height:13px"></i>
-                  Remove
+                  Entfernen
               </button>
               {/if}
             </div>
@@ -593,12 +592,12 @@
               <span class="empty-state__icon" aria-hidden="true">
                 <i data-lucide="search-x" style="width:18px;height:18px"></i>
               </span>
-              <h2 class="empty-state__title">No bans match those filters</h2>
-              <p class="empty-state__body">Try a different search term or clear the active filters to see every recorded ban.</p>
+              <h2 class="empty-state__title">Keine Banns entsprechen diesen Filtern</h2>
+              <p class="empty-state__body">Versuchen Sie einen anderen Suchbegriff oder löschen Sie die aktiven Filter, um alle aufgezeichneten Banns zu sehen.</p>
               <div class="empty-state__actions">
                 <a class="btn btn--secondary btn--sm" href="?p=banlist" data-testid="banlist-empty-clear">
                   <i data-lucide="x" style="width:13px;height:13px"></i>
-                  Clear filters
+                  Filter löschen
                 </a>
               </div>
             </div>
@@ -607,13 +606,13 @@
               <span class="empty-state__icon" aria-hidden="true">
                 <i data-lucide="ban" style="width:18px;height:18px"></i>
               </span>
-              <h2 class="empty-state__title">No bans recorded yet</h2>
-              <p class="empty-state__body">Enforcement actions will show up here as soon as admins start moderating.</p>
+              <h2 class="empty-state__title">Noch keine Banns aufgezeichnet</h2>
+              <p class="empty-state__body">Sanktionen werden hier angezeigt, sobald Administratoren mit der Moderation beginnen.</p>
               {if $can_add_ban}
               <div class="empty-state__actions">
                 <a class="btn btn--primary btn--sm" href="?p=admin&amp;c=bans" data-testid="banlist-empty-add">
                   <i data-lucide="plus" style="width:13px;height:13px"></i>
-                  Add a ban
+                  Bann hinzufügen
                 </a>
               </div>
               {/if}
@@ -655,16 +654,15 @@
           <span class="avatar" style="width:36px;height:36px;background:hsl({$ban.avatar_hue} 55% 45%);font-size:13px" aria-hidden="true">{$ban.avatar_initials|escape}</span>
           <div style="flex:1;min-width:0">
             <div class="flex items-center gap-2">
-              <span class="font-medium text-sm truncate">{if empty($ban.name)}<i class="text-faint">no nickname</i>{else}{$ban.name|escape}{/if}</span>
-              {assign var=_m_pill_label value=$ban.state|capitalize}
-              <span class="pill pill--{$ban.state}">{$_m_pill_label|escape}</span>
+              <span class="font-medium text-sm truncate">{if empty($ban.name)}<i class="text-faint">kein Spitzname</i>{else}{$ban.name|escape}{/if}</span>
+              <span class="pill pill--{$ban.state}">{if $ban.state == 'active'}Aktiv{elseif $ban.state == 'permanent'}Permanent{elseif $ban.state == 'expired'}Abgelaufen{elseif $ban.state == 'unbanned'}Entbannt{else}{$ban.state|capitalize|escape}{/if}</span>
             </div>
             {* `title=` carries the full (un-truncated) reason +
                length so a long-press / hover surfaces the full
                text — the inline copy is .truncate'd to one line so
                the summary row stays a fixed height (issue 5). *}
             <div class="text-xs text-muted truncate" style="margin-top:0.125rem"
-                 title="{if empty($ban.reason)}no reason{else}{$ban.reason|escape}{/if} &middot; {if $ban.length == 0}Permanent{else}{$ban.length_human|escape}{/if}">{if empty($ban.reason)}no reason{else}{$ban.reason|escape}{/if} &middot; {if $ban.length == 0}Permanent{else}{$ban.length_human|escape}{/if}</div>
+                 title="{if empty($ban.reason)}kein Grund{else}{$ban.reason|escape}{/if} &middot; {if $ban.length == 0}Permanent{else}{$ban.length_human|escape}{/if}">{if empty($ban.reason)}kein Grund{else}{$ban.reason|escape}{/if} &middot; {if $ban.length == 0}Permanent{else}{$ban.length_human|escape}{/if}</div>
             <div class="font-mono text-xs text-faint truncate" style="margin-top:0.125rem">{if empty($ban.steam)}&mdash;{else}{$ban.steam|escape}{/if}</div>
             {* #1302: IP line on the mobile card mirrors the desktop IP
                column above. Same `{if !$hideplayerips}` gate so an
@@ -680,8 +678,8 @@
                desktop branch. *}
             {if $ban.state == 'unbanned' && !$hideadminname && (!empty($ban.ureason) || !empty($ban.removedby))}
               <div class="text-xs text-faint truncate" style="margin-top:0.125rem" data-testid="ban-unban-meta-mobile"
-                   title="{if !empty($ban.removedby)}Unbanned by {$ban.removedby|escape}{if !empty($ban.ureason)}: {/if}{/if}{if !empty($ban.ureason)}{$ban.ureason|escape}{/if}">
-                {if !empty($ban.removedby)}Unbanned by {$ban.removedby|escape}{if !empty($ban.ureason)}: {/if}{/if}
+                   title="{if !empty($ban.removedby)}Entbannt von {$ban.removedby|escape}{if !empty($ban.ureason)}: {/if}{/if}{if !empty($ban.ureason)}{$ban.ureason|escape}{/if}">
+                {if !empty($ban.removedby)}Entbannt von {$ban.removedby|escape}{if !empty($ban.ureason)}: {/if}{/if}
                 {if !empty($ban.ureason)}{$ban.ureason|escape}{/if}
               </div>
             {/if}
@@ -695,7 +693,7 @@
             <a class="btn btn--ghost btn--sm" data-testid="row-action-edit-mobile"
                href="index.php?p=admin&amp;c=bans&amp;o=edit&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}">
                 <i data-lucide="pencil" style="width:13px;height:13px"></i>
-                Edit
+                Bearbeiten
             </a>
             {/if}
             {if $ban.can_unban && $ban.state != 'unbanned' && $ban.state != 'expired'}
@@ -707,7 +705,7 @@
                     data-name="{$ban.name|escape}"
                     data-fallback-href="index.php?p=banlist&amp;a=unban&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}">
                 <i data-lucide="check" style="width:13px;height:13px"></i>
-                Unban
+                Entbannen
             </button>
             {/if}
             {* #1315 + this PR: same `has_active_sibling` gate as the
@@ -716,7 +714,7 @@
             <a class="btn btn--secondary btn--sm" data-testid="row-action-reapply-mobile"
                href="index.php?p=admin&amp;c=bans&amp;section=add-ban&amp;rebanid={$ban.bid}&amp;key={$admin_postkey|escape}">
                 <i data-lucide="rotate-ccw" style="width:13px;height:13px"></i>
-                Re-apply
+                Erneut anwenden
             </a>
             {/if}
           {/if}
@@ -724,10 +722,10 @@
           <button class="btn btn--ghost btn--sm" type="button"
                   data-copy="{$ban.steam|escape}"
                   data-testid="row-action-copy-steam-mobile"
-                  aria-label="Copy SteamID"
-                  title="Copy SteamID">
+                  aria-label="SteamID kopieren"
+                  title="SteamID kopieren">
               <i data-lucide="copy" style="width:13px;height:13px"></i>
-              Copy
+              Kopieren
           </button>
           {/if}
           {if $ban.can_delete_ban}
@@ -740,7 +738,7 @@
                   data-fallback-href="index.php?p=banlist&amp;a=delete&amp;id={$ban.bid}&amp;key={$admin_postkey|escape}"
                   style="color:var(--danger)">
               <i data-lucide="trash-2" style="width:13px;height:13px"></i>
-              Remove
+              Entfernen
           </button>
           {/if}
           {* #BANLIST-COMMENTS mobile mirror — at-a-glance count indicator
@@ -757,7 +755,7 @@
           <div class="text-xs text-faint truncate" style="margin-top:0.125rem;display:flex;align-items:center;gap:0.25rem" data-testid="ban-comments-count-mobile">
             <i data-lucide="message-square-text" style="width:11px;height:11px" aria-hidden="true"></i>
             <span class="tabular-nums">{$ban.commentdata|@count}</span>
-            <span>comment{if $ban.commentdata|@count != 1}s{/if}</span>
+            <span>Kommentar{if $ban.commentdata|@count != 1}e{/if}</span>
           </div>
           {/if}
         </div>
@@ -770,12 +768,12 @@
         <span class="empty-state__icon" aria-hidden="true">
           <i data-lucide="search-x" style="width:18px;height:18px"></i>
         </span>
-        <h2 class="empty-state__title">No bans match those filters</h2>
-        <p class="empty-state__body">Try a different search term or clear the active filters.</p>
+        <h2 class="empty-state__title">Keine Banns entsprechen diesen Filtern</h2>
+        <p class="empty-state__body">Versuchen Sie einen anderen Suchbegriff oder löschen Sie die aktiven Filter.</p>
         <div class="empty-state__actions">
           <a class="btn btn--secondary btn--sm" href="?p=banlist">
             <i data-lucide="x" style="width:13px;height:13px"></i>
-            Clear filters
+            Filter löschen
           </a>
         </div>
       </div>
@@ -784,13 +782,13 @@
         <span class="empty-state__icon" aria-hidden="true">
           <i data-lucide="ban" style="width:18px;height:18px"></i>
         </span>
-        <h2 class="empty-state__title">No bans recorded yet</h2>
-        <p class="empty-state__body">Enforcement actions will show up here as soon as admins start moderating.</p>
+        <h2 class="empty-state__title">Noch keine Banns aufgezeichnet</h2>
+        <p class="empty-state__body">Sanktionen werden hier angezeigt, sobald Administratoren mit der Moderation beginnen.</p>
         {if $can_add_ban}
         <div class="empty-state__actions">
           <a class="btn btn--primary btn--sm" href="?p=admin&amp;c=bans">
             <i data-lucide="plus" style="width:13px;height:13px"></i>
-            Add a ban
+            Bann hinzufügen
           </a>
         </div>
         {/if}
@@ -820,7 +818,7 @@
   {if !empty($ban_nav)}
   <div class="card">
     <div class="card__body">
-      <nav class="text-xs text-muted" aria-label="Ban list pagination">
+      <nav class="text-xs text-muted" aria-label="Bannliste-Paginierung">
         {* nofilter: $ban_nav is server-built HTML in page.banlist.php — pagination label as numeric strings, two prev/next anchors with data-testid attrs whose URLs are urlencode()'d $_GET round-trips, plus a vanilla-JS page-jump <select> whose `window.location` template is htmlspecialchars(addslashes($_GET['advSearch']/['advType']))'d (the 2-layer escape from #1113). No raw user input flows in unescaped. *}
         {$ban_nav nofilter}
       </nav>
@@ -861,11 +859,11 @@
         hidden
         style="max-width:32rem;width:90vw;padding:1.25rem;border-radius:0.75rem;border:1px solid var(--border)">
   <form method="dialog" data-testid="bans-unban-form">
-    <h2 id="bans-unban-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Unban player</h2>
+    <h2 id="bans-unban-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Spieler entbannen</h2>
     <p class="text-sm text-muted m-0" style="margin-bottom:0.75rem">
-      Why are you unbanning <strong data-testid="bans-unban-target">this player</strong>? This reason is recorded against the ban and surfaced in the audit log.
+      Warum heben Sie den Bann für <strong data-testid="bans-unban-target">diesen Spieler</strong> auf? Dieser Grund wird beim Bann protokolliert und im Audit-Protokoll angezeigt.
     </p>
-    <label class="label" for="bans-unban-reason">Unban reason <span aria-hidden="true" style="color:var(--danger)">*</span></label>
+    <label class="label" for="bans-unban-reason">Grund für Entbannung <span aria-hidden="true" style="color:var(--danger)">*</span></label>
     {* aria-required (not the native `required`) so assistive tech announces
        the field as required while the JS submit handler owns the empty-reason
        branch — `required` would let the browser block the form submit before
@@ -877,12 +875,12 @@
               aria-required="true"
               maxlength="255"
               autocomplete="off"
-              placeholder="Mistaken ban, appeal accepted, sentence served, &hellip;"></textarea>
+              placeholder="Falscher Bann, Einspruch akzeptiert, Strafe verbüßt, &hellip;"></textarea>
     <p class="text-xs" data-testid="bans-unban-error" role="alert" hidden style="color:var(--danger);margin:0.25rem 0 0"></p>
     <div class="flex gap-2 mt-4" style="justify-content:flex-end">
-      <button type="button" class="btn btn--secondary" data-testid="bans-unban-cancel" value="cancel">Cancel</button>
+      <button type="button" class="btn btn--secondary" data-testid="bans-unban-cancel" value="cancel">Abbrechen</button>
       <button type="submit" class="btn btn--primary" data-testid="bans-unban-submit" value="confirm">
-        <i data-lucide="check" style="width:13px;height:13px"></i> Unban
+        <i data-lucide="check" style="width:13px;height:13px"></i> Entbannen
       </button>
     </div>
   </form>
@@ -974,7 +972,7 @@
      *  - data-state on the wrapper.
      *  - ban-row--<state> class on the wrapper.
      *  - The status pill has its `pill--<state>` class swapped AND its
-     *    visible label rewritten to "Unbanned".
+     *    visible label rewritten to "Entbannt".
      *  - The Unban button is removed (the tpl gates it on
      *    `state != 'unbanned' && state != 'expired'` so the post-render
      *    matches what the next page load would emit).
@@ -996,9 +994,12 @@
                 if (n.nodeType === 3) { lastText = n; break; }
             }
             var txt = (pill.textContent || '').trim();
-            if (txt === 'Active' || txt === 'Permanent' || txt === 'Expired') {
-                if (lastText) lastText.textContent = 'Unbanned';
-                else pill.textContent = 'Unbanned';
+            // Match both English (legacy) and German (translated) labels
+            // so rows rendered before translation stay flippable too.
+            if (txt === 'Active' || txt === 'Permanent' || txt === 'Expired'
+                || txt === 'Aktiv' || txt === 'Abgelaufen') {
+                if (lastText) lastText.textContent = 'Entbannt';
+                else pill.textContent = 'Entbannt';
             }
         });
         Array.prototype.forEach.call(
@@ -1057,7 +1058,7 @@
             return;
         }
         var target = d.querySelector('[data-testid="bans-unban-target"]');
-        if (target) target.textContent = ctx.name || ('ban #' + ctx.bid);
+        if (target) target.textContent = ctx.name || ('Bann #' + ctx.bid);
         var input = reasonInput();
         if (input) input.value = '';
         clearError();
@@ -1095,7 +1096,7 @@
         e.preventDefault();
 
         var bid = actionBtn.getAttribute('data-bid') || '';
-        var name = actionBtn.getAttribute('data-name') || ('ban #' + bid);
+        var name = actionBtn.getAttribute('data-name') || ('Bann #' + bid);
         var fallback = actionBtn.getAttribute('data-fallback-href') || '';
 
         if (act === 'bans-delete') {
@@ -1108,7 +1109,7 @@
             // entry — the in-place row removal lands on the next
             // page load.
             if (!fallback) return;
-            if (!window.confirm('Permanently delete the ban for "' + name + '"? This cannot be undone.')) return;
+            if (!window.confirm('Den Bann für "' + name + '" dauerhaft löschen? Dies kann nicht rückgängig gemacht werden.')) return;
             window.location.href = fallback;
             return;
         }
@@ -1140,7 +1141,7 @@
             // than submitting an empty reason that the server would
             // bounce. The server still re-validates as the load-bearing
             // gate.
-            showError('Please leave a comment.');
+            showError('Bitte hinterlassen Sie einen Kommentar.');
             if (input) try { input.focus(); } catch (_e) { /* focus may throw */ }
             return;
         }
@@ -1165,14 +1166,14 @@
         a.call(A.BansUnban, { bid: Number(ctx.bid), ureason: reason }).then(function (r) {
             setBusy(submitBtn, false);
             if (!r || r.ok === false) {
-                var msg = (r && r.error && r.error.message) || 'Unknown error';
+                var msg = (r && r.error && r.error.message) || 'Unbekannter Fehler';
                 showError(msg);
-                toast('error', 'Unban failed', msg);
+                toast('error', 'Entbannung fehlgeschlagen', msg);
                 return;
             }
             rowsForBid(ctx.bid).forEach(flipRowToUnbanned);
             closeUnbanDialog();
-            toast('success', 'Player unbanned', ctx.name + ' has been unbanned.');
+            toast('success', 'Spieler entbannt', ctx.name + ' wurde entbannt.');
         });
     });
 

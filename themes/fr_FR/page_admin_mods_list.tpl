@@ -39,25 +39,25 @@
 {if NOT $permission_listmods}
     <div class="card">
         <div class="card__body">
-            <p class="text-muted">Access denied.</p>
+            <p class="text-muted">Accès refusé.</p>
         </div>
     </div>
 {else}
     <div class="card">
         <div class="card__header">
             <div>
-                <h3>Server Mods</h3>
-                <p><span data-testid="mod-count">{$mod_count}</span> configured</p>
+                <h3>Mods serveur</h3>
+                <p><span data-testid="mod-count">{$mod_count}</span> configuré{if $mod_count != 1}s{/if}</p>
             </div>
         </div>
         {if $mod_count > 0}
             <table class="table" data-testid="mods-table">
                 <thead>
                     <tr>
-                        <th style="width:40%">Name</th>
-                        <th>Folder</th>
-                        <th><span title="SteamID Universe (X of STEAM_X:Y:Z)">SU</span></th>
-                        <th>Status</th>
+                        <th style="width:40%">Nom</th>
+                        <th>Dossier</th>
+                        <th><span title="Univers SteamID (X de STEAM_X:Y:Z)">US</span></th>
+                        <th>Statut</th>
                         {if $permission_editmods || $permission_deletemods}
                             <th style="text-align:right">Actions</th>
                         {/if}
@@ -81,9 +81,9 @@
                             <td class="tabular-nums">{$mod.steam_universe}</td>
                             <td>
                                 {if $mod.enabled}
-                                    <span class="pill pill--online">Enabled</span>
+                                    <span class="pill pill--online">Activé</span>
                                 {else}
-                                    <span class="pill pill--offline">Disabled</span>
+                                    <span class="pill pill--offline">Désactivé</span>
                                 {/if}
                             </td>
                             {if $permission_editmods || $permission_deletemods}
@@ -92,7 +92,7 @@
                                         {if $permission_editmods}
                                             <a class="btn btn--ghost btn--sm"
                                                href="index.php?p=admin&c=mods&o=edit&id={$mod.mid|escape:'url'}"
-                                               data-testid="editmod-link">Edit</a>
+                                               data-testid="editmod-link">Modifier</a>
                                         {/if}
                                         {if $permission_deletemods}
                                             {* #1397: data-action wires the delete button to the inline
@@ -117,7 +117,7 @@
                                                     data-name="{$mod.name|escape}"
                                                     data-fallback-href="index.php?p=admin&amp;c=mods"
                                                     data-testid="deletemod-btn"
-                                                    aria-label="Delete mod {$mod.name|escape}">Delete</button>
+                                                    aria-label="Supprimer le mod {$mod.name|escape}">Supprimer</button>
                                         {/if}
                                     </div>
                                 </td>
@@ -128,7 +128,7 @@
             </table>
         {else}
             <div class="card__body">
-                <p class="text-muted">No mods configured yet.</p>
+                <p class="text-muted">Aucun mod configuré pour le moment.</p>
             </div>
         {/if}
     </div>
@@ -173,11 +173,11 @@
             hidden
             style="max-width:32rem;width:90vw;padding:1.25rem;border-radius:0.75rem;border:1px solid var(--border)">
         <form method="dialog" data-testid="mod-delete-form">
-            <h2 id="mod-delete-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Delete mod</h2>
+            <h2 id="mod-delete-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Supprimer le mod</h2>
             <p class="text-sm text-muted m-0" style="margin-bottom:0.75rem">
-                You're about to permanently delete <strong data-testid="mod-delete-target">this mod</strong>. This cannot be undone. Historical bans and comm blocks recorded against this mod keep their rows but lose their game association, so the banlist will show &ldquo;Unknown&rdquo; in the Server / Mod column for those entries.
+                Vous êtes sur le point de supprimer définitivement <strong data-testid="mod-delete-target">ce mod</strong>. Cette action est irréversible. Les bannissements et blocages de communication historiques enregistrés pour ce mod conservent leur ligne mais perdent leur association au jeu, la liste des bannissements affichera donc &laquo;&nbsp;Inconnu&nbsp;&raquo; dans la colonne Serveur / Mod pour ces entrées.
             </p>
-            <label class="label" for="mod-delete-reason">Reason (optional)</label>
+            <label class="label" for="mod-delete-reason">Motif (facultatif)</label>
             {* aria-required (not the native `required`) parity with the
                canonical confirm-modal shape — see the matching note on
                `#admins-delete-dialog` / `#bans-unban-dialog` /
@@ -193,12 +193,12 @@
                       aria-required="false"
                       maxlength="255"
                       autocomplete="off"
-                      placeholder="Audit-log only. Leave blank to skip."></textarea>
+                      placeholder="Journal d'audit uniquement. Laisser vide pour ignorer."></textarea>
             <p class="text-xs" data-testid="mod-delete-error" role="alert" hidden style="color:var(--danger);margin:0.25rem 0 0"></p>
             <div class="flex gap-2 mt-4" style="justify-content:flex-end">
-                <button type="button" class="btn btn--secondary" data-testid="mod-delete-cancel" value="cancel">Cancel</button>
+                <button type="button" class="btn btn--secondary" data-testid="mod-delete-cancel" value="cancel">Annuler</button>
                 <button type="submit" class="btn btn--danger" data-testid="mod-delete-submit" value="confirm">
-                    <i data-lucide="trash-2" style="width:13px;height:13px"></i> Delete mod
+                    <i data-lucide="trash-2" style="width:13px;height:13px"></i> Supprimer le mod
                 </button>
             </div>
         </form>
@@ -313,7 +313,7 @@
                 return;
             }
             var target = d.querySelector('[data-testid="mod-delete-target"]');
-            if (target) target.textContent = ctx.name || ('mod #' + ctx.mid);
+            if (target) target.textContent = ctx.name || ('mod n°' + ctx.mid);
             var input = reasonInput();
             if (input) input.value = '';
             clearError();
@@ -347,7 +347,7 @@
             e.preventDefault();
 
             var mid = btn.getAttribute('data-mid') || '';
-            var name = btn.getAttribute('data-name') || ('mod #' + mid);
+            var name = btn.getAttribute('data-name') || ('mod n°' + mid);
             var fallback = btn.getAttribute('data-fallback-href') || '';
             var a = api(), A = actions();
             if (!a || !A || !mid) {
@@ -392,16 +392,16 @@
             a.call(A.ModsRemove, params).then(function (r) {
                 setBusy(submitBtn, false);
                 if (!r || r.ok === false) {
-                    var msg = (r && r.error && r.error.message) || 'Unknown error';
+                    var msg = (r && r.error && r.error.message) || 'Erreur inconnue';
                     showError(msg);
-                    toast('error', 'Delete failed', msg);
+                    toast('error', 'Échec de la suppression', msg);
                     return;
                 }
                 var row = rowForMid(ctx.mid);
                 if (row && row.parentNode) row.parentNode.removeChild(row);
                 decrementCount();
                 closeDeleteDialog();
-                toast('success', 'Mod deleted', ctx.name + ' has been removed.');
+                toast('success', 'Mod supprimé', ctx.name + ' a été supprimé.');
             });
         });
 

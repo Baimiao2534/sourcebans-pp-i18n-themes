@@ -26,16 +26,16 @@
 -{if NOT $permission_rcon}-
     <section class="card" data-testid="rcon-denied">
         <div class="card__body">
-            <h3 style="margin:0 0 0.25rem">Access Denied</h3>
-            <p class="text-sm text-muted m-0">You don't have RCON access to this server.</p>
+            <h3 style="margin:0 0 0.25rem">Accès refusé</h3>
+            <p class="text-sm text-muted m-0">Vous n'avez pas accès RCON à ce serveur.</p>
         </div>
     </section>
 -{else}-
 <section class="card" data-testid="rcon-console" data-sid="-{$id}-">
     <div class="card__header">
         <div>
-            <h3>RCON Console</h3>
-            <p>Server #-{$id}- · type <code class="font-mono">clr</code> to clear · output is rendered as plain text.</p>
+            <h3>Console RCON</h3>
+            <p>Serveur n°-{$id}- · saisissez <code class="font-mono">clr</code> pour effacer · la sortie est affichée en texte brut.</p>
         </div>
     </div>
     <div class="card__body">
@@ -49,10 +49,10 @@
         *}-
         <pre id="rcon"
              data-testid="rcon-output"
-             style="margin:0;background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem;height:18rem;overflow:auto;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--text);white-space:pre-wrap;word-break:break-word"><div id="rcon_con">SourceBans++ RCON console
+             style="margin:0;background:var(--bg-page);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem;height:18rem;overflow:auto;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--text);white-space:pre-wrap;word-break:break-word"><div id="rcon_con">Console RCON SourceBans++
 ==========================================================
-Type your command in the box below and hit Enter.
-Type 'clr' to clear the console.
+Saisissez votre commande dans le champ ci-dessous et appuyez sur Entrée.
+Saisissez « clr » pour effacer la console.
 ==========================================================
 </div></pre>
         <form id="rcon-form" class="flex gap-2 mt-4" autocomplete="off">
@@ -70,7 +70,7 @@ Type 'clr' to clear the console.
                     id="rcon_btn"
                     class="btn btn--primary"
                     data-testid="rcon-send">
-                Send
+                Envoyer
             </button>
         </form>
     </div>
@@ -128,7 +128,7 @@ Type 'clr' to clear the console.
             setBusy(false);
             if (!r || !r.ok || !r.data) {
                 if (r && r.error && window.SBPP && window.SBPP.showToast) {
-                    window.SBPP.showToast({ kind: 'error', title: 'RCON failed', body: r.error.message || 'Unknown error' });
+                    window.SBPP.showToast({ kind: 'error', title: 'Échec RCON', body: r.error.message || 'Erreur inconnue' });
                 }
                 return;
             }
@@ -136,7 +136,7 @@ Type 'clr' to clear the console.
             if (d.kind === 'clear') { out.innerHTML = ''; return; }
             if (d.kind === 'noop') { return; }
             if (d.kind === 'error') {
-                appendLine('> Error: ', d.error || '', 'error');
+                appendLine('> Erreur : ', d.error || '', 'error');
                 out.appendChild(document.createElement('br'));
                 scrollToBottom();
                 return;

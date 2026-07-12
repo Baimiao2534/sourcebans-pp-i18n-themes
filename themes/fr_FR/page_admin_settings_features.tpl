@@ -63,14 +63,14 @@
 *}
 <div>
     <div class="mb-6">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Settings</h1>
-        <p class="text-sm text-muted m-0 mt-2">Optional features and integrations.</p>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Paramètres</h1>
+        <p class="text-sm text-muted m-0 mt-2">Fonctionnalités et intégrations facultatives.</p>
     </div>
 
     {if NOT $can_web_settings}
         <div class="card">
             <div class="card__body">
-                <p class="text-muted">Access denied. <code>ADMIN_WEB_SETTINGS</code> required.</p>
+                <p class="text-muted">Accès refusé. <code>ADMIN_WEB_SETTINGS</code> requis.</p>
             </div>
         </div>
     {else}
@@ -79,15 +79,15 @@
                     <input type="hidden" name="settingsGroup" value="features">
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Bans</h3><p>Public exports, KickIt, group / friend banning.</p></div></div>
+                        <div class="card__header"><div><h3>Bannissements</h3><p>Exports publics, KickIt, bannissement de groupe / d'amis.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="config.exportpublic">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="export_public" name="export_public"{if $export_public} checked{/if} aria-describedby="export_public_help">
-                                    <span class="text-sm font-medium">Public ban export</span>
+                                    <span class="text-sm font-medium">Export public des bannissements</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="export_public_help" data-testid="setting-help-config.exportpublic">
-                                    Lets unauthenticated visitors download the full ban list.
+                                    Permet aux visiteurs non authentifiés de télécharger la liste complète des bannissements.
                                 </p>
                             </div>
 
@@ -97,79 +97,79 @@
                                     <span class="text-sm font-medium">KickIt</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_kickit_help" data-testid="setting-help-config.enablekickit">
-                                    Auto-kick a player when their ban lands.
+                                    Expulser automatiquement un joueur lorsque son bannissement est prononcé.
                                 </p>
                             </div>
 
                             <div data-testid="setting-row" data-key="config.enablegroupbanning">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_groupbanning" name="enable_groupbanning"{if $enable_groupbanning} checked{/if}{if NOT $steamapi} disabled{/if} aria-describedby="enable_groupbanning_help">
-                                    <span class="text-sm font-medium">Steam group banning</span>
+                                    <span class="text-sm font-medium">Bannissement de groupes Steam</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_groupbanning_help" data-testid="setting-help-config.enablegroupbanning">
-                                    Ban every member of a Steam community group.
-                                    {if NOT $steamapi}<br><span style="color:var(--warning)">Requires a Steam Web API key in <code>config.php</code>.</span>{/if}
+                                    Bannir tous les membres d'un groupe de la communauté Steam.
+                                    {if NOT $steamapi}<br><span style="color:var(--warning)">Requiert une clé Steam Web API dans <code>config.php</code>.</span>{/if}
                                 </p>
                             </div>
 
                             <div data-testid="setting-row" data-key="config.enablefriendsbanning">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_friendsbanning" name="enable_friendsbanning"{if $enable_friendsbanning} checked{/if}{if NOT $steamapi} disabled{/if} aria-describedby="enable_friendsbanning_help">
-                                    <span class="text-sm font-medium">Steam friends banning</span>
+                                    <span class="text-sm font-medium">Bannissement des amis Steam</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_friendsbanning_help" data-testid="setting-help-config.enablefriendsbanning">
-                                    Ban every Steam friend of a player.
-                                    {if NOT $steamapi}<br><span style="color:var(--warning)">Requires a Steam Web API key in <code>config.php</code>.</span>{/if}
+                                    Bannir tous les amis Steam d'un joueur.
+                                    {if NOT $steamapi}<br><span style="color:var(--warning)">Requiert une clé Steam Web API dans <code>config.php</code>.</span>{/if}
                                 </p>
                             </div>
 
                             <div data-testid="setting-row" data-key="config.enableadminrehashing">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_adminrehashing" name="enable_adminrehashing"{if $enable_adminrehashing} checked{/if} aria-describedby="enable_adminrehashing_help">
-                                    <span class="text-sm font-medium">Auto admin rehash</span>
+                                    <span class="text-sm font-medium">Rehachage automatique des admins</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_adminrehashing_help" data-testid="setting-help-config.enableadminrehashing">
-                                    Push admin/group changes to servers immediately.
+                                    Pousser immédiatement les modifications d'admins/groupes vers les serveurs.
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Login</h3><p>Sign-in surfaces exposed to admins.</p></div></div>
+                        <div class="card__header"><div><h3>Connexion</h3><p>Surfaces de connexion exposées aux admins.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="config.enablesteamlogin">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_steamlogin" name="enable_steamlogin"{if $enable_steamlogin} checked{/if} aria-describedby="enable_steamlogin_help">
-                                    <span class="text-sm font-medium">Steam OpenID login</span>
+                                    <span class="text-sm font-medium">Connexion Steam OpenID</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_steamlogin_help" data-testid="setting-help-config.enablesteamlogin">
-                                    Show "Sign in through Steam" on the login page.
+                                    Afficher « Se connecter via Steam » sur la page de connexion.
                                 </p>
                             </div>
 
                             <div data-testid="setting-row" data-key="config.enablenormallogin">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_normallogin" name="enable_normallogin"{if $enable_normallogin} checked{/if} aria-describedby="enable_normallogin_help">
-                                    <span class="text-sm font-medium">Username/password login</span>
+                                    <span class="text-sm font-medium">Connexion par identifiant / mot de passe</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_normallogin_help" data-testid="setting-help-config.enablenormallogin">
-                                    Disable to require Steam login for all admins.
+                                    Désactiver pour exiger la connexion Steam pour tous les admins.
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     <div class="card">
-                        <div class="card__header"><div><h3>Comments</h3><p>Visibility of admin commentary on bans / submissions.</p></div></div>
+                        <div class="card__header"><div><h3>Commentaires</h3><p>Visibilité des commentaires d'admin sur les bannissements / soumissions.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="config.enablepubliccomments">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="enable_publiccomments" name="enable_publiccomments"{if $enable_publiccomments} checked{/if} aria-describedby="enable_publiccomments_help">
-                                    <span class="text-sm font-medium">Public admin comments</span>
+                                    <span class="text-sm font-medium">Commentaires d'admin publics</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="enable_publiccomments_help" data-testid="setting-help-config.enablepubliccomments">
-                                    Show admin comments on a ban to anonymous visitors.
+                                    Afficher les commentaires d'admin sur un bannissement aux visiteurs anonymes.
                                 </p>
                             </div>
                         </div>
@@ -193,17 +193,17 @@
                         logged once via `Log::add(LogType::Message, ...)`.
                     *}
                     <div class="card">
-                        <div class="card__header"><div><h3>Privacy</h3><p>Anonymous telemetry that helps us prioritise releases.</p></div></div>
+                        <div class="card__header"><div><h3>Confidentialité</h3><p>Télémétrie anonyme qui nous aide à prioriser les versions.</p></div></div>
                         <div class="card__body space-y-4">
                             <div data-testid="setting-row" data-key="telemetry.enabled">
                                 <label class="flex items-center gap-2">
                                     <input type="checkbox" id="telemetry_enabled" name="telemetry_enabled"{if $telemetry_enabled} checked{/if} aria-describedby="telemetry_enabled_help">
-                                    <span class="text-sm font-medium">Anonymous telemetry</span>
+                                    <span class="text-sm font-medium">Télémétrie anonyme</span>
                                 </label>
                                 <p class="settings-fieldset__help" id="telemetry_enabled_help" data-testid="setting-help-telemetry.enabled">
-                                    Sends one anonymous ping per day with panel version, PHP / DB / OS family, counts (admins, servers, bans, comms, 30-day submissions / protests), and which features are turned on. <strong>No</strong> hostnames, IPs, admin names, SteamIDs, or ban reasons are sent. A random install ID is included so pings can be deduplicated.
-                                    <a href="https://sbpp.github.io/updating/1-8-to-2-0/#anonymous-telemetry" target="_blank" rel="noopener noreferrer">See the full payload</a>.
-                                    Disabling clears the random ID; turning it back on issues a fresh one.
+                                    Envoie un ping anonyme par jour avec la version du panneau, la famille PHP / BD / OS, les compteurs (admins, serveurs, bannissements, comms, soumissions / réclamations des 30 derniers jours) et les fonctionnalités activées. <strong>Aucun</strong> nom d'hôte, IP, nom d'admin, SteamID ni motif de bannissement n'est envoyé. Un identifiant d'installation aléatoire est inclus afin de dédupliquer les pings.
+                                    <a href="https://sbpp.github.io/updating/1-8-to-2-0/#anonymous-telemetry" target="_blank" rel="noopener noreferrer">Voir la charge utile complète</a>.
+                                    La désactivation efface l'identifiant aléatoire ; le réactiver en génère un nouveau.
                                 </p>
                             </div>
                         </div>
@@ -211,7 +211,7 @@
 
                     <div class="flex items-center justify-end gap-2">
                         <button type="submit" class="btn btn--primary" data-testid="settings-save">
-                            <i data-lucide="save"></i> Save changes
+                            <i data-lucide="save"></i> Enregistrer
                         </button>
                     </div>
                 </form>

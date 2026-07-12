@@ -22,8 +22,8 @@
     {if NOT $permission_addserver}
         <div class="card" data-testid="server-add-denied">
             <div class="card__body">
-                <h3 style="margin:0 0 0.25rem">Access Denied</h3>
-                <p class="text-sm text-muted m-0">You don't have permission to add servers.</p>
+                <h3 style="margin:0 0 0.25rem">Accès refusé</h3>
+                <p class="text-sm text-muted m-0">Vous n'avez pas la permission d'ajouter des serveurs.</p>
             </div>
         </div>
     {else}
@@ -37,14 +37,14 @@
             <input type="hidden" name="insert_type" value="add">
             <div class="card__header">
                 <div>
-                    <h3>{if $edit_server}Edit server{else}Add a server{/if}</h3>
-                    <p>Tip: hover the question marks for inline help. RCON is optional but unlocks the live console + per-server admin mapping.</p>
+                    <h3>{if $edit_server}Modifier le serveur{else}Ajouter un serveur{/if}</h3>
+                    <p>Astuce : survolez les points d'interrogation pour afficher l'aide en ligne. Le RCON est facultatif mais débloque la console en direct et le mappage d'administrateurs par serveur.</p>
                 </div>
             </div>
             <div class="card__body" style="display:grid;gap:1rem">
                 <div class="grid gap-4" style="grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))">
                     <label class="block">
-                        <span class="label">Server IP / domain</span>
+                        <span class="label">IP / domaine du serveur</span>
                         <input type="text"
                                id="address"
                                name="address"
@@ -53,10 +53,10 @@
                                placeholder="203.0.113.10"
                                required
                                data-testid="addserver-address">
-                        <span class="text-xs text-muted">IPv4 / IPv6 / hostname. Hostnames are resolved by the game server at connect time.</span>
+                        <span class="text-xs text-muted">IPv4 / IPv6 / nom d'hôte. Les noms d'hôte sont résolus par le serveur de jeu au moment de la connexion.</span>
                     </label>
                     <label class="block">
-                        <span class="label">Server port</span>
+                        <span class="label">Port du serveur</span>
                         <input type="number"
                                id="port"
                                name="port"
@@ -66,13 +66,13 @@
                                max="65535"
                                required
                                data-testid="addserver-port">
-                        <span class="text-xs text-muted">Default <code class="font-mono">27015</code>.</span>
+                        <span class="text-xs text-muted">Par défaut <code class="font-mono">27015</code>.</span>
                     </label>
                 </div>
 
                 <div class="grid gap-4" style="grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))">
                     <label class="block">
-                        <span class="label">RCON password</span>
+                        <span class="label">Mot de passe RCON</span>
                         <input type="password"
                                id="rcon"
                                name="rcon"
@@ -80,10 +80,10 @@
                                value="{$rcon|escape}"
                                autocomplete="new-password"
                                data-testid="addserver-rcon">
-                        <span class="text-xs text-muted">Found in <code class="font-mono">server.cfg</code> next to <code class="font-mono">rcon_password</code>.</span>
+                        <span class="text-xs text-muted">Présent dans <code class="font-mono">server.cfg</code> à côté de <code class="font-mono">rcon_password</code>.</span>
                     </label>
                     <label class="block">
-                        <span class="label">Confirm RCON</span>
+                        <span class="label">Confirmer le RCON</span>
                         <input type="password"
                                id="rcon2"
                                name="rcon2"
@@ -91,7 +91,7 @@
                                value="{$rcon|escape}"
                                autocomplete="new-password"
                                data-testid="addserver-rcon2">
-                        <span class="text-xs text-muted">Re-enter to avoid typos.</span>
+                        <span class="text-xs text-muted">Saisir à nouveau pour éviter les erreurs de frappe.</span>
                     </label>
                 </div>
 
@@ -103,7 +103,7 @@
                                 class="select"
                                 required
                                 data-testid="addserver-mod">
-                            {if !$edit_server}<option value="-2">Select a mod…</option>{/if}
+                            {if !$edit_server}<option value="-2">Sélectionner un mod&hellip;</option>{/if}
                             {foreach from=$modlist item=mod}
                                 <option value="{$mod.mid}"{if $modid !== '' && $modid == $mod.mid} selected{/if}>{$mod.name|escape}</option>
                             {/foreach}
@@ -116,15 +116,15 @@
                                value="on"
                                {if $enabled}checked{/if}
                                data-testid="addserver-enabled">
-                        <span class="text-sm">Enable on the public servers list</span>
+                        <span class="text-sm">Activer sur la liste publique des serveurs</span>
                     </label>
                 </div>
 
                 <fieldset style="border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem 1rem">
-                    <legend class="text-xs font-semibold" style="padding:0 0.5rem">Server groups</legend>
-                    <p class="text-xs text-muted m-0 mb-2">Pick the SourceMod groups this server inherits admins from.</p>
+                    <legend class="text-xs font-semibold" style="padding:0 0.5rem">Groupes de serveurs</legend>
+                    <p class="text-xs text-muted m-0 mb-2">Sélectionnez les groupes SourceMod dont ce serveur hérite les administrateurs.</p>
                     {if $grouplist|@count == 0}
-                        <p class="text-xs text-faint m-0">No server groups defined yet — visit Admins → Groups to create one.</p>
+                        <p class="text-xs text-faint m-0">Aucun groupe de serveurs défini pour le moment — rendez-vous dans Administrateurs &rarr; Groupes pour en créer un.</p>
                     {else}
                         <div class="grid gap-2" style="grid-template-columns:repeat(auto-fill,minmax(11rem,1fr))">
                             {foreach from=$grouplist item=group}
@@ -149,7 +149,7 @@
                         class="btn btn--ghost"
                         onclick="history.go(-1)"
                         data-testid="addserver-back">
-                    Back
+                    Retour
                 </button>
                 <button type="submit"
                         class="btn btn--primary"
@@ -208,7 +208,7 @@
 
         var api = window.sb && window.sb.api;
         if (!api || !window.Actions) {
-            setError('JS API not loaded; refresh the page.');
+            setError('API JS non chargée ; rafraîchissez la page.');
             if (submit) submit.disabled = false;
             return;
         }
@@ -224,10 +224,10 @@
         }).then(function (r) {
             if (submit) submit.disabled = false;
             if (!r || r.ok === false) {
-                var msg = (r && r.error && r.error.message) || 'Could not add server.';
+                var msg = (r && r.error && r.error.message) || 'Impossible d\'ajouter le serveur.';
                 setError(msg);
                 if (window.SBPP && window.SBPP.showToast) {
-                    window.SBPP.showToast({ kind: 'error', title: 'Add server failed', body: msg });
+                    window.SBPP.showToast({ kind: 'error', title: 'Échec de l\'ajout du serveur', body: msg });
                 }
                 return;
             }
@@ -236,7 +236,7 @@
             var d = (r && r.data) || {};
             var redir = d.message && d.message.redir;
             if (window.SBPP && window.SBPP.showToast && d.message) {
-                window.SBPP.showToast({ kind: 'success', title: d.message.title || 'Server added', body: d.message.body || '' });
+                window.SBPP.showToast({ kind: 'success', title: d.message.title || 'Serveur ajouté', body: d.message.body || '' });
             }
             if (typeof redir === 'string' && redir.length > 0) {
                 window.location.href = redir;

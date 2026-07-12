@@ -24,10 +24,10 @@
     {* -- Page header --------------------------------------------------- *}
     <header class="flex items-center justify-between gap-4" style="flex-wrap:wrap" data-testid="comms-header">
         <div>
-            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Comm blocks</h1>
+            <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Kommunikationssperren</h1>
             <p class="text-sm text-muted m-0 mt-2">
                 <span class="tabular-nums" data-testid="comms-count">{$ban_list|@count|number_format}</span>
-                of <span class="tabular-nums">{$total_bans|number_format}</span> blocks
+                von <span class="tabular-nums">{$total_bans|number_format}</span> Sperren
             </p>
         </div>
         <div class="flex gap-2">
@@ -56,13 +56,13 @@
                href="{$hide_inactive_toggle_url|escape}"
                data-testid="toggle-hide-inactive">
                 <i data-lucide="{if $is_active_only}eye{else}eye-off{/if}"></i>
-                {if $is_active_only}Show inactive{else}Hide inactive{/if}
+                {if $is_active_only}Inaktive anzeigen{else}Inaktive ausblenden{/if}
             </a>
             {if $can_add_comm}
             <a class="btn btn--primary btn--sm"
                href="index.php?p=admin&amp;c=comms"
                data-testid="comms-add-button">
-                <i data-lucide="plus"></i> Add comm block
+                <i data-lucide="plus"></i> Kommunikationssperre hinzufügen
             </a>
             {/if}
         </div>
@@ -81,23 +81,23 @@
                        type="search"
                        name="searchText"
                        value="{$filters.search|escape}"
-                       placeholder="Player, SteamID, or reason…"
+                       placeholder="Spieler, SteamID oder Grund…"
                        data-testid="comms-search">
             </div>
-            <select class="select" name="server" style="width:auto;min-width:11rem" data-testid="comms-server-filter" aria-label="Filter by server">
-                <option value="">All servers</option>
+            <select class="select" name="server" style="width:auto;min-width:11rem" data-testid="comms-server-filter" aria-label="Nach Server filtern">
+                <option value="">Alle Server</option>
                 {foreach $servers as $s}
                     <option value="{$s.sid}" {if $filters.server == $s.sid}selected{/if}>{$s.name|escape}</option>
                 {/foreach}
             </select>
-            <select class="select" name="time" style="width:auto" data-testid="comms-time-filter" aria-label="Filter by time range">
-                <option value="">All time</option>
-                <option value="1d" {if $filters.time == '1d'}selected{/if}>Today</option>
-                <option value="7d" {if $filters.time == '7d'}selected{/if}>Last 7 days</option>
-                <option value="30d" {if $filters.time == '30d'}selected{/if}>Last 30 days</option>
+            <select class="select" name="time" style="width:auto" data-testid="comms-time-filter" aria-label="Nach Zeitraum filtern">
+                <option value="">Gesamter Zeitraum</option>
+                <option value="1d" {if $filters.time == '1d'}selected{/if}>Heute</option>
+                <option value="7d" {if $filters.time == '7d'}selected{/if}>Letzte 7 Tage</option>
+                <option value="30d" {if $filters.time == '30d'}selected{/if}>Letzte 30 Tage</option>
             </select>
             <button class="btn btn--secondary btn--sm" type="submit" data-testid="comms-filter-apply">
-                <i data-lucide="filter"></i> Apply
+                <i data-lucide="filter"></i> Anwenden
             </button>
         </div>
 
@@ -119,31 +119,31 @@
                $is_active_only.
              - Type chips (Mute / Gag / Silence): submit `name="type"
                value=…`. Pressed when $filters.type matches. *}
-        <div class="flex items-center gap-2 mt-2 scroll-x" role="group" aria-label="Quick filters">
+        <div class="flex items-center gap-2 mt-2 scroll-x" role="group" aria-label="Schnellfilter">
             <button class="chip" type="submit" name="type" value=""
                     aria-pressed="{if $filters.type == '' && !$is_active_only}true{else}false{/if}"
                     data-testid="filter-chip-all">
-                All
+                Alle
             </button>
             <button class="chip" type="submit" name="state" value="active"
                     aria-pressed="{if $is_active_only}true{else}false{/if}"
                     data-testid="filter-chip-active">
-                <span class="chip__dot" style="background:#f59e0b"></span> Active
+                <span class="chip__dot" style="background:#f59e0b"></span> Aktiv
             </button>
             <button class="chip" type="submit" name="type" value="mute"
                     aria-pressed="{if $filters.type == 'mute'}true{else}false{/if}"
                     data-testid="filter-chip-mute">
-                <i data-lucide="mic-off" style="width:12px;height:12px"></i> Mute
+                <i data-lucide="mic-off" style="width:12px;height:12px"></i> Stumm
             </button>
             <button class="chip" type="submit" name="type" value="gag"
                     aria-pressed="{if $filters.type == 'gag'}true{else}false{/if}"
                     data-testid="filter-chip-gag">
-                <i data-lucide="message-square-off" style="width:12px;height:12px"></i> Gag
+                <i data-lucide="message-square-off" style="width:12px;height:12px"></i> Chat-Sperre
             </button>
             <button class="chip" type="submit" name="type" value="silence"
                     aria-pressed="{if $filters.type == 'silence'}true{else}false{/if}"
                     data-testid="filter-chip-silence">
-                <i data-lucide="volume-x" style="width:12px;height:12px"></i> Silence
+                <i data-lucide="volume-x" style="width:12px;height:12px"></i> Stille
             </button>
         </div>
     </form>
@@ -166,10 +166,10 @@
                  aria-controls="commslist-advsearch-body">
             <span class="filters-details__summary-label">
                 <i data-lucide="filter" style="width:14px;height:14px"></i>
-                <span>Advanced search</span>
+                <span>Erweiterte Suche</span>
                 {if $is_advanced_search_open}
                     <span class="filters-details__count" data-testid="commslist-advsearch-active">
-                        &middot; 1 active
+                        &middot; 1 aktiv
                     </span>
                 {/if}
             </span>
@@ -198,15 +198,15 @@
         <table class="table" data-testid="comms-table">
             <thead>
                 <tr>
-                    <th>Type</th>
-                    <th>Player</th>
+                    <th>Typ</th>
+                    <th>Spieler</th>
                     <th>SteamID</th>
-                    <th class="col-length col-tier-3">Length</th>
+                    <th class="col-length col-tier-3">Dauer</th>
                     <th class="col-tier-2">Server</th>
                     <th class="col-admin col-tier-2">Admin</th>
-                    <th class="col-tier-3">Started</th>
+                    <th class="col-tier-3">Beginn</th>
                     <th class="col-status">Status</th>
-                    <th class="col-actions" aria-label="Actions"></th>
+                    <th class="col-actions" aria-label="Aktionen"></th>
                 </tr>
             </thead>
             <tbody>
@@ -220,7 +220,7 @@
                             <span class="pill pill--{$comm.state}" style="text-transform:capitalize">
                                 <i data-lucide="{if $comm.type == 'mute'}mic-off{elseif $comm.type == 'gag'}message-square-off{elseif $comm.type == 'silence'}volume-x{else}help-circle{/if}"
                                    style="width:12px;height:12px"></i>
-                                {$comm.type|escape}
+                                {if $comm.type == 'mute'}Stumm{elseif $comm.type == 'gag'}Chat-Sperre{elseif $comm.type == 'silence'}Stille{else}{$comm.type|escape}{/if}
                             </span>
                         </td>
                         <td>
@@ -245,7 +245,7 @@
                                     <a class="font-medium truncate"
                                        href="?p=commslist&amp;id={$comm.cid}"
                                        data-drawer-cid="{$comm.cid}"
-                                       data-testid="drawer-trigger">{if $comm.name}{$comm.name|escape}{else}<i class="text-faint">no nickname</i>{/if}</a>
+                                       data-testid="drawer-trigger">{if $comm.name}{$comm.name|escape}{else}<i class="text-faint">kein Spitzname</i>{/if}</a>
                                     {* #1315: surface unban-reason / removed-by line below the
                                        player nickname when the row was lifted by an admin
                                        (state == 'unmuted'). Higher-priority than the banlist
@@ -256,7 +256,7 @@
                                        here either. *}
                                     {if $comm.state == 'unmuted' && !$hideadminname && (!empty($comm.ureason) || !empty($comm.removedby))}
                                         <div class="text-xs text-faint mt-1" data-testid="comm-unban-meta">
-                                            {if !empty($comm.removedby)}Lifted by <span class="font-medium">{$comm.removedby|escape}</span>{if !empty($comm.ureason)}: {/if}{/if}
+                                            {if !empty($comm.removedby)}Aufgehoben von <span class="font-medium">{$comm.removedby|escape}</span>{if !empty($comm.ureason)}: {/if}{/if}
                                             {* `title=` carries the full lift-reason so a long
                                                reason that was cropped on the desktop table reads
                                                in full on hover. Same shape as banlist's
@@ -281,24 +281,24 @@
                                              data-cid="{$comm.cid}">
                                       <summary class="ban-comments-inline__summary"
                                                data-testid="comm-comments-toggle"
-                                               title="{$comm.commentdata|@count} comment{if $comm.commentdata|@count != 1}s{/if} on this comm-block">
+                                               title="{$comm.commentdata|@count} Kommentar{if $comm.commentdata|@count != 1}e{/if} zu dieser Kommunikationssperre">
                                         <i data-lucide="message-square-text" style="width:11px;height:11px" aria-hidden="true"></i>
                                         <span class="tabular-nums">{$comm.commentdata|@count}</span>
-                                        <span class="ban-comments-inline__label">comment{if $comm.commentdata|@count != 1}s{/if}</span>
+                                        <span class="ban-comments-inline__label">Kommentar{if $comm.commentdata|@count != 1}e{/if}</span>
                                       </summary>
                                       <ul class="ban-comments-inline__list" data-testid="comm-comments-list">
                                         {foreach from=$comm.commentdata item=com}
                                         <li class="ban-comments-inline__item" data-testid="comm-comment-item">
                                           <div class="ban-comments-inline__meta">
                                             {* #1500: comment author is an admin username; hide it for public viewers when banlist.hideadminname is on (parity with the unban-meta gate above). *}
-                                            {if $hideadminname}<i class="text-faint">Hidden</i>{elseif !empty($com.comname)}<strong>{$com.comname|escape}</strong>{else}<i class="text-faint">deleted admin</i>{/if}
+                                            {if $hideadminname}<i class="text-faint">Versteckt</i>{elseif !empty($com.comname)}<strong>{$com.comname|escape}</strong>{else}<i class="text-faint">gelöschter Admin</i>{/if}
                                             <span class="text-faint">&middot;</span>
                                             <span class="text-xs text-faint tabular-nums">{$com.added}</span>
                                           </div>
                                           {* nofilter: $com.commenttxt is server-built HTML produced by encodePreservingBr (htmlspecialchars per text segment, only `<br/>` survives) plus a URL-wrap regex that wraps already-escaped URLs in `<a>` tags — see page.commslist.php $commentres loop. Same provenance + safety as the banlist disclosure (template comment up-thread). *}
                                           <div class="ban-comments-inline__text" data-testid="comm-comment-text">{$com.commenttxt nofilter}</div>
                                           {if !empty($com.edittime)}
-                                          <div class="ban-comments-inline__edit text-xs text-faint">last edit {$com.edittime} by {if $hideadminname}<i class="text-faint">Hidden</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>deleted admin</i>{/if}</div>
+                                          <div class="ban-comments-inline__edit text-xs text-faint">letzte Bearbeitung {$com.edittime} von {if $hideadminname}<i class="text-faint">Versteckt</i>{elseif !empty($com.editname)}{$com.editname|escape}{else}<i>gelöschter Admin</i>{/if}</div>
                                           {/if}
                                         </li>
                                         {/foreach}
@@ -323,7 +323,7 @@
                             <time datetime="{$comm.started_iso|escape}">{$comm.started_human|escape}</time>
                         </td>
                         <td class="col-status">
-                            <span class="pill pill--{$comm.state}" style="text-transform:capitalize">{$comm.state|escape}</span>
+                            <span class="pill pill--{$comm.state}" style="text-transform:capitalize">{if $comm.state == 'active'}Aktiv{elseif $comm.state == 'permanent'}Permanent{elseif $comm.state == 'expired'}Abgelaufen{elseif $comm.state == 'unmuted'}Entsperrt{else}{$comm.state|escape}{/if}</span>
                         </td>
                         <td class="col-actions">
                             <div class="row-actions">
@@ -332,7 +332,7 @@
                                        href="{$comm.edit_url|escape}"
                                        data-testid="row-action-edit">
                                         <i data-lucide="pencil" style="width:13px;height:13px"></i>
-                                        Edit
+                                        Bearbeiten
                                     </a>
                                 {/if}
                                 {if $can_unmute_gag && $comm.unmute_url}
@@ -351,7 +351,7 @@
                                             data-name="{$comm.name|escape}"
                                             data-fallback-href="{$comm.unmute_url|escape}">
                                         <i data-lucide="check" style="width:13px;height:13px"></i>
-                                        {if $comm.type == 'mute'}Unmute{elseif $comm.type == 'gag'}Ungag{else}Lift block{/if}
+                                        {if $comm.type == 'mute'}Stummschaltung aufheben{elseif $comm.type == 'gag'}Chat-Sperre aufheben{else}Sperre aufheben{/if}
                                     </button>
                                 {elseif $can_add_comm && ($comm.state == 'unmuted' || $comm.state == 'expired') && !$comm.has_active_sibling}
                                     {* #1207 ADM-6: when a row is no longer active, swap the
@@ -369,7 +369,7 @@
                                        href="index.php?p=admin&amp;c=comms&amp;rebanid={$comm.cid}"
                                        data-testid="row-action-reapply">
                                         <i data-lucide="rotate-ccw" style="width:13px;height:13px"></i>
-                                        Re-apply
+                                        Erneut anwenden
                                     </a>
                                 {/if}
                                 {if $can_delete_comm}
@@ -382,7 +382,7 @@
                                             data-fallback-href="{$comm.delete_url|escape}"
                                             style="color:var(--danger)">
                                         <i data-lucide="trash-2" style="width:13px;height:13px"></i>
-                                        Remove
+                                        Entfernen
                                     </button>
                                 {/if}
                             </div>
@@ -405,14 +405,14 @@
                                 <span class="empty-state__icon" aria-hidden="true">
                                     <i data-lucide="search-x" style="width:18px;height:18px"></i>
                                 </span>
-                                <h2 class="empty-state__title">No comm blocks match those filters</h2>
-                                <p class="empty-state__body">Try a different search term, server, or time range, or clear the active filters to see every recorded mute / gag.</p>
+                                <h2 class="empty-state__title">Keine Kommunikationssperren entsprechen diesen Filtern</h2>
+                                <p class="empty-state__body">Versuchen Sie einen anderen Suchbegriff, Server oder Zeitraum oder löschen Sie die aktiven Filter, um jede erfasste Stumm-/Chat-Sperre zu sehen.</p>
                                 <div class="empty-state__actions">
                                     <a class="btn btn--secondary btn--sm"
                                        href="?p=commslist"
                                        data-testid="comms-empty-clear">
                                         <i data-lucide="x" style="width:13px;height:13px"></i>
-                                        Clear filters
+                                        Filter löschen
                                     </a>
                                 </div>
                             </div>
@@ -426,15 +426,15 @@
                                 <span class="empty-state__icon" aria-hidden="true">
                                     <i data-lucide="mic-off" style="width:18px;height:18px"></i>
                                 </span>
-                                <h2 class="empty-state__title">No comm blocks recorded yet</h2>
-                                <p class="empty-state__body">Mutes and gags issued from the panel or in-game will appear here.</p>
+                                <h2 class="empty-state__title">Noch keine Kommunikationssperren erfasst</h2>
+                                <p class="empty-state__body">Stumm- und Chat-Sperren aus dem Panel oder im Spiel erscheinen hier.</p>
                                 {if $can_add_comm}
                                 <div class="empty-state__actions">
                                     <a class="btn btn--primary btn--sm"
                                        href="?p=admin&amp;c=comms"
                                        data-testid="comms-empty-add">
                                         <i data-lucide="plus" style="width:13px;height:13px"></i>
-                                        Add a comm block
+                                        Kommunikationssperre hinzufügen
                                     </a>
                                 </div>
                                 {/if}
@@ -483,12 +483,12 @@
                         <div style="flex:1;min-width:0">
                             <div class="flex items-center gap-2">
                                 <span class="font-medium text-sm truncate">
-                                    {if $comm.name}{$comm.name|escape}{else}<span class="text-faint">no nickname</span>{/if}
+                                    {if $comm.name}{$comm.name|escape}{else}<span class="text-faint">kein Spitzname</span>{/if}
                                 </span>
-                                <span class="pill pill--{$comm.state}">{$comm.state|escape}</span>
+                                <span class="pill pill--{$comm.state}">{if $comm.state == 'active'}Aktiv{elseif $comm.state == 'permanent'}Permanent{elseif $comm.state == 'expired'}Abgelaufen{elseif $comm.state == 'unmuted'}Entsperrt{else}{$comm.state|escape}{/if}</span>
                             </div>
                             <div class="text-xs text-muted truncate" style="margin-top:0.125rem">
-                                <span style="text-transform:capitalize">{$comm.type|escape}</span>
+                                <span style="text-transform:capitalize">{if $comm.type == 'mute'}Stumm{elseif $comm.type == 'gag'}Chat-Sperre{elseif $comm.type == 'silence'}Stille{else}{$comm.type|escape}{/if}</span>
                                 · {$comm.length_human|escape}
                                 {if $comm.sname} · {$comm.sname|escape}{/if}
                             </div>
@@ -504,8 +504,8 @@
                                    .truncate utility reads in full on long-press / hover
                                    (issue 5). *}
                                 <div class="text-xs text-faint truncate" style="margin-top:0.125rem" data-testid="comm-unban-meta-mobile"
-                                     title="{if !empty($comm.removedby)}Lifted by {$comm.removedby|escape}{if !empty($comm.ureason)}: {/if}{/if}{if !empty($comm.ureason)}{$comm.ureason|escape}{/if}">
-                                    {if !empty($comm.removedby)}Lifted by {$comm.removedby|escape}{if !empty($comm.ureason)}: {/if}{/if}
+                                     title="{if !empty($comm.removedby)}Aufgehoben von {$comm.removedby|escape}{if !empty($comm.ureason)}: {/if}{/if}{if !empty($comm.ureason)}{$comm.ureason|escape}{/if}">
+                                    {if !empty($comm.removedby)}Aufgehoben von {$comm.removedby|escape}{if !empty($comm.ureason)}: {/if}{/if}
                                     {if !empty($comm.ureason)}{$comm.ureason|escape}{/if}
                                 </div>
                             {/if}
@@ -519,7 +519,7 @@
                                href="{$comm.edit_url|escape}"
                                data-testid="row-action-edit-mobile">
                                 <i data-lucide="pencil" style="width:13px;height:13px"></i>
-                                Edit
+                                Bearbeiten
                             </a>
                         {/if}
                         {if $can_unmute_gag && $comm.unmute_url}
@@ -531,7 +531,7 @@
                                     data-name="{$comm.name|escape}"
                                     data-fallback-href="{$comm.unmute_url|escape}">
                                 <i data-lucide="check" style="width:13px;height:13px"></i>
-                                {if $comm.type == 'mute'}Unmute{elseif $comm.type == 'gag'}Ungag{else}Lift block{/if}
+                                {if $comm.type == 'mute'}Stummschaltung aufheben{elseif $comm.type == 'gag'}Chat-Sperre aufheben{else}Sperre aufheben{/if}
                             </button>
                         {elseif $can_add_comm && ($comm.state == 'unmuted' || $comm.state == 'expired') && !$comm.has_active_sibling}
                             {* Same `has_active_sibling` gate as the desktop
@@ -540,7 +540,7 @@
                                href="index.php?p=admin&amp;c=comms&amp;rebanid={$comm.cid}"
                                data-testid="row-action-reapply-mobile">
                                 <i data-lucide="rotate-ccw" style="width:13px;height:13px"></i>
-                                Re-apply
+                                Erneut anwenden
                             </a>
                         {/if}
                         {if $can_delete_comm}
@@ -553,7 +553,7 @@
                                     data-fallback-href="{$comm.delete_url|escape}"
                                     style="color:var(--danger)">
                                 <i data-lucide="trash-2" style="width:13px;height:13px"></i>
-                                Remove
+                                Entfernen
                             </button>
                         {/if}
                     </div>
@@ -569,12 +569,12 @@
                     <span class="empty-state__icon" aria-hidden="true">
                         <i data-lucide="search-x" style="width:18px;height:18px"></i>
                     </span>
-                    <h2 class="empty-state__title">No comm blocks match those filters</h2>
-                    <p class="empty-state__body">Try a different search term or clear the active filters.</p>
+                    <h2 class="empty-state__title">Keine Kommunikationssperren entsprechen diesen Filtern</h2>
+                    <p class="empty-state__body">Versuchen Sie einen anderen Suchbegriff oder löschen Sie die aktiven Filter.</p>
                     <div class="empty-state__actions">
                         <a class="btn btn--secondary btn--sm" href="?p=commslist">
                             <i data-lucide="x" style="width:13px;height:13px"></i>
-                            Clear filters
+                            Filter löschen
                         </a>
                     </div>
                 </div>
@@ -583,13 +583,13 @@
                     <span class="empty-state__icon" aria-hidden="true">
                         <i data-lucide="mic-off" style="width:18px;height:18px"></i>
                     </span>
-                    <h2 class="empty-state__title">No comm blocks recorded yet</h2>
-                    <p class="empty-state__body">Mutes and gags issued from the panel or in-game will appear here.</p>
+                    <h2 class="empty-state__title">Noch keine Kommunikationssperren erfasst</h2>
+                    <p class="empty-state__body">Stumm- und Chat-Sperren aus dem Panel oder im Spiel erscheinen hier.</p>
                     {if $can_add_comm}
                     <div class="empty-state__actions">
                         <a class="btn btn--primary btn--sm" href="?p=admin&amp;c=comms">
                             <i data-lucide="plus" style="width:13px;height:13px"></i>
-                            Add a comm block
+                            Kommunikationssperre hinzufügen
                         </a>
                     </div>
                     {/if}
@@ -609,9 +609,9 @@
     {if $pagination.total > 0}
     <div class="flex items-center justify-between text-xs text-muted" data-testid="comms-pagination">
         <div>
-            Showing
+            Zeige
             <span class="font-medium tabular-nums" style="color:var(--text)">{$pagination.from|number_format}–{$pagination.to|number_format}</span>
-            of
+            von
             <span class="font-medium tabular-nums" style="color:var(--text)">{$pagination.total|number_format}</span>
         </div>
         <div class="flex gap-1">
@@ -619,28 +619,28 @@
                 <a class="btn btn--secondary btn--sm"
                    href="{$pagination.prev_url|escape}"
                    data-testid="page-prev">
-                    <i data-lucide="chevron-left"></i> Prev
+                    <i data-lucide="chevron-left"></i> Zurück
                 </a>
             {else}
                 <span class="btn btn--secondary btn--sm"
                       aria-disabled="true"
                       style="opacity:0.5;pointer-events:none"
                       data-testid="page-prev">
-                    <i data-lucide="chevron-left"></i> Prev
+                    <i data-lucide="chevron-left"></i> Zurück
                 </span>
             {/if}
             {if $pagination.next_url}
                 <a class="btn btn--secondary btn--sm"
                    href="{$pagination.next_url|escape}"
                    data-testid="page-next">
-                    Next <i data-lucide="chevron-right"></i>
+                    Weiter <i data-lucide="chevron-right"></i>
                 </a>
             {else}
                 <span class="btn btn--secondary btn--sm"
                       aria-disabled="true"
                       style="opacity:0.5;pointer-events:none"
                       data-testid="page-next">
-                    Next <i data-lucide="chevron-right"></i>
+                    Weiter <i data-lucide="chevron-right"></i>
                 </span>
             {/if}
         </div>
@@ -683,11 +683,11 @@
         hidden
         style="max-width:32rem;width:90vw;padding:1.25rem;border-radius:0.75rem;border:1px solid var(--border)">
   <form method="dialog" data-testid="comms-unblock-form">
-    <h2 id="comms-unblock-dialog-title" data-testid="comms-unblock-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Lift block</h2>
+    <h2 id="comms-unblock-dialog-title" data-testid="comms-unblock-dialog-title" style="font-size:var(--fs-lg);font-weight:600;margin:0 0 0.25rem">Sperre aufheben</h2>
     <p class="text-sm text-muted m-0" style="margin-bottom:0.75rem">
-      Why are you lifting the block on <strong data-testid="comms-unblock-target">this player</strong>? This reason is recorded against the block and surfaced in the audit log.
+      Warum heben Sie die Sperre für <strong data-testid="comms-unblock-target">diesen Spieler</strong> auf? Dieser Grund wird gegen die Sperre protokolliert und im Audit-Log angezeigt.
     </p>
-    <label class="label" for="comms-unblock-reason">Reason <span aria-hidden="true" style="color:var(--danger)">*</span></label>
+    <label class="label" for="comms-unblock-reason">Grund <span aria-hidden="true" style="color:var(--danger)">*</span></label>
     {* aria-required (not the native `required`) so assistive tech announces
        the field as required while the JS submit handler owns the empty-reason
        branch — `required` would let the browser block the form submit before
@@ -699,12 +699,12 @@
               aria-required="true"
               maxlength="255"
               autocomplete="off"
-              placeholder="Mistaken block, appeal accepted, sentence served, &hellip;"></textarea>
+              placeholder="Falsche Sperre, Einspruch akzeptiert, Strafe verbüßt, &hellip;"></textarea>
     <p class="text-xs" data-testid="comms-unblock-error" role="alert" hidden style="color:var(--danger);margin:0.25rem 0 0"></p>
     <div class="flex gap-2 mt-4" style="justify-content:flex-end">
-      <button type="button" class="btn btn--secondary" data-testid="comms-unblock-cancel" value="cancel">Cancel</button>
+      <button type="button" class="btn btn--secondary" data-testid="comms-unblock-cancel" value="cancel">Abbrechen</button>
       <button type="submit" class="btn btn--primary" data-testid="comms-unblock-submit" value="confirm">
-        <i data-lucide="check" style="width:13px;height:13px"></i> Confirm
+        <i data-lucide="check" style="width:13px;height:13px"></i> Bestätigen
       </button>
     </div>
   </form>
@@ -810,7 +810,7 @@
         row.classList.add('ban-row--unmuted');
         Array.prototype.forEach.call(row.querySelectorAll('.pill'), function (pill) {
             // Only the *status* pill carries the previous state as its
-            // visible label; type pills (column 1) say "mute"/"gag" and
+            // visible label; type pills (column 1) say "Stumm"/"Chat-Sperre" and
             // we leave their text intact. The class swap applies to
             // both — the colored border treatment comes from
             // `pill--<state>` and both pills should track the new
@@ -818,7 +818,7 @@
             pill.classList.remove('pill--active', 'pill--permanent', 'pill--expired');
             pill.classList.add('pill--unmuted');
             var txt = (pill.textContent || '').trim().toLowerCase();
-            if (txt === prev || txt === 'active' || txt === 'permanent' || txt === 'expired') {
+            if (txt === prev || txt === 'aktiv' || txt === 'permanent' || txt === 'abgelaufen' || txt === 'active' || txt === 'expired') {
                 // Preserve any leading <i> icon — only the trailing
                 // text node carries the state label. Walk children
                 // backwards to find it.
@@ -827,8 +827,8 @@
                     var n = pill.childNodes[i];
                     if (n.nodeType === 3) { lastText = n; break; }
                 }
-                if (lastText) lastText.textContent = ' Unmuted';
-                else pill.textContent = 'Unmuted';
+                if (lastText) lastText.textContent = ' Entsperrt';
+                else pill.textContent = 'Entsperrt';
             }
         });
         Array.prototype.forEach.call(
@@ -840,7 +840,7 @@
                 var isMobile = (btn.getAttribute('data-testid') || '').indexOf('mobile') !== -1;
                 a.setAttribute('data-testid', isMobile ? 'row-action-reapply-mobile' : 'row-action-reapply');
                 a.setAttribute('href', 'index.php?p=admin&c=comms&rebanid=' + encodeURIComponent(bid));
-                a.innerHTML = '<i data-lucide="rotate-ccw" style="width:13px;height:13px"></i> Re-apply';
+                a.innerHTML = '<i data-lucide="rotate-ccw" style="width:13px;height:13px"></i> Erneut anwenden';
                 btn.parentNode.replaceChild(a, btn);
             }
         );
@@ -887,10 +887,10 @@
      * @returns {{title: string, verb: string}}
      */
     function copyForType(type) {
-        if (type === 'mute')    return { title: 'Unmute player',     verb: 'unmute' };
-        if (type === 'gag')     return { title: 'Ungag player',      verb: 'ungag' };
-        if (type === 'silence') return { title: 'Lift silence',      verb: 'lift the silence on' };
-        return                          { title: 'Lift block',       verb: 'lift the block on' };
+        if (type === 'mute')    return { title: 'Stummschaltung aufheben',     verb: 'Warum heben Sie die Stummschaltung für ' };
+        if (type === 'gag')     return { title: 'Chat-Sperre aufheben',        verb: 'Warum heben Sie die Chat-Sperre für ' };
+        if (type === 'silence') return { title: 'Stille aufheben',             verb: 'Warum heben Sie die Stille für ' };
+        return                          { title: 'Sperre aufheben',             verb: 'Warum heben Sie die Sperre für ' };
     }
 
     /** @param {{bid: string, name: string, fallback: string, type: string}} ctx */
@@ -909,15 +909,14 @@
         var title = d.querySelector('[data-testid="comms-unblock-dialog-title"]');
         if (title) title.textContent = copy.title;
         var prompt = d.querySelector('[data-testid="comms-unblock-target"]');
-        if (prompt) prompt.textContent = ctx.name || ('block #' + ctx.bid);
+        if (prompt) prompt.textContent = ctx.name || ('Sperre #' + ctx.bid);
         // Update the surrounding sentence's verb in place. The
         // <strong> nested-target child carries the player's name, so we
-        // rewrite the parent paragraph's first text node to swap "lifting
-        // the block on" for the type-specific verb without losing the
-        // bold name span.
+        // rewrite the parent paragraph's first text node to swap the
+        // type-specific verb without losing the bold name span.
         var p = d.querySelector('p.text-sm.text-muted');
         if (p && p.firstChild && p.firstChild.nodeType === 3) {
-            p.firstChild.textContent = 'Why are you ' + copy.verb + ' ';
+            p.firstChild.textContent = copy.verb;
         }
         var input = reasonInput();
         if (input) input.value = '';
@@ -964,7 +963,7 @@
         e.preventDefault();
 
         var bid = btn.getAttribute('data-bid') || '';
-        var name = btn.getAttribute('data-name') || ('block #' + bid);
+        var name = btn.getAttribute('data-name') || ('Sperre #' + bid);
         var fallback = btn.getAttribute('data-fallback-href') || '';
         var a = api(), A = actions();
         if (!a || !A || !bid) {
@@ -977,18 +976,18 @@
         }
 
         if (act === 'comms-delete') {
-            if (!window.confirm('Delete the block for "' + name + '"?')) return;
+            if (!window.confirm('Möchten Sie die Sperre für „' + name + '“ löschen?')) return;
             setBusy(btn, true);
             a.call(A.CommsDelete, { bid: Number(bid) }).then(function (r) {
                 if (!r || r.ok === false) {
                     setBusy(btn, false);
-                    var msg = (r && r.error && r.error.message) || 'Unknown error';
-                    toast('error', 'Delete failed', msg);
+                    var msg = (r && r.error && r.error.message) || 'Unbekannter Fehler';
+                    toast('error', 'Löschen fehlgeschlagen', msg);
                     return;
                 }
                 rowsForBid(bid).forEach(removeRow);
                 decrementCount();
-                toast('success', 'Block removed', 'The block for ' + name + ' has been deleted.');
+                toast('success', 'Sperre entfernt', 'Die Sperre für ' + name + ' wurde gelöscht.');
             });
             return;
         }
@@ -1018,7 +1017,7 @@
             // than submitting an empty reason that the server would
             // bounce. The server still re-validates as the
             // load-bearing gate (api_comms_unblock).
-            showError('Please leave a comment.');
+            showError('Bitte geben Sie einen Kommentar ein.');
             if (input) try { input.focus(); } catch (_e) { /* focus may throw */ }
             return;
         }
@@ -1041,14 +1040,14 @@
         a.call(A.CommsUnblock, { bid: Number(ctx.bid), ureason: reason }).then(function (r) {
             setBusy(submitBtn, false);
             if (!r || r.ok === false) {
-                var msg = (r && r.error && r.error.message) || 'Unknown error';
+                var msg = (r && r.error && r.error.message) || 'Unbekannter Fehler';
                 showError(msg);
-                toast('error', 'Unblock failed', msg);
+                toast('error', 'Aufhebung fehlgeschlagen', msg);
                 return;
             }
             rowsForBid(ctx.bid).forEach(flipRowToUnmuted);
             closeUnblockDialog();
-            toast('success', 'Block lifted', ctx.name + ' has been unblocked.');
+            toast('success', 'Sperre aufgehoben', ctx.name + ' wurde entsperrt.');
         });
     });
 

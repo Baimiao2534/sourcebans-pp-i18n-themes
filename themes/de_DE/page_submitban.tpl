@@ -29,9 +29,9 @@
 *}
 <section class="p-6" style="max-width:48rem">
     <header class="mb-6">
-        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Submit a ban request</h1>
+        <h1 style="font-size:var(--fs-2xl);font-weight:600;margin:0">Bannantrag einreichen</h1>
         <p class="text-sm text-muted m-0 mt-2">
-            Report a player for cheating, harassment, or other rule violations. Demos and screenshots help admins act faster.
+            Melden Sie einen Spieler wegen Cheatings, Belästigung oder anderer Regelverstöße. Demos und Screenshots helfen Admins, schneller zu handeln.
         </p>
     </header>
 
@@ -55,11 +55,11 @@
         <div class="card__body space-y-4">
             <div>
                 <h2 id="submitban-heading" class="m-0" style="font-size:var(--fs-base);font-weight:600">
-                    Offender details
+                    Angaben zum Spieler
                 </h2>
                 <p class="text-xs text-muted m-0 mt-2">
-                    Provide either a Steam ID or an IP address (or both). Nickname and a clear
-                    description of the incident are required.
+                    Geben Sie entweder eine Steam-ID oder eine IP-Adresse (oder beides) an. Spitzname und eine klare
+                    Beschreibung des Vorfalls sind erforderlich.
                 </p>
             </div>
 
@@ -87,14 +87,14 @@
                     <span class="pill"
                           aria-hidden="true"
                           style="height:1.25rem;background:var(--bg-muted);color:var(--text-muted);box-shadow:inset 0 0 0 1px var(--border)">
-                        1 of these required
+                        1 davon erforderlich
                     </span>
-                    <span class="text-muted" data-id-or-ip-text>Provide either a Steam ID or an IP address (or both).</span>
+                    <span class="text-muted" data-id-or-ip-text>Geben Sie entweder eine Steam-ID oder eine IP-Adresse (oder beides) an.</span>
                 </p>
                 <div>
                     <label class="label" for="submitban-steam">
-                        Player&rsquo;s Steam ID
-                        <span class="text-muted text-xs" style="font-weight:400">(or use the IP below)</span>
+                        Steam-ID des Spielers
+                        <span class="text-muted text-xs" style="font-weight:400">(oder verwenden Sie die IP unten)</span>
                     </label>
                     {*
                         #1420 follow-up #2: strict `pattern` mirrors the
@@ -119,7 +119,7 @@
                            value="{$STEAMID}"
                            placeholder="STEAM_0:1:23498765"
                            pattern="STEAM_[01]:[01]:\d+|\[U:1:\d+\]|\d{17}"
-                           title="Enter a Steam ID (STEAM_0:1:23498765), Steam3 ID ([U:1:23498765]), or 17-digit SteamID64."
+                           title="Geben Sie eine Steam-ID (STEAM_0:1:23498765), Steam3-ID ([U:1:23498765]) oder eine 17-stellige SteamID64 ein."
                            autocomplete="off"
                            aria-describedby="submitban-id-or-ip-help"
                            data-testid="submitban-steam">
@@ -127,8 +127,8 @@
 
                 <div>
                     <label class="label" for="submitban-ip">
-                        Player&rsquo;s IP address
-                        <span class="text-muted text-xs" style="font-weight:400">(or use the Steam ID above)</span>
+                        IP-Adresse des Spielers
+                        <span class="text-muted text-xs" style="font-weight:400">(oder verwenden Sie die Steam-ID oben)</span>
                     </label>
                     <input type="text"
                            class="input font-mono"
@@ -145,7 +145,7 @@
 
             <div>
                 <label class="label" for="submitban-name">
-                    Player&rsquo;s nickname <span style="color:var(--danger)" aria-hidden="true">*</span>
+                    Spitzname des Spielers <span style="color:var(--danger)" aria-hidden="true">*</span>
                 </label>
                 <input type="text"
                        class="input"
@@ -160,7 +160,7 @@
 
             <div>
                 <label class="label" for="submitban-reason">
-                    Comments <span style="color:var(--danger)" aria-hidden="true">*</span>
+                    Kommentare <span style="color:var(--danger)" aria-hidden="true">*</span>
                 </label>
                 <textarea class="textarea"
                           id="submitban-reason"
@@ -171,7 +171,7 @@
                           aria-describedby="submitban-reason-help"
                           data-testid="submitban-reason">{$ban_reason}</textarea>
                 <p id="submitban-reason-help" class="text-xs text-muted m-0 mt-2">
-                    Be specific. &ldquo;hacking&rdquo; is not enough. Describe what you saw, when, and on which server.
+                    Seien Sie spezifisch. &bdquo;Hacking&ldquo; reicht nicht aus. Beschreiben Sie, was Sie gesehen haben, wann und auf welchem Server.
                 </p>
             </div>
         </div>
@@ -179,16 +179,16 @@
         <div class="card__body space-y-4" style="border-top:1px solid var(--border)">
             <div>
                 <h2 class="m-0" style="font-size:var(--fs-base);font-weight:600">
-                    Your details
+                    Ihre Angaben
                 </h2>
                 <p class="text-xs text-muted m-0 mt-2">
-                    So an admin can reach out for follow-up questions.
+                    Damit ein Admin bei Rückfragen kontaktieren kann.
                 </p>
             </div>
 
             <div class="grid gap-4" style="grid-template-columns:1fr 1fr">
                 <div>
-                    <label class="label" for="submitban-reporter-name">Your name</label>
+                    <label class="label" for="submitban-reporter-name">Ihr Name</label>
                     <input type="text"
                            class="input"
                            id="submitban-reporter-name"
@@ -200,7 +200,7 @@
                 </div>
                 <div>
                     <label class="label" for="submitban-reporter-email">
-                        Your email <span style="color:var(--danger)" aria-hidden="true">*</span>
+                        Ihre E-Mail <span style="color:var(--danger)" aria-hidden="true">*</span>
                     </label>
                     <input type="email"
                            class="input"
@@ -225,16 +225,16 @@
                         required
                         aria-required="true"
                         data-testid="submitban-server">
-                    <option value="-1">&mdash; Select server &mdash;</option>
+                    <option value="-1">&mdash; Server auswählen &mdash;</option>
                     {foreach from=$server_list item="server"}
                         <option value="{$server.sid}"{if $server_selected == $server.sid} selected{/if}>{$server.hostname}</option>
                     {/foreach}
-                    <option value="0"{if $server_selected == 0} selected{/if}>Other server / Not listed here</option>
+                    <option value="0"{if $server_selected == 0} selected{/if}>Anderer Server / Nicht aufgeführt</option>
                 </select>
             </div>
 
             <div>
-                <label class="label" for="submitban-demo">Upload demo or evidence</label>
+                <label class="label" for="submitban-demo">Demo oder Beweise hochladen</label>
                 <div class="file-input">
                     <label class="btn btn--secondary">
                         <input type="file"
@@ -245,12 +245,12 @@
                                data-file-input
                                hidden>
                         <i data-lucide="upload" style="width:14px;height:14px"></i>
-                        Choose file&hellip;
+                        Datei auswählen&hellip;
                     </label>
-                    <span class="text-muted text-sm" data-file-name>No file chosen</span>
+                    <span class="text-muted text-sm" data-file-name>Keine Datei ausgewählt</span>
                 </div>
                 <p class="text-xs text-muted m-0 mt-2">
-                    Optional. Allowed formats: <code class="font-mono">.dem</code>,
+                    Optional. Erlaubte Formate: <code class="font-mono">.dem</code>,
                     <code class="font-mono">.zip</code>, <code class="font-mono">.rar</code>,
                     <code class="font-mono">.7z</code>, <code class="font-mono">.bz2</code>,
                     <code class="font-mono">.gz</code>.
@@ -261,17 +261,17 @@
         <div class="card__body flex items-center justify-between gap-2"
              style="border-top:1px solid var(--border)">
             <p class="text-xs text-muted m-0">
-                <span style="color:var(--danger)" aria-hidden="true">*</span> Required field
+                <span style="color:var(--danger)" aria-hidden="true">*</span> Pflichtfeld
             </p>
             <div class="flex gap-2">
                 <a class="btn btn--ghost"
                    href="index.php?p=banlist"
-                   data-testid="submitban-cancel">Cancel</a>
+                   data-testid="submitban-cancel">Abbrechen</a>
                 <button class="btn btn--primary"
                         type="submit"
                         data-testid="submitban-submit">
                     <i data-lucide="send-horizontal" aria-hidden="true"></i>
-                    Submit report
+                    Bericht absenden
                 </button>
             </div>
         </div>
@@ -329,7 +329,7 @@
         if (isError) {
             steam.setAttribute('aria-invalid', 'true');
             ip.setAttribute('aria-invalid', 'true');
-            helpText.textContent = 'Please enter a Steam ID or an IP address before submitting.';
+            helpText.textContent = 'Bitte geben Sie vor dem Absenden eine Steam-ID oder eine IP-Adresse ein.';
         } else {
             steam.removeAttribute('aria-invalid');
             ip.removeAttribute('aria-invalid');

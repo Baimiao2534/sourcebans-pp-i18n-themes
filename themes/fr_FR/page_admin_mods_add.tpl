@@ -46,7 +46,7 @@
 {if NOT $permission_add}
     <div class="card">
         <div class="card__body">
-            <p class="text-muted">Access denied.</p>
+            <p class="text-muted">Accès refusé.</p>
         </div>
     </div>
 {else}
@@ -60,8 +60,8 @@
         <div class="card">
             <div class="card__header">
                 <div>
-                    <h3>Add Mod</h3>
-                    <p>Configure a new game mod that can be assigned to bans and servers.</p>
+                    <h3>Ajouter un mod</h3>
+                    <p>Configurez un nouveau mod de jeu qui pourra être affecté aux bannissements et aux serveurs.</p>
                 </div>
             </div>
             <div class="card__body space-y-4" style="max-width:42rem">
@@ -73,7 +73,7 @@
                 <input type="hidden" id="icon_hid" name="icon_hid" value="" data-testid="addmod-icon-hidden">
 
                 <div>
-                    <label class="label" for="name">Mod name</label>
+                    <label class="label" for="name">Nom du mod</label>
                     <input class="input"
                            type="text"
                            id="name"
@@ -86,7 +86,7 @@
                 </div>
 
                 <div>
-                    <label class="label" for="folder">Mod folder</label>
+                    <label class="label" for="folder">Dossier du mod</label>
                     <input class="input"
                            type="text"
                            id="folder"
@@ -94,7 +94,7 @@
                            data-testid="addmod-folder"
                            required>
                     <p class="text-xs text-muted" style="margin-top:0.25rem">
-                        Folder name on disk (e.g. <span class="font-mono">cstrike</span> for Counter-Strike: Source).
+                        Nom du dossier sur le disque (ex. <span class="font-mono">cstrike</span> pour Counter-Strike: Source).
                     </p>
                     <div id="folder.msg"
                          class="text-xs"
@@ -102,7 +102,7 @@
                 </div>
 
                 <div>
-                    <label class="label" for="steam_universe">Steam universe number</label>
+                    <label class="label" for="steam_universe">Numéro d'univers Steam</label>
                     <input class="input"
                            type="number"
                            id="steam_universe"
@@ -112,7 +112,7 @@
                            value="0"
                            style="max-width:8rem">
                     <p class="text-xs text-muted" style="margin-top:0.25rem">
-                        First digit (X) of <span class="font-mono">STEAM_X:Y:Z</span> as rendered by this mod. Default 0.
+                        Premier chiffre (X) de <span class="font-mono">STEAM_X:Y:Z</span> tel que rendu par ce mod. 0 par défaut.
                     </p>
                 </div>
 
@@ -124,26 +124,26 @@
                                data-testid="addmod-enabled"
                                value="1"
                                checked>
-                        <span class="text-sm">Enabled — assignable to bans and servers.</span>
+                        <span class="text-sm">Activé — affectable aux bannissements et aux serveurs.</span>
                     </label>
                 </div>
 
                 <div>
-                    <label class="label">Mod icon</label>
+                    <label class="label">Icône du mod</label>
                     <div class="flex items-center gap-3">
                         <button class="btn btn--secondary btn--sm"
                                 type="button"
                                 data-testid="addmod-upload"
                                 onclick="childWindow=open('pages/admin.uploadicon.php','upload','resizable=yes,width=320,height=160');">
                             <i data-lucide="upload"></i>
-                            Upload icon
+                            Téléverser une icône
                         </button>
                         <span class="text-xs text-muted" data-testid="addmod-current-icon" hidden>
-                            Current: <span class="font-mono" data-testid="addmod-current-icon-name"></span>
+                            Actuelle : <span class="font-mono" data-testid="addmod-current-icon-name"></span>
                         </span>
                     </div>
                     <p class="text-xs text-muted" style="margin-top:0.25rem">
-                        16x16 GIF, PNG or JPG. Opens a popup uploader.
+                        GIF, PNG ou JPG 16x16. Ouvre un téléversement dans une fenêtre popup.
                     </p>
                     <div id="icon.msg"
                          class="text-xs"
@@ -154,13 +154,13 @@
                      style="border-top:1px solid var(--border);padding-top:1rem">
                     <a class="btn btn--ghost btn--sm"
                        href="javascript:history.go(-1)"
-                       data-testid="addmod-cancel">Back</a>
+                       data-testid="addmod-cancel">Retour</a>
                     <button class="btn btn--primary btn--sm"
                             type="submit"
                             id="amod"
                             data-testid="addmod-submit">
                         <i data-lucide="plus"></i>
-                        Add mod
+                        Ajouter le mod
                     </button>
                 </div>
             </div>
@@ -278,9 +278,9 @@
             var enabled = enEl ? !!enEl.checked : false;
 
             var errors = 0;
-            if (!name)   { showMsg('name.msg',   'You must type a name for the mod.'); errors++; }
-            if (!folder) { showMsg('folder.msg', "You must enter the mod's folder name."); errors++; }
-            if (!icon)   { showMsg('icon.msg',   'You must upload an icon for the mod.'); errors++; }
+            if (!name)   { showMsg('name.msg',   'Vous devez saisir un nom pour le mod.'); errors++; }
+            if (!folder) { showMsg('folder.msg', "Vous devez saisir le nom du dossier du mod."); errors++; }
+            if (!icon)   { showMsg('icon.msg',   'Vous devez téléverser une icône pour le mod.'); errors++; }
             if (errors > 0) return;
 
             var submitBtn = /** @type {HTMLButtonElement|null} */ (form.querySelector('[data-testid="addmod-submit"]'));
@@ -289,7 +289,7 @@
             var a = api(), A = actions();
             if (!a || !A) {
                 setBusy(submitBtn, false);
-                showMsg('name.msg', 'JSON dispatcher missing. Refresh the page and try again.');
+                showMsg('name.msg', 'Répartiteur JSON manquant. Rafraîchissez la page et réessayez.');
                 return;
             }
 
@@ -304,19 +304,19 @@
                 if (r.redirect) return; // sb.api.call already navigated
                 if (r.ok === false) {
                     setBusy(submitBtn, false);
-                    var em = (r.error && r.error.message) || 'Unknown error';
+                    var em = (r.error && r.error.message) || 'Erreur inconnue';
                     var field = (r.error && r.error.field) || 'name';
                     // Map handler field codes to our `.msg` slot ids.
                     var slot = field === 'folder' ? 'folder.msg'
                         : field === 'icon' ? 'icon.msg'
                         : 'name.msg';
                     showMsg(slot, em);
-                    toast('error', 'Add mod failed', em);
+                    toast('error', 'Échec de l\'ajout du mod', em);
                     return;
                 }
                 var data = r.data || {};
                 var msg = data.message || {};
-                toast('success', msg.title || 'Mod added', msg.body || 'The mod has been added.');
+                toast('success', msg.title || 'Mod ajouté', msg.body || 'Le mod a été ajouté.');
                 // Leave the button busy across the navigation so the form
                 // can't be re-submitted while the redirect resolves.
                 setTimeout(function () {
@@ -331,7 +331,7 @@
                 // every non-navigating response branch.
                 setBusy(submitBtn, false);
                 showMsg('name.msg', String(err && err.message ? err.message : err));
-                toast('error', 'Add mod failed', String(err && err.message ? err.message : err));
+                toast('error', 'Échec de l\'ajout du mod', String(err && err.message ? err.message : err));
             });
         });
     })();
